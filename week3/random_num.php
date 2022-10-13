@@ -24,6 +24,8 @@
         $color = "red";
         echo "<br>My car is " . $color . "<br>"
     ?>
+
+    
     
 
 </body>
