@@ -2,30 +2,24 @@
 <html>
 
 <head>
-    <title>php</title>
-    <style>
-        .colour {
-            color: red;
-        }
-    </style>
+    <title>Random Number</title>
+    <link rel="stylesheet" href="css/random_num.css">
 
 </head>
 
 <body>
 
     <?php
-        echo "<p class=\"colour\">hello</p>";
+    $num1 = rand(100,200);
+    $num2 = rand(100,200);
+
+        echo "<p class= 'num1'>". $num1 ."</p> ";
+        echo "<p class= 'num2'>". $num2 ."</p> ";
+        echo "<p class= 'num3'>". ($num1 + $num2) ."</p> ";
+        echo "<p class= 'num4'>". ($num1 * $num2) ."</p> ";
     ?>
 
-    <h1>Tan Zhen Xun </h1>
 
-    <?php
-        echo date("dS F Y ");
-        $color = "red";
-        echo "<br>My car is " . $color . "<br>"
-    ?>
-
-    
     
 
 </body>
