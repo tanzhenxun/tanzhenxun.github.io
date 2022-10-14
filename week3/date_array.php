@@ -25,8 +25,10 @@
     <select class="bg-warning form-select form-select-md col">
     <option value="Month">Month</option>
         <?php
-        for($month = 1; $month <= 12; $month++){
-            echo "<option value = $month>$month</option>";
+        $month = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        for($countmounth = 1; $countmounth <= 12; $countmounth++){
+            $count = $countmounth-1;
+            echo "<option value = $month>".$month[$count]."</option>";
         }
         ?>
     </select>
