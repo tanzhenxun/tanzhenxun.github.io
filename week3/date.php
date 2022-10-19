@@ -34,7 +34,7 @@
     <select class="bg-danger form-select form-select-md col">
     <option value="Year">Years</option>
         <?php
-        for($year = 1940; $year <= 2022; $year++){
+        for($year = 1900; $year <= 2022; $year++){
             echo "<option value = $year>$year</option>";
         }
         ?>
