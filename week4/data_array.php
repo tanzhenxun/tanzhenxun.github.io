@@ -29,11 +29,17 @@
 
     <select class="bg-warning form-select form-select-md col">
     <option value="Month">Month</option>
+    
         <?php
+        $m = date("F");
         $month = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
         for($countmounth = 1; $countmounth <= 12; $countmounth++){
+            $state = "";
             $count = $countmounth-1;
-            echo "<option value = $month>".$month[$count]."</option>";
+            if ($m == $month[$count]){
+                $state = "selected";
+            }
+            echo "<option value = $month $state>".$month[$count]."</option>";
         }
         ?>
     </select>
