@@ -24,14 +24,14 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between textboxcenter align-items-center" id="navbarNavAltMarkup">
                 <div class="navbar-nav text-black text-center">
-                <a class="nav-link active" aria-current="page" href="home.php">Home</a>
-                    <a class="nav-link" href="#">Create Product</a>
+                    <a class="nav-link" aria-current="page" href="home.php">Home</a>
+                    <a class="nav-link active" href="#">Create Product</a>
                     <a class="nav-link" href="customer_create.php">Create Customer</a>
                     <a class="nav-link" href="contact.php">Contact Us</a>
                 </div>
                 <div class="navbar-brand">
-                <a href="https://github.com/tanzhenxun" class=" text-dark"><i class="fa-brands fa-github fa-2x"></i></a>
-                <a href="https://www.instagram.com/tan315_x18/?hl=en" class=" text-dark"><i class="fa-brands fa-instagram fa-2x"></i></a>
+                    <a href="https://github.com/tanzhenxun" class=" text-dark"><i class="fa-brands fa-github fa-2x"></i></a>
+                    <a href="https://www.instagram.com/tan315_x18/?hl=en" class=" text-dark"><i class="fa-brands fa-instagram fa-2x"></i></a>
                 </div>
             </div>
         </div>
@@ -53,7 +53,7 @@
             $manufacture_date = $_POST['manufacture_date'];
             $expired_date = $_POST['expired_date'];
 
-            if($expired_date == ""){
+            if ($expired_date == "") {
                 $expired_date = NULL;
             }
 
