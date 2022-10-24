@@ -24,10 +24,10 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between textboxcenter align-items-center" id="navbarNavAltMarkup">
                 <div class="navbar-nav text-black text-center">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    <a class="nav-link" aria-current="page" href="home.php">Home</a>
                     <a class="nav-link" href="product_create.php">Create Product</a>
                     <a class="nav-link" href="customer_create.php">Create Customer</a>
-                    <a class="nav-link" href="contact.php">Contact Us</a>
+                    <a class="nav-link active" href="#">Contact Us</a>
                 </div>
                 <div class="navbar-brand">
                     <a href="https://github.com/tanzhenxun" class=" text-dark"><i class="fa-brands fa-github fa-2x"></i></a>
