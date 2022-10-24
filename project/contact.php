@@ -36,19 +36,11 @@
             </div>
         </div>
     </nav>
-    <div class="bg-light bg-images py-5">
-        <div class="d-flex container align-items-center justify-content-center py-5 mt-5">
-            <!--<div class="header_images">
-                <img src="images/Web-Development-Illustration.svg" alt="" >
-            </div>-->
-            <div class="header-text text-center">
-                <h1>Sample Product</h1>
-                <p>Please fill in product or customer information.</p>
+    <div class="bg-light bg-images">
+        <div class="contact-header-bg bg-secondary">
+            <div class="container py-5">
+                <h1>Contact Us</h1>
             </div>
-        </div>
-        <div class="d-flex container align-items-center justify-content-evenly py-5 mb-5">
-            <button class="button-30" role="button"><a href="product_create" class="text-decoration-none buttoncolor">Create Product</a></button>
-            <button class="button-30" role="button"><a href="customer_create" class="text-decoration-none buttoncolor">Create Customer</a></button>
         </div>
     </div>
 

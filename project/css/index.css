@@ -24,15 +24,15 @@ body{
 }
 
 
-.bg-images{
+.bg-image{
     background-image: url('../images/abstract-technology-background.webp');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 100px;
-    padding-bottom: 100px;
 }
 
+
+.contact
 
 /* CSS */
 .button-30 {
