@@ -42,6 +42,10 @@
                 <h1>Contact Us</h1>
             </div>
         </div>
+        <div class="d-flex container align-items-center justify-content-evenly ">
+            <button class="button-30" role="button"><a href="product_create" class="text-decoration-none buttoncolor">Create Product</a></button>
+            <button class="button-30" role="button"><a href="customer_create" class="text-decoration-none buttoncolor">Create Customer</a></button>
+        </div>
     </div>
 
 
