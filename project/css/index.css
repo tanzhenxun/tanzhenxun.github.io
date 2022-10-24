@@ -24,15 +24,41 @@ body{
 }
 
 
-.bg-image{
+.bg-images{
     background-image: url('../images/abstract-technology-background.webp');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
+.bg-color-contact {
+    background-color: #C4B6B6;
+}
 
+.button-contactForm {
+    background-color: #C4B6B6;
+    color: rgb(0, 0, 0) ;
+    transition: all 0.2s ease-in-out;
+    border: 2px solid #C4B6B6;
+  }
+  
+.button-contactForm:hover {
+    color: #9b7a7a ;
+    background-color: rgba(255, 255, 255, 0.644);
+    border: 2px solid #C4B6B6;
+  }
 
-.contact
+.contact-title {
+    margin-bottom: 20px;
+  }
+
+.email-contact i{
+    font-size: 1.5em;
+}
+
+.right-content-box{
+    background-color: rgb(254, 254, 254);
+}
+
 
 /* CSS */
 .button-30 {
