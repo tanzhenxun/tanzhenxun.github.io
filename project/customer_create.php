@@ -125,8 +125,8 @@
                     <td>Account Status</td>
                     <td>
                         <select class="form-select" aria-label="Default select example" name="account_status">
-                        <option value="1" selected>Active</option>
-                        <option value="2">Inactive</option>
+                        <option value="active" selected>Active</option>
+                        <option value="inactive">Inactive</option>
                         </select>
                     </td>
                 </tr>
