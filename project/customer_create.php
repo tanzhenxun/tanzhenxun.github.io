@@ -20,10 +20,11 @@
                 <a class="navbar-brand fw-bold fs-5" href="home.php">TANZX</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between textboxcenter align-items-center" id="navbarNavAltMarkup">
-                <div class="navbar-nav text-black text-center">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNavAltMarkup">
+            <hr>
+                <div class="navbar-nav text-black text-lg-center text-start">
                     <a class="nav-link" aria-current="page" href="home.php">Home</a>
                     <a class="nav-link" href="product_create.php">Create Product</a>
                     <a class="nav-link active" href="#">Create Customer</a>
@@ -36,9 +37,8 @@
             </div>
         </div>
     </nav>
-
     <div class="container">
-        <div class="page-header my-3">
+        <div class="page-header py-3">
             <h3>Create Customer</h3>
         </div>
 
@@ -54,10 +54,10 @@
             $birthday = $_POST['birthday'];
             $account_status = $_POST['account_status'];
 
-            if ($username == "" || $password == "" || $firstname == "" || $lastname == "" || $account_status == ""){
+            if ($username == "" || $password == "" || $firstname == "" || $lastname == "" || $account_status == "") {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {
-            // include database connection
+                // include database connection
                 try {
                     // insert query
                     $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthday=:birthday, account_status=:account_status, register_date=:register_date";
@@ -85,13 +85,14 @@
                 catch (PDOException $exception) {
                     die('ERROR: ' . $exception->getMessage());
                 }
-            } 
+            }
         }
 
         ?>
+
         <!-- html form here where the product information will be entered -->
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
-            <table class='table table-hover table-responsive table-bordered '>
+            <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Username</td>
                     <td><input type='text' name='username' class='form-control' /></td>
@@ -110,10 +111,10 @@
                 </tr>
                 <tr>
                     <td>Gender</td>
-                    <td class="d-flex align-item-center" >
-                        <input type="radio"  name="gender" value="male" class="ms-1 mx-2" >
+                    <td class="d-flex align-item-center">
+                        <input type="radio" name="gender" value="male" class="ms-1 mx-2">
                         <label for="gender" class="me-4">Male</label>
-                        <input type="radio" name="gender" value="female" class="ms-1 mx-2" >
+                        <input type="radio" name="gender" value="female" class="ms-1 mx-2">
                         <label for="gender">Female</label>
                     </td>
                 </tr>
@@ -125,8 +126,8 @@
                     <td>Account Status</td>
                     <td>
                         <select class="form-select" aria-label="Default select example" name="account_status">
-                        <option value="active" selected>Active</option>
-                        <option value="inactive">Inactive</option>
+                            <option value="active" selected>Active</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                     </td>
                 </tr>
@@ -139,7 +140,6 @@
             </table>
         </form>
     </div>
-
     <footer class="container-fluid py-3 bg-dark">
         <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
             <div>Copyright @ 2022 TANZX</div>

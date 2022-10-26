@@ -20,10 +20,11 @@
                 <a class="navbar-brand fw-bold fs-5" href="home.php">TANZX</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between textboxcenter align-items-center" id="navbarNavAltMarkup">
-                <div class="navbar-nav text-black text-center">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+            <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNavAltMarkup">
+            <hr>
+                <div class="navbar-nav text-black text-lg-center text-start">
                     <a class="nav-link" aria-current="page" href="home.php">Home</a>
                     <a class="nav-link active" href="#">Create Product</a>
                     <a class="nav-link" href="customer_create.php">Create Customer</a>
