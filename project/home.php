@@ -48,8 +48,8 @@
             </div>
         </div>
         <div class="d-flex container align-items-center justify-content-evenly py-5 mb-5">
-            <button class="button-30" role="button"><a href="product_create" class="text-decoration-none buttoncolor">Create Product</a></button>
-            <button class="button-30" role="button"><a href="customer_create" class="text-decoration-none buttoncolor">Create Customer</a></button>
+        <a href="product_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30" role="button">Create Product</button></a>
+        <a href="customer_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30" role="button">Create Customer</button></a>
         </div>
     </div>
 

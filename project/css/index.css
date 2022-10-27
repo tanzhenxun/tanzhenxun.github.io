@@ -109,7 +109,8 @@ body {
 }
 
 .buttoncolor {
-    color: #36395A;
+    color: #191a2b;
+    background-color: inherit;
 }
 
 .content-bg {
