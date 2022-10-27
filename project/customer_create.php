@@ -20,10 +20,10 @@
                 <a class="navbar-brand fw-bold fs-5" href="home.php">TANZX</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNavAltMarkup">
-            <hr>
+                <hr>
                 <div class="navbar-nav text-black text-lg-center text-start">
                     <a class="nav-link" aria-current="page" href="home.php">Home</a>
                     <a class="nav-link" href="product_create.php">Create Product</a>
@@ -51,41 +51,83 @@
             $password = $_POST['password'];
             $firstname = $_POST['firstname'];
             $lastname = $_POST['lastname'];
-            $birthday = $_POST['birthday'];
+            $date_of_birth = $_POST['date_of_birth'];
             $account_status = $_POST['account_status'];
+            $confirm_password = $_POST['confirm_password'];
 
-            
+            $uppercase = preg_match('@[A-Z]@', $password);
+            $lowercase = preg_match('@[a-z]@', $password);
+            $number    = preg_match('@[0-9]@', $password);
+            $flag = 0;
 
-            if ($username == "" || $password == "" || $firstname == "" || $lastname == "" || $account_status == "") {
+            if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "") {
+                $flag = 1;
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {
-                // include database connection
-                try {
-                    // insert query
-                    $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, birthday=:birthday, account_status=:account_status, register_date=:register_date";
-                    // prepare query for execution
-                    $stmt = $con->prepare($query);
-                    $gender = $_POST['gender'];
-                    // bind the parameters
-                    $stmt->bindParam(':username', $username);
-                    $stmt->bindParam(':password', $password);
-                    $stmt->bindParam(':firstname', $firstname);
-                    $stmt->bindParam(':lastname', $lastname);
-                    $register_date = date('Y-m-d H:i:s'); // get the current date and time
-                    $stmt->bindParam(':register_date', $register_date);
-                    $stmt->bindParam(':gender', $gender);
-                    $stmt->bindParam(':birthday', $birthday);
-                    $stmt->bindParam(':account_status', $account_status);
-                    // Execute the query
-                    if ($stmt->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                if (strlen($username) >= 6) {
+                    if (strpos($username, ' ')) {
+                        $flag = 1;
+                        echo "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
                     }
+                } else {
+                    $flag = 1;
+                    echo "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
                 }
-                // show error
-                catch (PDOException $exception) {
-                    die('ERROR: ' . $exception->getMessage());
+
+                if (strlen($password) <= 8) {
+                    $flag = 1;
+                    echo "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
+                }
+
+                if (!$uppercase || !$lowercase || !$number) {
+                    $flag = 1;
+                    echo "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                }
+
+                if ($password !== $confirm_password) {
+                    $flag = 1;
+                    echo "<div class='alert alert-danger'>Passwords do not match, please type again.</div>";
+                }
+
+                $now_date = date('Y-m-d');
+                $diff = date_diff(date_create($now_date),date_create($date_of_birth));
+                $year = (int)$diff->format("%R%y");
+
+                if ($year >= -18){
+                    $flag = 1;
+                    echo "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                }
+
+
+                if ($flag == 0) {
+                    // include database connection
+                    try {
+                        // insert query
+                        $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, register_date=:register_date";
+                        // prepare query for execution
+                        $stmt = $con->prepare($query);
+                        $gender = $_POST['gender'];
+                        // bind the parameters
+                        $stmt->bindParam(':username', $username);
+                        $stmt->bindParam(':password', $password);
+                        $stmt->bindParam(':firstname', $firstname);
+                        $stmt->bindParam(':lastname', $lastname);
+                        $register_date = date('Y-m-d H:i:s'); // get the current date and time
+                        $stmt->bindParam(':register_date', $register_date);
+                        $stmt->bindParam(':gender', $gender);
+                        $stmt->bindParam(':date_of_birth', $date_of_birth);
+                        $stmt->bindParam(':account_status', $account_status);
+                        // Execute the query
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                        }
+                    }
+                    // show error
+                    catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
+                    }
                 }
             }
         }
@@ -112,6 +154,10 @@
                     <td><input type='text' name='password' class='form-control' /></td>
                 </tr>
                 <tr>
+                    <td>Confirm Password</td>
+                    <td><input type='text' name='confirm_password' class='form-control' /></td>
+                </tr>
+                <tr>
                     <td>Gender</td>
                     <td class="d-flex align-item-center">
                         <input type="radio" name="gender" value="male" class="ms-1 mx-2">
@@ -122,7 +168,7 @@
                 </tr>
                 <tr>
                     <td>Date of Birth</td>
-                    <td><input type='date' name='birthday' class='form-control' /></td>
+                    <td><input type='date' name='date_of_birth' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Account Status</td>
