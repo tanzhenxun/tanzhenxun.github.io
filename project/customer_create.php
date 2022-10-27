@@ -65,7 +65,7 @@
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {
                 if (strlen($username) >= 6) {
-                    if (strpos($username, ' ')) {
+                    if (strpos(trim($username), ' ')) {
                         $flag = 1;
                         echo "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
                     }
