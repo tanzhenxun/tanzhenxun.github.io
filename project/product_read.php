@@ -63,7 +63,7 @@
 
         //check if more than 0 record found
         if ($num > 0) {
-
+            
             // data from database will be here
             echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
 
@@ -100,6 +100,9 @@
                 echo "</td>";
                 echo "</tr>";
             }
+
+
+
             // end table
             echo "</table>";
         } else {

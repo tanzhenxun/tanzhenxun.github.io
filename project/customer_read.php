@@ -30,7 +30,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price FROM customers WHERE id = :id ";
+            $query = "SELECT id, username, gender, date_of_birth, resgister_date FROM customers WHERE id = :id ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
