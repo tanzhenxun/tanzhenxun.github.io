@@ -54,6 +54,8 @@
             $birthday = $_POST['birthday'];
             $account_status = $_POST['account_status'];
 
+            
+
             if ($username == "" || $password == "" || $firstname == "" || $lastname == "" || $account_status == "") {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {

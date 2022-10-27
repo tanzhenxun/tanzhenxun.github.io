@@ -47,17 +47,17 @@
                 <p>Please fill in product or customer information.</p>
             </div>
         </div>
-        <div class="d-flex container align-items-center justify-content-evenly py-5 mb-5">
-        <a href="product_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30" role="button">Create Product</button></a>
-        <a href="customer_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30" role="button">Create Customer</button></a>
+        <div class="d-sm-flex container align-items-center justify-content-evenly py-sm-5 py-2 mb-sm-5 mb-2 flex-sm-row flex-column text-center">
+        <a href="product_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30 m-sm-0 m-2" role="button">Create Product</button></a>
+        <a href="customer_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30 m-sm-0 m-2" role="button">Create Customer</button></a>
         </div>
     </div>
 
 
     <footer class="container-fluid py-3 bg-dark">
         <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div>Copyright @ 2022 TANZX</div>
-            <div class="d-flex">
+            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
+            <div class="d-flex justify-content-evenly">
                 <div class="mx-3">Terms of Use</div>
                 <div class="mx-3">Privacy Policy</div>
             </div>

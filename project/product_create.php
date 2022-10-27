@@ -58,6 +58,10 @@
                 $expired_date = NULL;
             }
 
+            if($promotion_price == ""){
+                $promotion_price = NULL;
+            }
+
             // include database connection
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
