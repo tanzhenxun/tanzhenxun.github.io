@@ -30,7 +30,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, username, gender, date_of_birth, resgister_date FROM customers WHERE id = :id ";
+            $query = "SELECT id, username, firstname, lastname, gender, date_of_birth, resgister_date, account_status FROM customers WHERE id = :id ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
@@ -43,9 +43,13 @@
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $name = $row['name'];
-            $description = $row['description'];
-            $price = $row['price'];
+            $username = $row['username'];
+            $firstname = $row['firstname'];
+            $lastname = $row['lastname'];
+            $gender = $row['gender'];
+            $date_of_birth = $row['date_of_birth'];
+            $resgister_date = $row['resgister_date'];
+            $account_status = $row['account_status'];
             // shorter way to do that is extract($row)
         }
 
@@ -60,21 +64,37 @@
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
-                <td>Name</td>
-                <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
+                <td>Username</td>
+                <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Description</td>
-                <td><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></td>
+                <td>First Name</td>
+                <td><?php echo htmlspecialchars($firstname, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
-                <td>Price</td>
-                <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
+                <td>Last Name</td>
+                <td><?php echo htmlspecialchars($lastname, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Gender</td>
+                <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Date of Birth</td>
+                <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Resgister Date</td>
+                <td><?php echo htmlspecialchars($resgister_date, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Account Status</td>
+                <td><?php echo htmlspecialchars($account_status, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                    <a href='product_read.php' class='btn btn-danger'>Back to read customer</a>
                 </td>
             </tr>
         </table>
