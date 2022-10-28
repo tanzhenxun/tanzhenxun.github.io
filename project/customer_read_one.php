@@ -94,7 +94,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <a href='product_read.php' class='btn btn-danger'>Back to read customer</a>
+                    <a href='customer_read.php' class='btn btn-danger'>Back to read customer</a>
                 </td>
             </tr>
         </table>
