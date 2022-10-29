@@ -51,7 +51,7 @@
         // delete message prompt will be here
 
         // select all data
-        $query = "SELECT id, username, resgister_date, account_status FROM customer ORDER BY id DESC";
+        $query = "SELECT id, username, register_date, account_status FROM customers ORDER BY id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -71,7 +71,7 @@
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Username</th>";
-            echo "<th>Resgister Date</th>";
+            echo "<th>Register Date</th>";
             echo "<th>Account Status</th>";
             echo "<th>Action</th>";
             echo "</tr>";
@@ -86,7 +86,7 @@
                 echo "<tr>";
                 echo "<td>{$id}</td>";
                 echo "<td>{$username}</td>";
-                echo "<td>{$resgister_date}</td>";
+                echo "<td>{$register_date}</td>";
                 echo "<td>{$account_status}</td>";
                 echo "<td class\"\">";
                 // read one record

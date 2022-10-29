@@ -30,7 +30,7 @@
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, username, firstname, lastname, gender, date_of_birth, resgister_date, account_status FROM customers WHERE id = :id ";
+            $query = "SELECT id, username, firstname, lastname, gender, date_of_birth, register_date, account_status FROM customers WHERE id = :id ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
@@ -48,7 +48,7 @@
             $lastname = $row['lastname'];
             $gender = $row['gender'];
             $date_of_birth = $row['date_of_birth'];
-            $resgister_date = $row['resgister_date'];
+            $register_date = $row['register_date'];
             $account_status = $row['account_status'];
             // shorter way to do that is extract($row)
         }
@@ -85,7 +85,7 @@
             </tr>
             <tr>
                 <td>Resgister Date</td>
-                <td><?php echo htmlspecialchars($resgister_date, ENT_QUOTES);  ?></td>
+                <td><?php echo htmlspecialchars($register_date, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td>Account Status</td>
