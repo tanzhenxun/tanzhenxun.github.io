@@ -2,11 +2,11 @@
 // used to connect to the database
 $host = "localhost";
 $db_name = "tanzhenxun";
-$username = "tanzhenxun";
-$password = "CB5IlUaIKf)2UJkB";
+$db_username = "tanzhenxun";
+$db_password = "CB5IlUaIKf)2UJkB";
   
 try {
-    $con = new PDO("mysql:host={$host};dbname={$db_name}", $username, $password);
+    $con = new PDO("mysql:host={$host};dbname={$db_name}", $db_username, $db_password);
     $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // show error
     //echo "Connected successfully"; 
 }  
