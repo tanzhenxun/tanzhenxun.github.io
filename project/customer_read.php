@@ -28,6 +28,7 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                     <a class="nav-link" href="product_create.php">Create Product</a>
                     <a class="nav-link" href="customer_create.php">Create Customer</a>
+                    <a class="nav-link" href="create_order.php">Create Order</a>
                     <a class="nav-link" href="contact.php">Contact Us</a>
                 </div>
                 <div class="navbar-brand">

@@ -28,7 +28,7 @@
                     <a class="nav-link active" aria-current="page" href="#">Home</a>
                     <a class="nav-link" href="product_create.php">Create Product</a>
                     <a class="nav-link" href="customer_create.php">Create Customer</a>
-                    <a class="nav-link" href="#">Order</a>
+                    <a class="nav-link" href="#">Create Order</a>
                     <a class="nav-link" href="contact.php">Contact Us</a>
                 </div>
                 <div class="navbar-brand">
@@ -44,27 +44,11 @@
             <h1>Create Order</h1>
         </div>
         <?php
-        
+
         if ($_POST) {
             $array_postValues = array();
             include 'config/database.php';
             try {
-                // // insert query
-                // $table_order_summary = "order_summary";
-                // $query_order_summary = "INSERT INTO $table_order_summary SET customer_id=:customer_id, total_price=:total_price, order_date=:order_date";
-                // // prepare query for execution
-                // $stmt_order_summary = $con->prepare($query_order_summary);
-
-                // // bind the parameters
-                // $stmt_order_summary->bindParam(':customer_id', $array_postValues["customerSelect"]);
-
-                // // Execute the query
-                // if ($stmt_order_summary->execute()) {
-                //     echo "<div class='alert alert-success'>Record was saved.</div>";
-                // } else {
-                //     echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                // }
-
                 $total_amount = 0;
                 $order_id = $_POST['inputOrderNumber'];
                 $customer_id = $_POST['customerSelect'];
@@ -137,14 +121,10 @@
                 $stmt = $con->prepare($query);
                 
                 $stmt->bindParam(':order_id', $order_id);
-                echo $order_id;
                 $stmt->bindParam(':customer_id', $customer_id);
-                echo $customer_id;
                 $stmt->bindParam(':total_price', $total_amount);
-                echo $total_amount;
                 $order_date = date('Y-m-d H:i:s');
                 $stmt->bindParam(':order_date', $order_date);
-                echo $order_date;
                 if ($stmt->execute()) {
                     echo "<div class='alert alert-success'>Record was saved.</div>";
                 } else {
@@ -417,45 +397,6 @@
                 }
                 echo "</tbody>";
                 echo "</table>";
-                // // $SecondProductSelect = $_POST['SecondProductSelect'];
-                // // $secondInputOrderQuantity = $_POST['secondInputOrderQuantity'];
-
-                // // $stmt->bindParam(":product_id", $secondProductSelect);
-
-                // // $stmt->execute();
-                // // $num = $stmt->rowCount();
-                // // $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // // show product 2
-                // echo "<tr>";
-                // echo "<th scope=\"row\">2</th>";
-                // // show product name
-                // echo "<td>";
-                // echo "<div class=\"mb-3 col\">";
-                // echo $row["name"];
-                // echo "</div>";
-                // echo "</td>";
-                // // show product quantity
-                // echo "<td>";
-                // echo "<div class=\"mb-3 col\">";
-                // echo $quantity;
-                // echo "</div>";
-                // echo "</td>";
-                // //show product price
-                // echo "<td>";
-                // echo "<div class=\"mb-3 col\">";
-                // echo $row["price"];
-                // echo "</div>";
-                // echo "</td>";
-                // //show total
-                // echo "<td>";
-                // echo "<div class=\"mb-3 col\">";
-                // $total2 = $quantity * $row["price"];
-                // echo $total2;
-                // echo "</div>";
-                // echo "</td>";
-                // echo "</tbody>";
-                // echo "</table>";
             }
             ?>
         </table>
