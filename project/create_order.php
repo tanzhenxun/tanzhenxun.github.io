@@ -211,10 +211,12 @@
                     ?>
                 </tbody>
             </table>
-            <div class="row text-center d-flex justify-content-evenly">
-                <input type="button" value="Add More Product" class="add_one btn btn-outline-success mb-3 col-4" />
-                <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-4" />
-                <button type="submit" class="btn btn-outline-secondary mb-3 col-8">Submit</button>
+            <div class="row text-center d-flex justify-content-between">
+                <div class="d-flex row col-6">
+                <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-3 mx-2" />
+                <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-2 mx-2" />
+                </div>
+                <button type="submit" class="btn btn-secondary mb-3 col-3">Submit</button>
             </div>
         </form>
     </div> <!-- end .container -->
