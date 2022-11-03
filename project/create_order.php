@@ -46,95 +46,105 @@
         <?php
 
         if ($_POST) {
-            $array_postValues = array();
             include 'config/database.php';
-            try {
-                $total_amount = 0;
-                $order_id = $_POST['inputOrderNumber'];
-                $customer_id = $_POST['customerSelect'];
+            $order_id = $_POST['inputOrderNumber'];
+            $customer_id = $_POST['customerSelect'];
+            $flag = 0;
+            if ($order_id == "" || $customer_id == "NULL") {
+                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                $flag = 1;
+            } else {
+                if ($order_id < 6) {
+                    echo "<div class='alert alert-danger'>Please make sure order number must containt by 6 number!</div>";
+                    $flag = 1;
+                }
+                if ($flag == 0) {
+                    try {
+                        $total_amount = 0;
 
-                if ($_POST["firstProductSelect"] != -1) {
-                    $product_id_one =  explode("-", $_POST['firstProductSelect'])[0];
-                    $price = explode("-", $_POST['firstProductSelect'])[1];
-                    $quantity_one = $_POST['firstInputOrderQuantity'];
-                    $total_amount += $price * $quantity_one;
+                        if ($_POST["firstProductSelect"] != -1) {
+                            $product_id_one =  explode("-", $_POST['firstProductSelect'])[0];
+                            $price = explode("-", $_POST['firstProductSelect'])[1];
+                            $quantity_one = $_POST['firstInputOrderQuantity'];
+                            $total_amount += $price * $quantity_one;
 
-                    // insert query
-                    $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_id, product_id=:product_id, quantity=:quantity";
-                    // prepare query for execution
-                    $stmt_order_detail = $con->prepare($query_order_detail);
-                    // bind the parameters
-                    $stmt_order_detail->bindParam(':order_id', $order_id);
-                    $stmt_order_detail->bindParam(':product_id', $product_id_one);
-                    $stmt_order_detail->bindParam(':quantity', $quantity_one);
+                            // insert query
+                            $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_id, product_id=:product_id, quantity=:quantity";
+                            // prepare query for execution
+                            $stmt_order_detail = $con->prepare($query_order_detail);
+                            // bind the parameters
+                            $stmt_order_detail->bindParam(':order_id', $order_id);
+                            $stmt_order_detail->bindParam(':product_id', $product_id_one);
+                            $stmt_order_detail->bindParam(':quantity', $quantity_one);
 
-                    // Execute the query
-                    if ($stmt_order_detail->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                            // Execute the query
+                            if ($stmt_order_detail->execute()) {
+                                echo "<div class='alert alert-success'>Product 1 was saved.</div>";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to save product 1.</div>";
+                            }
+                        }
+
+                        if ($_POST["secondProductSelect"] != -1) {
+                            $product_id_second =  explode("-", $_POST['secondProductSelect'])[0];
+                            $price =  explode("-", $_POST['secondProductSelect'])[1];
+                            $quantity_second = $_POST['secondInputOrderQuantity'];
+                            $total_amount += $price * $quantity_second;
+
+                            $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_id, product_id=:product_id, quantity=:quantity";
+                            // prepare query for execution
+                            $stmt_order_detail = $con->prepare($query_order_detail);
+                            $stmt_order_detail->bindParam(':order_id', $order_id);
+                            $stmt_order_detail->bindParam(':product_id', $product_id_second);
+                            $stmt_order_detail->bindParam(':quantity', $quantity_second);
+                            // Execute the query
+                            if ($stmt_order_detail->execute()) {
+                                echo "<div class='alert alert-success'>Product 2 was saved.</div>";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to save product 2.</div>";
+                            }
+                        }
+
+                        if ($_POST["thirdProductSelect"] != -1) {
+                            $product_id_third = explode("-", $_POST['thirdProductSelect'])[0];
+                            $price =  explode("-", $_POST['thirdProductSelect'])[1];
+                            $quantity_third = $_POST['thirdInputOrderQuantity'];
+                            $total_amount += $price * $quantity_third;
+
+                            $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_id, product_id=:product_id, quantity=:quantity";
+                            // prepare query for execution
+                            $stmt_order_detail = $con->prepare($query_order_detail);
+                            $stmt_order_detail->bindParam(':order_id', $order_id);
+                            $stmt_order_detail->bindParam(':product_id', $product_id_third);
+                            $stmt_order_detail->bindParam(':quantity', $quantity_third);
+                            // Execute the query
+                            if ($stmt_order_detail->execute()) {
+                                echo "<div class='alert alert-success'>Product 3 was saved.</div>";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to save product 3.</div>";
+                            }
+                        }
+
+                        $query = "INSERT INTO order_summary SET order_summary_id=:order_id, customer_id=:customer_id, total_price=:total_price, order_date=:order_date";
+
+                        $stmt = $con->prepare($query);
+
+                        $stmt->bindParam(':order_id', $order_id);
+                        $stmt->bindParam(':customer_id', $customer_id);
+                        $stmt->bindParam(':total_price', $total_amount);
+                        $order_date = date('Y-m-d H:i:s');
+                        $stmt->bindParam(':order_date', $order_date);
+                        if ($stmt->execute()) {
+                            $flag = 0;
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to save record by total price.</div>";
+                        }
+                    }
+                    // show error
+                    catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
                     }
                 }
-
-                if ($_POST["secondProductSelect"] != -1) {
-                    $product_id_second =  explode("-", $_POST['secondProductSelect'])[0];
-                    $price =  explode("-", $_POST['secondProductSelect'])[1];
-                    $quantity_second = $_POST['secondInputOrderQuantity'];
-                    $total_amount += $price * $quantity_second;
-
-                    $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_id, product_id=:product_id, quantity=:quantity";
-                    // prepare query for execution
-                    $stmt_order_detail = $con->prepare($query_order_detail);
-                    $stmt_order_detail->bindParam(':order_id', $order_id);
-                    $stmt_order_detail->bindParam(':product_id', $product_id_second);
-                    $stmt_order_detail->bindParam(':quantity', $quantity_second);
-                    // Execute the query
-                    if ($stmt_order_detail->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                    }
-                }
-
-                if ($_POST["thirdProductSelect"] != -1) {
-                    $product_id_third = explode("-", $_POST['thirdProductSelect'])[0];
-                    $price =  explode("-", $_POST['thirdProductSelect'])[1];
-                    $quantity_third = $_POST['thirdInputOrderQuantity'];
-                    $total_amount += $price * $quantity_third;
-
-                    $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_id, product_id=:product_id, quantity=:quantity";
-                    // prepare query for execution
-                    $stmt_order_detail = $con->prepare($query_order_detail);
-                    $stmt_order_detail->bindParam(':order_id', $order_id);
-                    $stmt_order_detail->bindParam(':product_id', $product_id_third);
-                    $stmt_order_detail->bindParam(':quantity', $quantity_third);
-                    // Execute the query
-                    if ($stmt_order_detail->execute()) {
-                        echo "<div class='alert alert-success'>Record was saved.</div>";
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                    }
-                }
-                
-                $query = "INSERT INTO order_summary SET order_summary_id=:order_id, customer_id=:customer_id, total_price=:total_price, order_date=:order_date";
-
-                $stmt = $con->prepare($query);
-                
-                $stmt->bindParam(':order_id', $order_id);
-                $stmt->bindParam(':customer_id', $customer_id);
-                $stmt->bindParam(':total_price', $total_amount);
-                $order_date = date('Y-m-d H:i:s');
-                $stmt->bindParam(':order_date', $order_date);
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was saved.</div>";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to save record.</div>";
-                }
-
-            }
-            // show error
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
             }
         }
         ?>
@@ -143,6 +153,7 @@
                 <div class="mb-3 col">
                     <label for="inputOrderNumber" class="form-label">Order number</label>
                     <input type="text" class="form-control" id="inputOrderNumber" name="inputOrderNumber" placeholder="#000001" aria-labelledby="orderNumberHit">
+                    <div id="orderNumberHit" class="form-tex">*Order number should contain 6 digits!</div>
                 </div>
                 <div class="mab-3 col">
                     <label for="customerSelect" class="form-label">Customer</label>
@@ -216,7 +227,6 @@
                             extract($row);
 
                             echo "<option value={$id}-{$price}>{$name}</option>";
-                            
                         }
                     } else {
                         echo "<option selected value=-1>No records found</option>";
@@ -322,88 +332,90 @@
         <table class="table">
             <?php
             if ($_POST) {
-
                 include 'config/database.php';
+                $order_id = $_POST['inputOrderNumber'];
+                $customer_id = $_POST['customerSelect'];
+                $flag = 0;
+                if ($order_id == "" || $customer_id == "NULL") {
+                    $flag = 1;
+                } else {
+                    if ($order_id < 6) {
+                        $flag = 1;
+                    }
 
-                // $firstProductSelect = $_POST['firstProductSelect'];
-                // $firstInputOrderQuantity = $_POST['firstInputOrderQuantity'];
+                    if ($flag == 0) {
 
-
-                //this is how to get number of rows returned
-
-                // $query_order_detail_table = "SELECT product_id quantity FROM order_detail";
-                // $query_product_table = "SELECT name, price FROM products where id=:product_id";
-                $query = "SELECT  *
-                FROM order_detail
-                LEFT JOIN products
-                ON order_detail.product_id = products.id
-             UNION ALL
-                SELECT  *
-                FROM products
-                RIGHT JOIN order_detail
-                ON products.id = order_detail.product_id
-                Order by order_detail_id desc limit 3";
+                        $query = "SELECT  *
+                        FROM order_detail
+                        LEFT JOIN products
+                        ON order_detail.product_id = products.id
+                    UNION ALL
+                        SELECT *
+                        FROM products
+                        RIGHT JOIN order_detail
+                        ON products.id = order_detail.product_id
+                        Order by order_detail_id desc limit 3";
 
 
 
-                $stmt = $con->prepare($query);
-                $stmt->execute();
+                        $stmt = $con->prepare($query);
+                        $stmt->execute();
 
-                $num = $stmt->rowCount();
-                
-                echo "<thead>";
-                echo "<tr>";
-                echo "<th scope=\"col\">No</th>";
-                echo "<th scope=\"col\">Product name</th>";
-                echo "<th scope=\"col\">Quantity</th>";
-                echo "<th scope=\"col\">Price</th>";
-                echo "<th scope=\"col\">Total</th>";
-                echo "</tr>";
-                echo "</thead>";
-                echo "<tbody>";
-                $count = 1;
-                if ($num > 0) {
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        // show product 1
+                        $num = $stmt->rowCount();
+
+                        echo "<thead>";
                         echo "<tr>";
-                        echo "<th scope=\"row\">$count</th>";
-                        // show product name
-                        echo "<td>";
-                        echo "<div class=\"mb-3 col\">";
-                        echo $row["name"];
-                        echo "</div>";
-                        echo "</td>";
-                        // show product quantity
-                        echo "<td>";
-                        echo "<div class=\"mb-3 col\">";
-                        echo $row["quantity"];
-                        echo "</div>";
-                        echo "</td>";
-                        //show product price
-                        echo "<td>";
-                        echo "<div class=\"mb-3 col\">";
-                        echo $row["price"];
-                        echo "</div>";
-                        echo "</td>";
-                        //show total
-                        echo "<td>";
-                        echo "<div class=\"mb-3 col\">";
-                        $total = $row["quantity"] * $row["price"];
-                        echo $total;
-                        echo "</div>";
-                        echo "</td>";
-                        $count++;
+                        echo "<th scope=\"col\">No</th>";
+                        echo "<th scope=\"col\">Product name</th>";
+                        echo "<th scope=\"col\">Quantity</th>";
+                        echo "<th scope=\"col\">Price</th>";
+                        echo "<th scope=\"col\">Total</th>";
+                        echo "</tr>";
+                        echo "</thead>";
+                        echo "<tbody>";
+                        $count = 1;
+                        if ($num > 0) {
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                // show product 1
+                                echo "<tr>";
+                                echo "<th scope=\"row\">$count</th>";
+                                // show product name
+                                echo "<td>";
+                                echo "<div class=\"mb-3 col\">";
+                                echo $row["name"];
+                                echo "</div>";
+                                echo "</td>";
+                                // show product quantity
+                                echo "<td>";
+                                echo "<div class=\"mb-3 col\">";
+                                echo $row["quantity"];
+                                echo "</div>";
+                                echo "</td>";
+                                //show product price
+                                echo "<td>";
+                                echo "<div class=\"mb-3 col\">";
+                                echo $row["price"];
+                                echo "</div>";
+                                echo "</td>";
+                                //show total
+                                echo "<td>";
+                                echo "<div class=\"mb-3 col\">";
+                                $total = $row["quantity"] * $row["price"];
+                                echo $total;
+                                echo "</div>";
+                                echo "</td>";
+                                $count++;
+                            }
+                        }
+                        echo "</tbody>";
+                        echo "</table>";
                     }
                 }
-                echo "</tbody>";
-                echo "</table>";
             }
             ?>
         </table>
-    </div>
 
     </div> <!-- end .container -->
-    <script src="javascript.js"></script>
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
