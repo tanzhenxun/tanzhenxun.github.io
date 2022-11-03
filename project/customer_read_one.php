@@ -129,8 +129,8 @@
 
     <footer class="container-fluid py-3 bg-dark">
         <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div>Copyright @ 2022 TANZX</div>
-            <div class="d-flex">
+            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
+            <div class="d-flex justify-content-evenly">
                 <div class="mx-3">Terms of Use</div>
                 <div class="mx-3">Privacy Policy</div>
             </div>

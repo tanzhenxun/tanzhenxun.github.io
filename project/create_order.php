@@ -47,9 +47,6 @@
 
         if ($_POST) {
             include 'config/database.php';
-
-
-
             $customer_id = $_POST['customerSelect'];
             $flag = 0;
             if ($customer_id == "NULL") {
@@ -60,6 +57,17 @@
 
                 if ($flag == 0) {
 
+                    $query_summary = "SELECT MAX(order_summary_id) from order_summary";
+                    $stmt_summary = $con->prepare($query_summary);
+                    $stmt_summary->execute();
+                    $num = $stmt_summary->rowCount();
+
+                    if ($num > 0) {
+                        $row = $stmt_summary->fetch(PDO::FETCH_ASSOC);
+                        $order_id = $row['MAX(order_summary_id)'];
+                    }
+                    $order_id++;
+
                     $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date";
 
                     $stmt = $con->prepare($query);
@@ -67,24 +75,15 @@
                     $stmt->bindParam(':customer_id', $customer_id);
                     $order_date = date('Y-m-d H:i:s');
                     $stmt->bindParam(':order_date', $order_date);
-                    if ($stmt->execute()) {
-                        $query_summary = "SELECT MAX(order_summary_id) from order_summary";
-                        $stmt_summary = $con->prepare($query_summary);
-                        $stmt_summary->execute();
-                        $num = $stmt_summary->rowCount();
 
-                        if ($num > 0) {
-                            $row = $stmt_summary->fetch(PDO::FETCH_ASSOC);
-                            $order_id = $row['MAX(order_summary_id)'];
-                            $order_id++;
-                        }
+                    if ($stmt->execute()) {
 
                         try {
 
-                            for ($y = 0; $y < 3; $y++) {
-                                if ($_POST["ProductSelect"][$y] != -1) {
-                                    $product_id = $_POST['ProductSelect'][$y];
-                                    $quantity = $_POST['InputOrderQuantity'][$y];
+                            for ($loop = 0; $loop < count($_POST['ProductSelect']); $loop++) {
+                                if ($_POST["ProductSelect"][$loop] != -1) {
+                                    $product_id = $_POST['ProductSelect'][$loop];
+                                    $quantity = $_POST['InputOrderQuantity'][$loop];
 
                                     // insert query
                                     $query_order_detail = "INSERT INTO order_detail SET order_summary_id=:order_summary_id, product_id=:product_id, quantity=:quantity";
@@ -94,14 +93,16 @@
                                     $stmt_order_detail->bindParam(':product_id', $product_id);
                                     $stmt_order_detail->bindParam(':quantity', $quantity);
                                     $stmt_order_detail->bindParam(':order_summary_id', $order_id);
-
                                     // Execute the query
                                     if ($stmt_order_detail->execute()) {
-                                        echo "<div class='alert alert-success'>Product was saved.</div>";
+                                        $flag = 0;
                                     } else {
-                                        echo "<div class='alert alert-danger'>Unable to save product 1.</div>";
+                                        echo "<div class='alert alert-danger'>Unable to save product.</div>";
                                     }
                                 }
+                            }
+                            if ($flag == 0) {
+                                echo "<div class='alert alert-success'>Product was saved.</div>";
                             }
                         }
                         // show error
@@ -153,7 +154,7 @@
                     </select>
                 </div>
             </div>
-            <table class="table">
+            <table class="table" id="order">
                 <thead>
                     <tr>
                         <th scope="col">No</th>
@@ -161,7 +162,7 @@
                         <th scope="col">Quantity</th>
                     </tr>
                 </thead>
-                <tbody class="pRow">
+                <tbody>
                     <?php
 
                     include 'config/database.php';
@@ -170,13 +171,15 @@
                     $stmt = $con->prepare($query);
                     $stmt->execute();
 
-                    for ($x = 1; $x <= 1; $x++) {
-                        $stmt->execute();
-                        echo "<tr>";
-                        echo "<th scope=\"row\" on>$x</th>";
+                    $num = $stmt->rowCount();
+
+                    //for ($pdct_tbl = 1; $pdct_tbl  <= 1; $pdct_tbl ++) {
+                    //    $stmt->execute();
+                        echo "<tr class = \"pRow\">";
+                        echo "<th scope=\"row\">1</th>";
                         echo "<td>";
-                        echo "<div class=\"mb-3 col\">";
-                        $num = $stmt->rowCount();
+                        echo "<div class=\"my-2 col\">";
+                        
                         echo "<select class=\"form-select\" id=\"ProductSelect\" name=\"ProductSelect[]\">";
                         //check if more than 0 record found
                         if ($num > 0) {
@@ -198,117 +201,27 @@
                         echo "</td>";
 
                         echo "<td>";
-                        echo "<div class=\"mb-3 col\">";
+                        echo "<div class=\"my-2 col\">";
                         echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\">";
                         echo "</div>";
                         echo "</td>";
 
                         echo "</tr>";
-                    }
+                    //}
                     ?>
                 </tbody>
             </table>
-            <div class="row">
-            <input type="button" value="Add More Product" class="add_one btn btn-Success mb-3 col-" />
-            <input type="button" value="Delete" class="delete_one btn btn-danger mb-3 col" />
-            <button type="submit" class="btn btn-primary mb-3 col">Submit</button>
+            <div class="row text-center d-flex justify-content-evenly">
+                <input type="button" value="Add More Product" class="add_one btn btn-outline-success mb-3 col-4" />
+                <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-4" />
+                <button type="submit" class="btn btn-outline-secondary mb-3 col-8">Submit</button>
             </div>
         </form>
-        <!-- <table class="table"> -->
-        <?php
-        // if ($_POST) {
-        //     include 'config/database.php';
-        //     $customer_id = $_POST['customerSelect'];
-        //     $flag = 0;
-        //     if ($customer_id == "NULL") {
-        //         $flag = 1;
-        //     } else {
-
-        //         $query = "SELECT order_summary_id From order_summary Order by order_summary_id desc limit 1";
-        //         $stmt = $con->prepare($query);
-        //         $stmt->execute();
-        //         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        //         $order_summary_id = $row['order_summary_id'];
-        //         echo $order_summary_id;
-
-
-        //         if ($flag == 0) {
-
-
-        //             $query = "SELECT  *
-        //             FROM order_detail
-        //             LEFT JOIN products
-        //             ON order_detail.product_id = products.id
-        //         UNION ALL
-        //             SELECT *
-        //             FROM products
-        //             RIGHT JOIN order_detail
-        //             ON products.id = order_detail.product_id
-        //             Order by order_detail_id desc limit 3";
-        //             //Select Max(orderid) From orders
-
-        //             $stmt = $con->prepare($query);
-        //             $stmt->execute();
-
-        //             $num = $stmt->rowCount();
-
-        //             echo "<thead>";
-        //             echo "<tr>";
-        //             echo "<th scope=\"col\">No</th>";
-        //             echo "<th scope=\"col\">Product name</th>";
-        //             echo "<th scope=\"col\">Quantity</th>";
-        //             echo "<th scope=\"col\">Price</th>";
-        //             echo "<th scope=\"col\">Total</th>";
-        //             echo "</tr>";
-        //             echo "</thead>";
-        //             echo "<tbody>";
-        //             $count = 1;
-        //             if ($num > 0) {
-        //                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        //                     // show product 1
-        //                     echo "<tr>";
-        //                     echo "<th scope=\"row\">$count</th>";
-        //                     // show product name
-        //                     echo "<td>";
-        //                     echo "<div class=\"mb-3 col\">";
-        //                     echo $row["name"];
-        //                     echo "</div>";
-        //                     echo "</td>";
-        //                     // show product quantity
-        //                     echo "<td>";
-        //                     echo "<div class=\"mb-3 col\">";
-        //                     echo $row["quantity"];
-        //                     echo "</div>";
-        //                     echo "</td>";
-        //                     //show product price
-        //                     echo "<td>";
-        //                     echo "<div class=\"mb-3 col\">";
-        //                     echo $row["price"];
-        //                     echo "</div>";
-        //                     echo "</td>";
-        //                     //show total
-        //                     echo "<td>";
-        //                     echo "<div class=\"mb-3 col\">";
-        //                     $total = $row["quantity"] * $row["price"];
-        //                     echo $total;
-        //                     echo "</div>";
-        //                     echo "</td>";
-        //                     $count++;
-        //                 }
-        //             }
-        //             echo "</tbody>";
-        //             echo "</table>";
-        //         }
-        //     }
-        // }
-        ?>
-        <!-- </table> -->
-
     </div> <!-- end .container -->
     <footer class="container-fluid py-3 bg-dark">
         <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div>Copyright @ 2022 TANZX</div>
-            <div class="d-flex">
+            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
+            <div class="d-flex justify-content-evenly">
                 <div class="mx-3">Terms of Use</div>
                 <div class="mx-3">Privacy Policy</div>
             </div>
@@ -317,27 +230,27 @@
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script>
-            document.addEventListener('click', function(event) {
-                if (event.target.matches('.add_one')) {
-                    var element = document.querySelector('.pRow');
-                    var clone = element.cloneNode(true);
-                    element.after(clone);
-                }
-                if (event.target.matches('.delete_one')) {
-                    var total = document.querySelectorAll('.pRow').length;
-                    if (total > 1) {
-                        var element = document.querySelector('.pRow');
-                        element.remove(element);
-                    }
-                }
+        document.addEventListener('click', function(event) {
+            if (event.target.matches('.add_one')) {
+                var element = document.querySelector('.pRow');
+                var clone = element.cloneNode(true);
+                element.after(clone);
+            }
+            if (event.target.matches('.delete_one')) {
                 var total = document.querySelectorAll('.pRow').length;
-           
-                var row = document.getElementById('order').rows;
-                for (var i = 1; i <= total; i++) {
-                    row[i].cells[0].innerHTML = i ;
-                 
+                if (total > 1) {
+                    var element = document.querySelector('.pRow');
+                    element.remove(element);
                 }
-            }, false);
+            }
+            var total = document.querySelectorAll('.pRow').length;
+
+            var row = document.getElementById('order').rows;
+            for (var i = 1; i <= total; i++) {
+                row[i].cells[0].innerHTML = i;
+
+            }
+        }, false);
     </script>
 </body>
 

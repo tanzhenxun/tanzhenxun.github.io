@@ -1,6 +1,7 @@
 body {
     background-color: #efefef;
-}
+  }
+  
 
 .nav-size {
     max-width: 95%;
@@ -9,8 +10,6 @@ body {
 .logo {
     width: 60px;
 }
-
-
 
 .header_images {
     width: 60%;
