@@ -345,6 +345,14 @@
 
                     if ($flag == 0) {
 
+                        if ($_POST["secondProductSelect"] == -1 && $_POST["thirdProductSelect"] == -1) {
+                            $datalist = 1;
+                        } else if ($_POST["thirdProductSelect"] == -1) {
+                            $datalist = 2;
+                        } else {
+                            $datalist = 3;
+                        }
+
                         $query = "SELECT  *
                         FROM order_detail
                         LEFT JOIN products
@@ -354,7 +362,7 @@
                         FROM products
                         RIGHT JOIN order_detail
                         ON products.id = order_detail.product_id
-                        Order by order_detail_id desc limit 3";
+                        Order by order_detail_id desc limit $datalist";
 
 
 
