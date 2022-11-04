@@ -31,42 +31,41 @@
                         $user_correct = true;
                         $pass_correct = true;
                         $account_check = true;
-
+                        
+                        // Check username and password have empty or not 
                         if (empty($username)) {
                             header("Location: login.php?error=User Name is required");
                             $user_correct = false;
-                        }
-
-                        if (empty($password)) {
+                        } else if (empty($password)) {
                             header("Location: login.php?error=Password is required");
                             $pass_correct = false;
                         }
 
+                        // Run and check the username, password and account status correct or active.
                         if ($user_correct == true || $pass_correct == true) {
+                            // select all data
                             $query = "SELECT username, password, account_status FROM customers where username=:username AND password=:password";
                             $stmt = $con->prepare($query);
-
+                            // bind the parameters
                             $stmt->bindParam(":username", $username);
                             $stmt->bindParam(":password", $password);
 
                             $stmt->execute();
-
+                            // store retrieved row to a variable
                             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
                             $username = $row['username'];
                             $password = $row['password'];
                             $account_status = $row['account_status'];
-
-                            if ($account_status === "active"){
-                                $account_check = true;
-                            }else{
-                                $account_check = false;
-                                header("Location: login.php?error=Your Account is suspended");
-                            }
-
+                        
+                            // username and password must correct then run to check this account is suspended or not
                             if ($username && $password) {
-                                if($account_check == true){
+                                if ($account_status === "active"){
+                                    $account_check = true;
                                     header("Location: home.php");
+                                }else{
+                                    $account_check = false;
+                                    header("Location: login.php?error=Your Account is suspended");
                                 }
                             } else {
                                 header("Location: login.php?error=Invaild Username or password");
