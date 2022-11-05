@@ -26,7 +26,7 @@
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
                         <div class="card shadow-2-strong shadow" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
-
+                                <a href="home.php"><img src="images/tanzxlogo.png" alt="Tanzx Logo" class="logo al"></a>
                                 <h3 class="mb-3">Sign in</h3>
                                 <?php
 
@@ -65,7 +65,7 @@
                                             $num_pass = $stmt_pass->rowCount();
 
                                             if ($num_pass > 0) {
-                                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                while ($row = $stmt_pass->fetch(PDO::FETCH_ASSOC)) {
                                                     extract($row);
                                                     $account_status = $row['account_status'];
                                                     if ($account_status === "active") {
@@ -92,16 +92,9 @@
                                     <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" placeholder="Password" />
                                 </div>
 
-                                <!-- Checkbox -->
-                                <div class="form-check d-flex justify-content-start mb-4">
-                                    <input class="form-check-input me-2" type="checkbox" value="" id="form1Example3" />
-                                    <label class="form-check-label" for="form1Example3"> Remember password </label>
-                                </div>
-
-                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Submit</button>
+                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Login in</button>
 
                                 <p class="mt-3 mb-3 text-muted">&copy; 2022 TANZX</p>
-
                             </div>
                         </div>
                     </form>
