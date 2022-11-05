@@ -22,69 +22,69 @@
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                    <?php
 
-                    if ($_POST) {
-                        include 'config/database.php';
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
-                        $user_correct = true;
-                        $pass_correct = true;
-                        $account_check = true;
-                        
-                        // Check username and password have empty or not 
-                        if (empty($username)) {
-                            header("Location: login.php?error=User Name is required");
-                            $user_correct = false;
-                        } else if (empty($password)) {
-                            header("Location: login.php?error=Password is required");
-                            $pass_correct = false;
-                        }
-
-                        // Run and check the username, password and account status correct or active.
-                        if ($user_correct == true || $pass_correct == true) {
-                            // select all data
-                            $query = "SELECT username, password, account_status FROM customers where username=:username AND password=:password";
-                            $stmt = $con->prepare($query);
-                            // bind the parameters
-                            $stmt->bindParam(":username", $username);
-                            $stmt->bindParam(":password", $password);
-
-                            $stmt->execute();
-                            // store retrieved row to a variable
-                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                            $username = $row['username'];
-                            $password = $row['password'];
-                            $account_status = $row['account_status'];
-                        
-                            // username and password must correct then run to check this account is suspended or not
-                            if ($username && $password) {
-                                if ($account_status === "active"){
-                                    $account_check = true;
-                                    header("Location: home.php");
-                                }else{
-                                    $account_check = false;
-                                    header("Location: login.php?error=Your Account is suspended");
-                                }
-                            } else {
-                                header("Location: login.php?error=Invaild Username or password");
-                            }
-                        }
-                    }
-                    ?>
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
                         <div class="card shadow-2-strong shadow" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
 
-                                <h3 class="mb-5">Sign in</h3>
+                                <h3 class="mb-3">Sign in</h3>
+                                <?php
 
-                                <?php if (isset($_GET['error'])) { ?>
+                                if ($_POST) {
+                                    include 'config/database.php';
+                                    $username = $_POST['username'];
+                                    $password = $_POST['password'];
 
-                                    <div class='alert alert-danger'><?php echo $_GET['error']; ?></div>
+                                    // Check username and password have empty or not 
+                                    if (empty($_POST['username']) && empty($_POST['password'])) {
+                                        echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                                    } else { // Run and check the username, password and account status correct or active.
+                                        // select all data
+                                        // username must correct then check the password
+                                        $query_name = "SELECT * FROM customers where username=:username ";
+                                        $stmt_name = $con->prepare($query_name);
+                                        // bind the parameters
 
-                                <?php } ?>
-                                <div class="form-outline mb-4">
+                                        $stmt_name->bindParam(":username", $username);
+                                        $stmt_name->execute();
+
+                                        // store retrieved row to a variable
+                                        $num_name = $stmt_name->rowCount();
+
+                                        if ($num_name > 0) {
+                                            // username and password must correct then run to check this account is suspended or not
+                                            $query_pass = "SELECT * FROM customers where username=:username AND password=:password ";
+                                            $stmt_pass = $con->prepare($query_pass);
+                                            // bind the parameters
+
+                                            $stmt_pass->bindParam(":username", $username);
+                                            $stmt_pass->bindParam(":password", $password);
+
+                                            $stmt_pass->execute();
+
+                                            $num_pass = $stmt_pass->rowCount();
+
+                                            if ($num_pass > 0) {
+                                                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                                    extract($row);
+                                                    $account_status = $row['account_status'];
+                                                    if ($account_status === "active") {
+                                                        header("Location: home.php");
+                                                    } else {
+                                                        echo "<div class='alert alert-danger'>Your Account is suspended</div>";
+                                                    }
+                                                }
+                                            } else {
+                                                echo "<div class='alert alert-danger'>Incorrect Password</div>";
+                                            }
+                                        } else {
+                                            echo "<div class='alert alert-danger'>User not found (Invalid Account)!</div>";
+                                        }
+                                    }
+                                }
+                                ?>
+
+                                <div class="form-outline mb-4 pt-3">
                                     <input type="type" id="username" name="username" class="form-control form-control-lg" placeholder="Username" />
                                 </div>
 
