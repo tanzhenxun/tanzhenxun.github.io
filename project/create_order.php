@@ -49,10 +49,19 @@
             include 'config/database.php';
             $customer_id = $_POST['customerSelect'];
             $flag = 0;
-            if ($customer_id == "NULL") {
+            if ($customer_id == -1) {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
                 $flag = 1;
-            } else {
+            }
+            for ($check = 0; $check < count($_POST['ProductSelect']); $check++) {
+                if ($_POST['ProductSelect'][$check] == -1 ) {
+                    echo "<div class='alert alert-danger'>Please make sure your product are not emplty!</div>";
+                    $flag = 1;
+                }
+            }
+
+            if ($flag == 0) {
+
                 $order_id = 0;
 
                 if ($flag == 0) {
@@ -175,46 +184,46 @@
 
                     //for ($pdct_tbl = 1; $pdct_tbl  <= 1; $pdct_tbl ++) {
                     //    $stmt->execute();
-                        echo "<tr class = \"pRow\">";
-                        echo "<th scope=\"row\">1</th>";
-                        echo "<td>";
-                        echo "<div class=\"my-2 col\">";
-                        
-                        echo "<select class=\"form-select\" id=\"ProductSelect\" name=\"ProductSelect[]\">";
-                        //check if more than 0 record found
-                        if ($num > 0) {
-                            echo "<option selected value=-1>--Option--</option>";
+                    echo "<tr class = \"pRow\">";
+                    echo "<th scope=\"row\">1</th>";
+                    echo "<td>";
+                    echo "<div class=\"my-2 col\">";
 
-                            // retrieve our table contents
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                // extract row
-                                // this will make $row['firstname'] to just $firstname only
-                                extract($row);
+                    echo "<select class=\"form-select\" id=\"ProductSelect\" name=\"ProductSelect[]\">";
+                    //check if more than 0 record found
+                    if ($num > 0) {
+                        echo "<option selected value=-1>--Option--</option>";
 
-                                echo "<option value={$id}>{$name}</option>";
-                            }
-                        } else {
-                            echo "<option selected value=-1>No records found</option>";
+                        // retrieve our table contents
+                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            // extract row
+                            // this will make $row['firstname'] to just $firstname only
+                            extract($row);
+
+                            echo "<option value={$id}>{$name}</option>";
                         }
+                    } else {
+                        echo "<option selected value=-1>No records found</option>";
+                    }
 
-                        echo "</select>";
-                        echo "</td>";
+                    echo "</select>";
+                    echo "</td>";
 
-                        echo "<td>";
-                        echo "<div class=\"my-2 col\">";
-                        echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\">";
-                        echo "</div>";
-                        echo "</td>";
+                    echo "<td>";
+                    echo "<div class=\"my-2 col\">";
+                    echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\">";
+                    echo "</div>";
+                    echo "</td>";
 
-                        echo "</tr>";
+                    echo "</tr>";
                     //}
                     ?>
                 </tbody>
             </table>
             <div class="row text-center d-flex justify-content-between">
                 <div class="d-flex row col-6">
-                <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-3 mx-2" />
-                <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-2 mx-2" />
+                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-3 mx-2" />
+                    <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-2 mx-2" />
                 </div>
                 <button type="submit" class="btn btn-secondary mb-3 col-3">Submit</button>
             </div>

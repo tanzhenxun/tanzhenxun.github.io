@@ -92,7 +92,7 @@
                                     <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" placeholder="Password" />
                                 </div>
 
-                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Login in</button>
+                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Login</button>
 
                                 <p class="mt-3 mb-3 text-muted">&copy; 2022 TANZX</p>
                             </div>
