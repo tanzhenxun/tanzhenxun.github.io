@@ -26,14 +26,23 @@
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
                         <div class="card shadow-2-strong shadow" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
+                                <?php if (isset($_GET['error'])) { ?>
+
+                                    <div class='alert alert-dark'><?php echo $_GET['error']; ?></div>
+
+                                <?php } ?>
+
                                 <a href="home.php"><img src="images/tanzxlogo.png" alt="Tanzx Logo" class="logo al"></a>
                                 <h3 class="mb-3">Sign in</h3>
                                 <?php
-
+                                session_start();
+                               // $error = isset($_GET['error']) ? $_GET['error'] : NULL;
+                               // if ($error == Please login again ){echo "<div class='alert alert-dark'>Please login again</div>"}
                                 if ($_POST) {
                                     include 'config/database.php';
                                     $username = $_POST['username'];
-                                    $password = $_POST['password'];
+                                    $pass = $_POST['password'];
+                                    
 
                                     // Check username and password have empty or not 
                                     if (empty($_POST['username']) && empty($_POST['password'])) {
@@ -41,38 +50,24 @@
                                     } else { // Run and check the username, password and account status correct or active.
                                         // select all data
                                         // username must correct then check the password
-                                        $query_name = "SELECT * FROM customers where username=:username ";
-                                        $stmt_name = $con->prepare($query_name);
+                                        $query = "SELECT * FROM customers where username=:username ";
+                                        $stmt = $con->prepare($query);
                                         // bind the parameters
-
-                                        $stmt_name->bindParam(":username", $username);
-                                        $stmt_name->execute();
+                                        $stmt->bindParam(":username", $username);
+                                        $stmt->execute();
 
                                         // store retrieved row to a variable
-                                        $num_name = $stmt_name->rowCount();
+                                        $num = $stmt->rowCount();
 
-                                        if ($num_name > 0) {
-                                            // username and password must correct then run to check this account is suspended or not
-                                            $query_pass = "SELECT * FROM customers where username=:username AND password=:password ";
-                                            $stmt_pass = $con->prepare($query_pass);
-                                            // bind the parameters
-
-                                            $stmt_pass->bindParam(":username", $username);
-                                            $stmt_pass->bindParam(":password", $password);
-
-                                            $stmt_pass->execute();
-
-                                            $num_pass = $stmt_pass->rowCount();
-
-                                            if ($num_pass > 0) {
-                                                while ($row = $stmt_pass->fetch(PDO::FETCH_ASSOC)) {
-                                                    extract($row);
-                                                    $account_status = $row['account_status'];
-                                                    if ($account_status === "active") {
-                                                        header("Location: home.php");
-                                                    } else {
-                                                        echo "<div class='alert alert-danger'>Your Account is suspended</div>";
-                                                    }
+                                        if ($num > 0) {
+                                            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                                            extract($row);
+                                            if ($pass == $password) {
+                                                if ($account_status == "active") { // === check the datatype and value like "1" check string(datatype) and 1(value) (== check value like check "1" just 1 (value))
+                                                    header("Location: home.php");
+                                                    $_SESSION['username'] = true;
+                                                } else {
+                                                    echo "<div class='alert alert-danger'>Your Account is suspended</div>";
                                                 }
                                             } else {
                                                 echo "<div class='alert alert-danger'>Incorrect Password</div>";
@@ -92,7 +87,7 @@
                                     <input type="password" id="typePasswordX-2" name="password" class="form-control form-control-lg" placeholder="Password" />
                                 </div>
 
-                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Login</button>
+                                <button type="submit" class="btn btn-secondary btn-lg btn-block">Sign in</button>
 
                                 <p class="mt-3 mb-3 text-muted">&copy; 2022 TANZX</p>
                             </div>

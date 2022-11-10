@@ -89,3 +89,9 @@
 
         //record login page
         https://www.simplilearn.com/tutorials/php-tutorial/php-login-form
+
+
+        <?php
+        //sessions // connect muti page same information 
+        
+        ?>

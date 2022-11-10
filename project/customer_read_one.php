@@ -1,3 +1,7 @@
+<?php
+include 'logincheck.php';
+?>
+
 <!DOCTYPE HTML>
 <html>
 
@@ -29,9 +33,10 @@
                     <a class="nav-link" href="create_order.php">Create Order</a>
                     <a class="nav-link" href="contact.php">Contact Us</a>
                 </div>
-                <div class="navbar-brand">
-                    <a href="https://github.com/tanzhenxun" class=" text-dark"><i class="fa-brands fa-github fa-2x"></i></a>
-                    <a href="https://www.instagram.com/tan315_x18/?hl=en" class=" text-dark"><i class="fa-brands fa-instagram fa-2x"></i></a>
+                <div class="navbar-brand d-flex align-center">
+                    <a href="https://github.com/tanzhenxun" class=" text-dark me-3"><i class="fa-brands fa-github fa-2x"></i></a>
+                    <a href="https://www.instagram.com/tan315_x18/?hl=en" class=" text-dark me-3"><i class="fa-brands fa-instagram fa-2x"></i></a>
+                    <a href="logout.php" class="btn btn-dark">Logout</a>
                 </div>
             </div>
         </div>
