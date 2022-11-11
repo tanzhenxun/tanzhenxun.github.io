@@ -131,9 +131,16 @@ body {
     backdrop-filter: blur(20px); 
 }
 
-.page{
-    color:rgb(255, 0, 0) !important;
-    background: #36395A !important;
+
+
+.dropdown-menu{
+    --bs-dropdown-link-active-color: rgb(255, 255, 255);
+    --bs-dropdown-link-active-bg: #4c4c4c;
+}
+
+.dropdown-menu .active{
+    color:rgb(255, 255, 255) !important;
+    background-color: #303030 !important;
 }
 
 

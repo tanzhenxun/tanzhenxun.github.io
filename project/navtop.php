@@ -1,4 +1,6 @@
-
+<?php 
+$web_name = basename($_SERVER["PHP_SELF"]);
+?>
 <nav class="navbar navbar-expand-lg navbar border-dark border-bottom border-2">
     <div class="container-fluid m-auto nav-size align-items-center justify-content-between">
         <div class="d-flex align-items-center ">
@@ -11,36 +13,36 @@
         <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarNavAltMarkup">
             <hr>
             <div class="navbar-nav text-black text-lg-center text-start">
-                <a class="nav-link" aria-current="page" href="#">Home</a>
+                <a class="nav-link <?php if($web_name =="home.php"){echo "active";}?>" aria-current="page" href="home.php">Home</a>
                 
                 <div class="dropdown">
-                    <a class="text-decoration-none nav-link dropdown-toggle" href="product_create.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="text-decoration-none nav-link dropdown-toggle <?php if($web_name == "product_create.php"|| $web_name == "product_read.php"){echo "active";}?>" href="product_create.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Product
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item <?php if(basename($_SERVER["PHP_SELF"])=="product_create.php"){echo "active_page";}?>" href="product_create.php">Create Product</a></li>
-                        <li><a class="dropdown-item page" href="product_read">Product List</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="product_create.php"){echo "active";}?>" href="product_create.php">Create Product</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="product_read.php"){echo "active";}?>" href="product_read">Product List</a></li>
                     </ul>
                 </div>
                 <div class="dropdown">
-                    <a class="text-decoration-none nav-link dropdown-toggle" href="customer_create.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="text-decoration-none nav-link dropdown-toggle <?php if($web_name== "customer_create.php" || $web_name == "customer_read.php"){echo "active";}?>" href="customer_create.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Customer
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="customer_create.php">Create Customer</a></li>
-                        <li><a class="dropdown-item" href="customer_read.php">Customer List</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="customer_create.php"){echo "active";}?>" href="customer_create.php">Create Customer</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="customer_read.php"){echo "active";}?>" href="customer_read.php">Customer Detail</a></li>
                     </ul>
                 </div>
                 <div class="dropdown">
-                    <a class="text-decoration-none nav-link dropdown-toggle" href="create_order.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="text-decoration-none nav-link dropdown-toggle <?php if($web_name=="create_order.php"){echo "active";}?>" href="create_order.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Order
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="create_order.php">Create Order</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="create_order.php"){echo "active";}?>" href="create_order.php">Create Order</a></li>
                     </ul>
                 </div>
                 
-                <a class="nav-link" href="contact.php">Contact Us</a>
+                <a class="nav-link <?php if($web_name=="contact.php"){echo "active";}?>" href="contact.php">Contact Us</a>
             </div>
             <div class="navbar-brand d-flex align-center">
                 <a href="https://github.com/tanzhenxun" class=" text-dark me-3"><i class="fa-brands fa-github fa-2x"></i></a>
