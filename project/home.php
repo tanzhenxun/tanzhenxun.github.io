@@ -20,7 +20,7 @@ include 'logincheck.php';
     <?php
     include 'navtop.php';
     ?>
-    <div class="bg-light bg-images py-5">
+    <div class="bg-light bg-images py-5 full_page">
         <div class="d-flex container align-items-center justify-content-center py-5 mt-5">
             <!--<div class="header_images">
                 <img src="images/Web-Development-Illustration.svg" alt="" >

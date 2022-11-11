@@ -20,7 +20,7 @@ include 'logincheck.php';
    ?>
  
     <!-- container -->
-    <div class="container">
+    <div class="container full_page">
         <div class="page-header">
             <h1>Read Customer</h1>
         </div>

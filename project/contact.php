@@ -20,7 +20,7 @@ include 'logincheck.php';
    <?php 
    include 'navtop.php';
    ?>
-    <div class="bg-images">
+    <div class="bg-images full_page">
         <div class="bg-color-contact">
             <div class="container text-center py-5">
                 <h1 class="fw-bold">Contact Us</h1>

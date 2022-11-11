@@ -20,7 +20,7 @@ include 'logincheck.php';
    include 'navtop.php';
    ?>
     <!-- container -->
-    <div class="container">
+    <div class="container full_page">
         <div class="page-header">
             <h1>Read Product</h1>
         </div>
@@ -89,7 +89,7 @@ include 'logincheck.php';
 
     </div> <!-- end .container -->
 
-    <footer class="container-fluid py-3 bg-dark">
+    <footer class="container-fluid py-3 bg-dark m-100">
         <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
             <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
             <div class="d-flex justify-content-evenly">

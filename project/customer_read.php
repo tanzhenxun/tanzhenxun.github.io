@@ -21,7 +21,7 @@ include 'logincheck.php';
    include 'navtop.php';
    ?>
     <!-- container -->
-    <div class="container">
+    <div class="container full_page">
         <div class="page-header my-3">
             <h1>Read Customers</h1>
         </div>

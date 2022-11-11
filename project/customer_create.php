@@ -21,7 +21,7 @@ include 'logincheck.php';
     <?php 
    include 'navtop.php';
    ?>
-    <div class="container">
+    <div class="container full_page">
         <div class="page-header py-3">
             <h3>Create Customer</h3>
         </div>

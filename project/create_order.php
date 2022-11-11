@@ -21,7 +21,7 @@ include 'logincheck.php';
    include 'navtop.php';
    ?>
     <!-- container -->
-    <div class="container">
+    <div class="container full_page">
         <div class="page-header">
             <h1>Create Order</h1>
         </div>
