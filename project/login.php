@@ -28,7 +28,7 @@
                             <div class="card-body p-5 text-center">
                                 <?php if (isset($_GET['error'])) { ?>
 
-                                    <div class='alert alert-dark'><?php echo $_GET['error']; ?></div>
+                                    <div class='alert alert-danger'><?php echo $_GET['error']; ?></div>
 
                                 <?php } ?>
 
@@ -50,7 +50,7 @@
                                     } else { // Run and check the username, password and account status correct or active.
                                         // select all data
                                         // username must correct then check the password
-                                        $query = "SELECT * FROM customers where username=:username ";
+                                        $query = "SELECT * FROM customers where username=:username";
                                         $stmt = $con->prepare($query);
                                         // bind the parameters
                                         $stmt->bindParam(":username", $username);
@@ -65,7 +65,7 @@
                                             if ($pass == $password) {
                                                 if ($account_status == "active") { // === check the datatype and value like "1" check string(datatype) and 1(value) (== check value like check "1" just 1 (value))
                                                     header("Location: home.php");
-                                                    $_SESSION['username'] = true;
+                                                    $_SESSION['login'] = true;
                                                 } else {
                                                     echo "<div class='alert alert-danger'>Your Account is suspended</div>";
                                                 }

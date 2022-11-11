@@ -131,8 +131,10 @@ body {
     backdrop-filter: blur(20px); 
 }
 
-
-
+.page{
+    color:rgb(255, 0, 0) !important;
+    background: #36395A !important;
+}
 
 
 @media screen and (max-width: 720px) {

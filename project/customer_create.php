@@ -13,6 +13,7 @@ include 'logincheck.php';
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="css/index.css">
+    
 </head>
 
 <body>
@@ -33,7 +34,7 @@ include 'logincheck.php';
                     <a class="nav-link" href="product_create.php">Create Product</a>
                     <a class="nav-link active" href="#">Create Customer</a>
                     <a class="nav-link" href="create_order.php">Create Order</a>
-                    <a class="nav-link" href="contact.php">Contact Us</a>
+                    <a class="nav-link active-page" href="contact.php">Contact Us</a>
                 </div>
                 <div class="navbar-brand d-flex align-center">
                     <a href="https://github.com/tanzhenxun" class=" text-dark me-3"><i class="fa-brands fa-github fa-2x"></i></a>
@@ -188,7 +189,7 @@ include 'logincheck.php';
                 <tr>
                     <td colspan="2" class="text-center">
                         <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        <a href='index.php' class='btn btn-danger'>Back to read customer</a>
                     </td>
                 </tr>
             </table>
