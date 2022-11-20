@@ -36,9 +36,9 @@ include 'logincheck.php';
 </head>
 
 <body>
-<?php 
-   include 'navtop.php';
-   ?>
+    <?php
+    include 'navtop.php';
+    ?>
     <!-- container -->
     <div class="container full_page">
         <div class="page-header py-3">
@@ -70,11 +70,11 @@ include 'logincheck.php';
 
             // values to fill up our form
             $username = $row['username'];
-            $password_ = $row['password'];
+            $oldpassword = $row['password'];
             $firstname = $row['firstname'];
             $lastname = $row['lastname'];
             $gender = $row['gender'];
-            $date_of_birth =$row['date_of_birth'];
+            $date_of_birth = $row['date_of_birth'];
             $account_status = $row['account_status'];
         }
 
@@ -87,47 +87,120 @@ include 'logincheck.php';
 
         <!-- PHP post to update record will be here -->
         <?php
-            if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "" || $gender == "") {
-                $flag = 1;
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
-            } 
-
-        // check if form was submitted
         if ($_POST) {
-            try {
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                $query = "UPDATE customer
-                SET username=:username, password=:password,
-                firstname=:firstname, lastname=:lastname, 
-                gender=:gender, date_of_birth=:date_of_birth,
-                account_status=:account_status WHERE id=:id";
-                // prepare query for excecution
-                $stmt = $con->prepare($query);
-                // posted values
-                $username = htmlspecialchars(strip_tags($_POST['username']));
-                $firstname = htmlspecialchars(strip_tags($_POST['firstname']));
-                $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
-                $gender = htmlspecialchars(strip_tags($_POST['gender']));
-                $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
+            $username = $_POST['username'];
+            $uppercase = preg_match('@[A-Z]@', $_POST['new_pass']);
+            $lowercase = preg_match('@[a-z]@', $_POST['new_pass']);
+            $number    = preg_match('@[0-9]@', $_POST['new_pass']);
 
+            $check = 0;
 
-                // bind the parameters
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':description', $description);
-                $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':id', $id);
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+            if (empty($_POST['username']) || empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['gender']) || empty($_POST['date_of_birth'])) {
+                $check = 1;
+                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+            }else{
+                if (!empty($_POST['old_pass']) || !empty($_POST['new_pass']) || !empty($_POST['con_pass'])) {
+                    if (empty($_POST['old_pass'])) {
+                        echo "<div class='alert alert-danger mt-2'>If want to change new passward then old password field can not be empty!</div>";
+                        $check = 1;
+                    }
+
+                    if (empty($_POST['new_pass'])) {
+                        echo "<div class='alert alert-danger mt-2'>If want to change new passward then new password field can not be empty!</div>";
+                        $check = 1;
+                    }
+
+                    if (empty($_POST['con_pass'])) {
+                        echo "<div class='alert alert-danger mt-2'>If want to change new passward then confirm password field can not be empty!</div>";
+                        $check = 1;
+                    }
+                } 
+
+                if($check == 0){
+                    if (strlen($username) >= 6) {
+                        if (strpos(trim($username), ' ')) {
+                            $check = 1;
+                            echo "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
+                        }
+                    } else {
+                        $check = 1;
+                        echo "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
+                    }
+                    if(!empty($_POST['old_pass']) && $_POST['old_pass'] != $oldpassword){
+                        $check = 1;
+                        echo "<div class='alert alert-danger'>Wong old password same  your current password!</div>";
+                    }
+
+                    if (!empty($_POST['old_pass']) && strlen($_POST['new_pass']) <= 8) {
+                        $check = 1;
+                        echo "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
+                    }
+
+                    if (!empty($_POST['old_pass']) && (!$uppercase || !$lowercase || !$number)) {
+                        $check = 1;
+                        echo "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                    }
+
+                    if (!empty($_POST['old_pass']) && $_POST['new_pass'] !== $_POST['con_pass']) {
+                        $check = 1;
+                        echo "<div class='alert alert-danger'>Passwords do not match, please check again your new password or confirm password!</div>";
+                    }
+
+                    $now_date = date('Y-m-d');
+                    $diff = date_diff(date_create($now_date),date_create($date_of_birth));
+                    $year = (int)$diff->format("%R%y");
+
+                    if ($year >= -18){
+                        $check = 1;
+                        echo "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                    }
+
+                    // check if form was submitted
+                    if ($check == 0) {
+                        try {
+                            // write update query
+                            // in this case, it seemed like we have so many fields to pass and
+                            // it is better to label them and not use question marks
+                            $query = "UPDATE customers
+                        SET username=:username, password=:password,
+                        firstname=:firstname, lastname=:lastname, 
+                        gender=:gender, date_of_birth=:date_of_birth,
+                        account_status=:account_status WHERE id=:id";
+                            // prepare query for excecution
+                            $stmt = $con->prepare($query);
+                            // posted values
+                            $username = htmlspecialchars(strip_tags($_POST['username']));
+                            $firstname = htmlspecialchars(strip_tags($_POST['firstname']));
+                            $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
+                            $gender = htmlspecialchars(strip_tags($_POST['gender']));
+                            $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
+                            if(!empty($_POST['new_pass'])){
+                                $oldpassword =  str_replace(" ", "", htmlspecialchars(strip_tags($_POST['new_pass'])));
+                            }
+                            $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
+
+                            // bind the parameters
+                            $stmt->bindParam(':username', $username);
+                            $stmt->bindParam(':firstname', $firstname);
+                            $stmt->bindParam(':lastname', $lastname);
+                            $stmt->bindParam(':gender', $gender);
+                            $stmt->bindParam(':date_of_birth', $date_of_birth);
+                            $stmt->bindParam(':password', $oldpassword);
+                            $stmt->bindParam(':account_status', $account_status);
+                            $stmt->bindParam(':id', $id);
+                            // Execute the query
+                            if ($stmt->execute()) {
+                                echo "<div class='alert alert-success'>Record was updated.</div>";
+                            } else {
+                                echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                            }
+                        }
+                        // show errors
+                        catch (PDOException $exception) {
+                            die('ERROR: ' . $exception->getMessage());
+                        }
+                    }
                 }
-            }
-            // show errors
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
             }
         } ?>
 
@@ -141,19 +214,19 @@ include 'logincheck.php';
                 </tr>
                 <tr>
                     <td>Old password</td>
-                    <td><input name='old_pass' class='form-control'></input></td>
+                    <td><input name='old_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
                 </tr>
                 <tr>
                     <td>New password</td>
-                    <td><input name='new_pass' class='form-control'></input></td>
+                    <td><input name='new_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
                 </tr>
                 <tr>
                     <td>Confirm password</td>
-                    <td><input name='con_pass' class='form-control'></input></td>
+                    <td><input name='con_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type='text' name='firstname' class='form-control' value="<?php echo htmlspecialchars($firstname, ENT_QUOTES);  ?>"/></td>
+                    <td><input type='text' name='firstname' class='form-control' value="<?php echo htmlspecialchars($firstname, ENT_QUOTES);  ?>" /></td>
                 </tr>
                 <tr>
                     <td>Last Name</td>
@@ -162,22 +235,26 @@ include 'logincheck.php';
                 <tr>
                     <td>Gender</td>
                     <td class="d-flex align-item-center">
-                        <input type="radio" name="gender" value="<?php $mactive = 0; if( htmlspecialchars($gender, ENT_QUOTES) == "male"){$mactive = 1; echo"male";} ?>" class="ms-1 mx-2" <?php if($mactive == 1){echo"checked";} ?>>
-                        <label for="gender" class="me-4">Male</label>
-                        <input type="radio" name="gender" value="<?php $factive = 0; echo htmlspecialchars($gender, ENT_QUOTES); if($gender == "female"){$factive = 1;echo"female";} ?>" class="ms-1 mx-2" <?php if(htmlspecialchars($factive, ENT_QUOTES) == 1){echo"checked";} ?>>
-                        <label for="gender">Female</label>
+                        <input type="radio" name="gender" id="gender1" value="male" class="ms-1 mx-2" <?php if($gender == "male"){echo"checked";} ?>>
+                        <label for="gender1" class="me-4">Male</label>
+                        <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if($gender){echo"checked";} ?>>
+                        <label for="gender2">Female</label>
                     </td>
                 </tr>
                 <tr>
                     <td>Date of Birth</td>
-                    <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>"/></td>
+                    <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" /></td>
                 </tr>
                 <tr>
                     <td>Account Status</td>
                     <td>
                         <select class="form-select" aria-label="Default select example" name="account_status">
-                            <option value="active" <?php if( htmlspecialchars($account_status, ENT_QUOTES) == "active"){echo"selected";} ?>>Active</option>
-                            <option value="inactive" <?php if( htmlspecialchars($account_status, ENT_QUOTES) == "inactive"){echo"selected";} ?>>Inactive</option>
+                            <option value="active" <?php if (htmlspecialchars($account_status, ENT_QUOTES) == "active") {
+                                                        echo "selected";
+                                                    } ?>>Active</option>
+                            <option value="inactive" <?php if (htmlspecialchars($account_status, ENT_QUOTES) == "inactive") {
+                                                            echo "selected";
+                                                        } ?>>Inactive</option>
                         </select>
                     </td>
                 </tr>

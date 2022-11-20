@@ -120,7 +120,7 @@
                 }
                 ?>
                 <tr>
-                    <th colspan = "4">Total Amount</th>
+                    <th colspan = "4" class="text-end pe-5">Total Amount</th>
                     <td class=" fw-bold">RM <?php echo htmlspecialchars($total_amount, ENT_QUOTES);  ?></td>
                 </tr>
             </table>
