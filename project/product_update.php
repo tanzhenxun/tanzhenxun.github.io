@@ -42,7 +42,7 @@ include 'logincheck.php';
     <!-- container -->
     <div class="container full_page">
         <div class="page-header py-3">
-            <h3>Create Customer</h3>
+            <h3>Edit Product Detail</h3>
         </div>
         <!-- PHP read record by ID will be here -->
         <?php

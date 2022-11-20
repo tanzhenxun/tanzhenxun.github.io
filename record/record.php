@@ -95,3 +95,17 @@
         //sessions // connect muti page same information 
         
         ?>
+
+        <?php 
+        // full join
+        // $query = "SELECT smry.order_summary_id, cus.username, smry.order_date
+        // FROM order_summary AS smry
+        // LEFT JOIN customers AS cus
+        // ON smry.customer_id = cus.id
+        // UNION 
+        // SELECT smry.order_summary_id, cus.username, smry.order_date
+        // FROM customers AS cus
+        // RIGHT JOIN order_summary AS smry
+        // ON cus.id = smry.customer_id
+        // Order by order_summary_id DESC";
+        ?>

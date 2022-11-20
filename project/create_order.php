@@ -181,7 +181,7 @@ include 'logincheck.php';
                             // extract row
                             // this will make $row['firstname'] to just $firstname only
                             extract($row);
-
+                            
                             echo "<option value={$id}>{$name}</option>";
                         }
                     } else {

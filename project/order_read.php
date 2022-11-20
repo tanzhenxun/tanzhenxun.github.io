@@ -1,6 +1,3 @@
-<?php
-include 'logincheck.php';
-?>
 
 <!DOCTYPE HTML>
 <html>
@@ -8,7 +5,7 @@ include 'logincheck.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PDO - Create a Record - PHP CRUD Tutorial</title>
+    <title>Order List</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -23,7 +20,7 @@ include 'logincheck.php';
     <!-- container -->
     <div class="container full_page">
         <div class="page-header my-3">
-            <h1>Read Customers</h1>
+            <h1>Order List</h1>
         </div>
 
         <!-- PHP code to read records will be here -->
@@ -34,7 +31,13 @@ include 'logincheck.php';
         // delete message prompt will be here
 
         // select all data
-        $query = "SELECT id, username, register_date, account_status FROM customers ORDER BY id DESC";
+        
+        $query = "SELECT smry.order_summary_id, cus.username, smry.order_date
+            FROM order_summary AS smry
+            LEFT JOIN customers AS cus
+            ON smry.customer_id = cus.id
+            Order by order_summary_id DESC";
+
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -42,7 +45,7 @@ include 'logincheck.php';
         $num = $stmt->rowCount();
 
         // link to create record form
-        echo "<a href='customer_create.php' class='btn btn-primary mb-3 '>Create New Customers</a>";
+        echo "<a href='create_order.php' class='btn btn-primary mb-3 '>Create New Order</a>";
 
         //check if more than 0 record found
         if ($num > 0) {
@@ -53,33 +56,30 @@ include 'logincheck.php';
             //creating our table heading
             echo "<tr>";
             echo "<th>ID</th>";
-            echo "<th>Username</th>";
-            echo "<th>Register Date</th>";
-            echo "<th>Account Status</th>";
-            echo "<th>Action</th>";
+            echo "<th>Order Name</th>";
+            echo "<th>Order Date</th>";
             echo "</tr>";
 
             // table body will be here
             // retrieve our table contents
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 // extract row
-                // this will make $row['firstname'] to just $firstname only
+                // this will make $row['firstname'] to just $firstname only //table inside call $_post('username') so $row['username'] if $_post('name') so $row['name'] 
                 extract($row);
                 // creating new table row per record
                 echo "<tr>";
-                echo "<td>{$id}</td>";
+                echo "<td>{$order_summary_id}</td>";
                 echo "<td>{$username}</td>";
-                echo "<td>{$register_date}</td>";
-                echo "<td>{$account_status}</td>";
+                echo "<td>{$order_date}</td>";
                 echo "<td class\"\">";
                 // read one record
-                echo "<a href='customer_read_one.php?id={$id}' class='btn btn-info me-1'>Read</a>";
+                echo "<a href='order_read_one.php?order_summary_id={$order_summary_id}' class='btn btn-info me-1'>Read</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='customer_update.php?id={$id}' class='btn btn-primary me-1'>Edit</a>";
+                echo "<a href='order_update.php?order_summary_id={$order_summary_id}' class='btn btn-primary me-1'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                echo "<a href='#' onclick='delete_product({$order_summary_id});'  class='btn btn-danger'>Delete</a>";
                 echo "</td>";
                 echo "</tr>";
             }
