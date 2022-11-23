@@ -115,8 +115,8 @@ include 'logincheck.php';
                         $check = 1;
                     }
                 } 
-
-                if($check == 0){
+                
+                if($check == 0){ 
                     if (strlen($username) >= 6) {
                         if (strpos(trim($username), ' ')) {
                             $check = 1;
@@ -127,7 +127,7 @@ include 'logincheck.php';
                         echo "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
                     }
                     if(!empty($_POST['old_pass']) && $_POST['old_pass'] != $oldpassword){
-                        $check = 1;
+                       $check = 1; 
                         echo "<div class='alert alert-danger'>Wong old password same  your current password!</div>";
                     }
 
@@ -262,14 +262,24 @@ include 'logincheck.php';
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='product_read.php' class='btn btn-danger'>Back to read customers</a>
+                        <a href='customer_read.php' class='btn btn-danger'>Back to read customers</a>
                     </td>
                 </tr>
             </table>
         </form>
 
     </div>
+    <footer class="container-fluid py-3 bg-dark m-100">
+        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
+            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
+            <div class="d-flex justify-content-evenly">
+                <div class="mx-3">Terms of Use</div>
+                <div class="mx-3">Privacy Policy</div>
+            </div>
+        </div>
+    </footer>
     <!-- end .container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
 
 </html>

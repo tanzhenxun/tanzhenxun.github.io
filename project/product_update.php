@@ -56,7 +56,7 @@ include 'logincheck.php';
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price FROM products WHERE id = ? LIMIT 0,1";
+            $query = "SELECT * FROM products WHERE id = ? LIMIT 0,1";
             $stmt = $con->prepare($query);
 
             // this is the first question mark
@@ -72,6 +72,9 @@ include 'logincheck.php';
             $name = $row['name'];
             $description = $row['description'];
             $price = $row['price'];
+            $promotion_price = $row['promotion_price'];
+            $manufacture_date = $row['manufacture_date'];
+            $expired_date = $row['expired_date'];
         }
 
         // show error
@@ -90,17 +93,23 @@ include 'logincheck.php';
                 // in this case, it seemed like we have so many fields to pass and
                 // it is better to label them and not use question marks
                 $query = "UPDATE products
-                  SET name=:name, description=:description,price=:price WHERE id = :id";
+                  SET name=:name, description=:description,price=:price, promotion_price=:promotion_price, expired_date=:expired_date WHERE id = :id";
                 // prepare query for excecution
                 $stmt = $con->prepare($query);
                 // posted values
                 $name = htmlspecialchars(strip_tags($_POST['name']));
                 $description = htmlspecialchars(strip_tags($_POST['description']));
                 $price = htmlspecialchars(strip_tags($_POST['price']));
+                $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
+                $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
+                $expired_date = htmlspecialchars(strip_tags($_POST['expired_date']));
                 // bind the parameters
                 $stmt->bindParam(':name', $name);
                 $stmt->bindParam(':description', $description);
                 $stmt->bindParam(':price', $price);
+                $stmt->bindParam(':promotion_price', $promotion_price);
+                $stmt->bindParam(':manufacture_date', $manufacture_date);
+                $stmt->bindParam(':expired_date', $expired_date);
                 $stmt->bindParam(':id', $id);
                 // Execute the query
                 if ($stmt->execute()) {
@@ -132,6 +141,18 @@ include 'logincheck.php';
                     <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
+                    <td>Promotion Price</td>
+                    <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                </tr>
+                <tr>
+                    <td>Manufacture Date</td>
+                    <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                </tr>
+                <tr>
+                    <td>Expired Date</td>
+                    <td><input type='date' name='expired_date' value="<?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                </tr>
+                <tr>
                     <td></td>
                     <td>
                         <input type='submit' value='Save Changes' class='btn btn-primary' />
@@ -142,7 +163,17 @@ include 'logincheck.php';
         </form>
 
     </div>
+    <footer class="container-fluid py-3 bg-dark m-100">
+        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
+            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
+            <div class="d-flex justify-content-evenly">
+                <div class="mx-3">Terms of Use</div>
+                <div class="mx-3">Privacy Policy</div>
+            </div>
+        </div>
+    </footer>
     <!-- end .container -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
 
 </html>

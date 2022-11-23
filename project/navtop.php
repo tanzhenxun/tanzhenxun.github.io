@@ -39,7 +39,7 @@ $web_name = basename($_SERVER["PHP_SELF"]);
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item <?php if($web_name=="create_order.php"){echo "active";}?>" href="create_order.php">Create Order</a></li>
-                        <li><a class="dropdown-item <?php if($web_name=="order_read.php"){echo "active";}?>" href="order_read.php">Create Order</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="order_read.php"){echo "active";}?>" href="order_read.php">Order List</a></li>
                     </ul>
                 </div>
                 

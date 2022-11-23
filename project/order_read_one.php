@@ -60,10 +60,12 @@ include 'logincheck.php';
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $username = $row['username'];
+            $username = $row['username'];
             $firstname = $row['firstname'];
             $lastname = $row['lastname'];
             $order_date = $row['order_date'];
-            
+            $customer_id = $row['customer_id'];
+
         ?>
 
 
@@ -71,17 +73,16 @@ include 'logincheck.php';
             <!--we have our html table here where the record will be displayed-->
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
-                    <th>Username</th>
-                    <td colspan="2"><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                    <th>ID</th>
+                    <td><?php echo htmlspecialchars($customer_id, ENT_QUOTES); ?></td>
                 </tr>
                 <tr>
-                    <th>First & Last Name</th>
-                    <td><?php echo htmlspecialchars($firstname, ENT_QUOTES);?></td>
-                    <td><?php echo htmlspecialchars($lastname, ENT_QUOTES);?></td>
+                    <th>Username</th>
+                    <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
                 </tr>
                 <tr>
                     <th>Order Date</th>
-                    <td colspan="2"><?php echo htmlspecialchars($order_date, ENT_QUOTES);  ?></td>
+                    <td><?php echo htmlspecialchars($order_date, ENT_QUOTES);  ?></td>
                 </tr>
             </table>
             <hr class="my-3 ">
@@ -106,25 +107,24 @@ include 'logincheck.php';
                 if ($num > 0) {
                     while ($row_p = $stmt->fetch(PDO::FETCH_ASSOC)) {
                         extract($row_p);
-                        number_format($price,2);
+                        number_format($price, 2);
                         echo "<tr>";
                         echo "<th scope=\"row\">$count</th>";
                         echo "<td name=\"name\">$name</td>";
-                        echo "<td name=\"price\">RM ".number_format($price,2)."</td>";
+                        echo "<td name=\"price\">RM " . number_format($price, 2) . "</td>";
                         echo "<td name=\"quantity\">$quantity</td>";
                         $total = $quantity * $price;
-                        echo "<td name=\"total\">RM ".number_format($total,2)."</td>";
+                        echo "<td name=\"total\">RM " . number_format($total, 2) . "</td>";
                         echo "</tr>";
-                        
+
                         $count++;
                         $totalamount += $quantity * $price;
-                        $total_amount = number_format($totalamount,2);
                     }
                 }
                 ?>
                 <tr>
-                    <th colspan = "4" class="text-end pe-5">Total Amount</th>
-                    <td class=" fw-bold">RM <?php echo htmlspecialchars($total_amount, ENT_QUOTES);  ?></td>
+                    <th colspan="4" class="text-end pe-5">Total Amount</th>
+                    <td class=" fw-bold">RM <?php echo htmlspecialchars(number_format($totalamount, 2), ENT_QUOTES);  ?></td>
                 </tr>
             </table>
             <a href='order_read.php' class='btn btn-danger'>Back to order list</a>
