@@ -237,7 +237,7 @@ include 'logincheck.php';
                     <td class="d-flex align-item-center">
                         <input type="radio" name="gender" id="gender1" value="male" class="ms-1 mx-2" <?php if($gender == "male"){echo"checked";} ?>>
                         <label for="gender1" class="me-4">Male</label>
-                        <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if($gender){echo"checked";} ?>>
+                        <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if($gender == "female"){echo"checked";} ?>>
                         <label for="gender2">Female</label>
                     </td>
                 </tr>
