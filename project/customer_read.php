@@ -16,10 +16,10 @@ include 'logincheck.php';
 </head>
 
 <body>
-     <!-- container -->
-     <?php 
-   include 'navtop.php';
-   ?>
+    <!-- container -->
+    <?php
+    include 'navtop.php';
+    ?>
     <!-- container -->
     <div class="container full_page">
         <div class="page-header my-3">
@@ -32,6 +32,12 @@ include 'logincheck.php';
         include 'config/database.php';
 
         // delete message prompt will be here
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        // if it was redirected from delete.php
+        if ($action == 'deleted') {
+            echo "<div class='alert alert-success'>Record was deleted.</div>";
+        }
 
         // select all data
         $query = "SELECT id, username, register_date, account_status FROM customers ORDER BY id DESC";
@@ -46,7 +52,7 @@ include 'logincheck.php';
 
         //check if more than 0 record found
         if ($num > 0) {
-            
+
             // data from database will be here
             echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
 
@@ -79,7 +85,7 @@ include 'logincheck.php';
                 echo "<a href='customer_update.php?id={$id}' class='btn btn-primary me-1'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                echo "<button onclick='delete_user($id);'  class='btn btn-danger'>Delete</button>";
                 echo "</td>";
                 echo "</tr>";
             }
@@ -104,7 +110,16 @@ include 'logincheck.php';
             </div>
         </div>
     </footer>
+    <script>
+        function delete_user(id) {
 
+            if (confirm('Are you sure?')) {
+                // if user clicked ok,
+                // pass the id to delete.php and execute the delete query
+                window.location = 'customer_delete.php?id=' + id;
+            }
+        }
+    </script>
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

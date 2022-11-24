@@ -48,17 +48,6 @@ include 'logincheck.php';
 
                 if ($flag == 0) {
 
-                    $query_summary = "SELECT MAX(order_summary_id) from order_summary";
-                    $stmt_summary = $con->prepare($query_summary);
-                    $stmt_summary->execute();
-                    $num = $stmt_summary->rowCount();
-
-                    if ($num > 0) {
-                        $row = $stmt_summary->fetch(PDO::FETCH_ASSOC);
-                        $order_id = $row['MAX(order_summary_id)'];
-                    }
-                    $order_id++;
-
                     $query = "INSERT INTO order_summary SET customer_id=:customer_id, order_date=:order_date";
 
                     $stmt = $con->prepare($query);
@@ -67,7 +56,16 @@ include 'logincheck.php';
                     $order_date = date('Y-m-d H:i:s');
                     $stmt->bindParam(':order_date', $order_date);
 
-                    if ($stmt->execute()) {
+                    if ($stmt->execute()) {                    
+                        $query_summary = "SELECT MAX(order_summary_id) from order_summary";
+                        $stmt_summary = $con->prepare($query_summary);
+                        $stmt_summary->execute();
+                        $num = $stmt_summary->rowCount();
+    
+                        if ($num > 0) {
+                            $row = $stmt_summary->fetch(PDO::FETCH_ASSOC);
+                            $order_id = $row['MAX(order_summary_id)'];
+                        }
 
                         try {
 
@@ -84,9 +82,11 @@ include 'logincheck.php';
                                     $stmt_order_detail->bindParam(':product_id', $product_id);
                                     $stmt_order_detail->bindParam(':quantity', $quantity);
                                     $stmt_order_detail->bindParam(':order_summary_id', $order_id);
+                                    echo "tan";
                                     // Execute the query
                                     if ($stmt_order_detail->execute()) {
                                         $flag = 0;
+                                        echo "33";
                                     } else {
                                         echo "<div class='alert alert-danger'>Unable to save product.</div>";
                                     }
@@ -98,6 +98,7 @@ include 'logincheck.php';
                         }
                         // show error
                         catch (PDOException $exception) {
+                            echo "qwen";
                             die('ERROR: ' . $exception->getMessage());
                         }
                     } else {

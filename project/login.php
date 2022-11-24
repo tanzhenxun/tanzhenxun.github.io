@@ -62,7 +62,7 @@
                                         if ($num > 0) {
                                             $row = $stmt->fetch(PDO::FETCH_ASSOC);
                                             extract($row);
-                                            if ($pass == $password) {
+                                            if (md5($pass) == $password) {
                                                 if ($account_status == "active") { // === check the datatype and value like "1" check string(datatype) and 1(value) (== check value like check "1" just 1 (value))
                                                     header("Location: home.php");
                                                     $_SESSION['login'] = true;

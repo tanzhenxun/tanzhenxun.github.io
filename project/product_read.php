@@ -30,6 +30,15 @@ include 'logincheck.php';
         // include database connection
         include 'config/database.php';
 
+
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+        
+        // if it was redirected from delete.php
+        if($action=='deleted'){
+            echo "<div class='alert alert-success'>Record was deleted.</div>";
+        }
+
+
         // delete message prompt will be here
 
         // select all data
@@ -78,7 +87,7 @@ include 'logincheck.php';
                 echo "<a href='product_update.php?id={$id}' class='btn btn-primary me-1'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_product({$id});'  class='btn btn-danger'>Delete</a>";
+                echo "<button onclick='delete_product($id);'  class='btn btn-danger'>Delete</button>";
                 echo "</td>";
                 echo "</tr>";
             }
@@ -94,6 +103,7 @@ include 'logincheck.php';
 
 
     </div> <!-- end .container -->
+    
     <footer class="container-fluid py-3 bg-dark">
         <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
             <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
@@ -103,6 +113,17 @@ include 'logincheck.php';
             </div>
         </div>
     </footer>
+        <script type='text/javascript'>
+        // confirm record deletion
+        function delete_product( id ){
+            
+            if (confirm('Are you sure?')){
+                // if user clicked ok,
+                // pass the id to delete.php and execute the delete query
+                window.location = 'product_delete.php?id=' + id;
+            }
+        }
+        </script>
 
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

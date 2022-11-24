@@ -31,14 +31,25 @@ include 'logincheck.php';
         include 'config/database.php';
 
         // delete message prompt will be here
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        // if it was redirected from delete.php
+        if ($action == 'deleted') {
+            echo "<div class='alert alert-success'>Record was deleted.</div>";
+        }
 
         // select all data
-        
-        $query = "SELECT smry.order_summary_id, cus.username, smry.order_date
-            FROM order_summary AS smry
-            LEFT JOIN customers AS cus
-            ON smry.customer_id = cus.id
-            Order by order_summary_id DESC";
+
+        $query = "SELECT smry.order_summary_id, firstname, order_date, lastname, SUM(quantity*price) AS total_amount
+        FROM order_summary AS smry
+        INNER JOIN customers AS cus
+        ON smry.customer_id = cus.id
+        Inner Join order_detail AS detail
+        ON detail.order_summary_id = smry.order_summary_id
+        Inner Join products AS prdt
+        ON detail.product_id = prdt.id
+        GROUP BY smry.order_summary_id
+        Order by order_summary_id DESC";
 
         $stmt = $con->prepare($query);
         $stmt->execute();
@@ -58,8 +69,10 @@ include 'logincheck.php';
             //creating our table heading
             echo "<tr>";
             echo "<th>ID</th>";
-            echo "<th>Order Name</th>";
+            echo "<th>First Name</th>";
+            echo "<th>Last Name</th>";
             echo "<th>Order Date</th>";
+            echo "<th>Total Amount (RM)</th>";
             echo "</tr>";
 
             // table body will be here
@@ -71,8 +84,10 @@ include 'logincheck.php';
                 // creating new table row per record
                 echo "<tr>";
                 echo "<td>{$order_summary_id}</td>";
-                echo "<td>{$username}</td>";
+                echo "<td>{$firstname}</td>";
+                echo "<td>{$lastname}</td>";
                 echo "<td>{$order_date}</td>";
+                echo "<td class=\"text-end\">".number_format(round($total_amount, 1),2)."</td>";
                 echo "<td class\"\">";
                 // read one record
                 echo "<a href='order_read_one.php?order_summary_id={$order_summary_id}' class='btn btn-info me-1'>Read</a>";
@@ -81,7 +96,7 @@ include 'logincheck.php';
                 echo "<a href='order_update.php?order_summary_id={$order_summary_id}' class='btn btn-primary me-1'>Edit</a>";
 
                 // we will use this links on next part of this post
-                echo "<a href='#' onclick='delete_product({$order_summary_id});'  class='btn btn-danger'>Delete</a>";
+                echo "<button onclick='delete_order($order_summary_id);'  class='btn btn-danger'>Delete</button>";
                 echo "</td>";
                 echo "</tr>";
             }
@@ -106,6 +121,16 @@ include 'logincheck.php';
             </div>
         </div>
     </footer>
+    <script>
+    function delete_order( order_summary_id ){
+            
+            if (confirm('Are you sure?')){
+                // if user clicked ok,
+                // pass the id to delete.php and execute the delete query
+                window.location = 'order_delete.php?order_summary_id=' + order_summary_id;
+            }
+        }
+        </script>
 
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

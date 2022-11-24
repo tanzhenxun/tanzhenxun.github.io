@@ -60,7 +60,6 @@ include 'logincheck.php';
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             $username = $row['username'];
-            $username = $row['username'];
             $firstname = $row['firstname'];
             $lastname = $row['lastname'];
             $order_date = $row['order_date'];
@@ -100,7 +99,7 @@ include 'logincheck.php';
                 echo "<th>Product Name</th>";
                 echo "<th>Price</th>";
                 echo "<th>Quatity</th>";
-                echo "<th>Total</th>";
+                echo "<th>Total (RM)</th>";
                 echo "</tr>";
                 $count = 1;
                 $totalamount = 0;
@@ -111,10 +110,10 @@ include 'logincheck.php';
                         echo "<tr>";
                         echo "<th scope=\"row\">$count</th>";
                         echo "<td name=\"name\">$name</td>";
-                        echo "<td name=\"price\">RM " . number_format($price, 2) . "</td>";
+                        echo "<td name=\"price\" class=\"text-end\">" . number_format($price, 2) . "</td>";
                         echo "<td name=\"quantity\">$quantity</td>";
                         $total = $quantity * $price;
-                        echo "<td name=\"total\">RM " . number_format($total, 2) . "</td>";
+                        echo "<td name=\"total\" class=\"text-end\">" . number_format($total, 2) . "</td>";
                         echo "</tr>";
 
                         $count++;
@@ -124,7 +123,7 @@ include 'logincheck.php';
                 ?>
                 <tr>
                     <th colspan="4" class="text-end pe-5">Total Amount</th>
-                    <td class=" fw-bold">RM <?php echo htmlspecialchars(number_format($totalamount, 2), ENT_QUOTES);  ?></td>
+                    <td class=" fw-bold" class="text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1),2), ENT_QUOTES);  ?></td>
                 </tr>
             </table>
             <a href='order_read.php' class='btn btn-danger'>Back to order list</a>

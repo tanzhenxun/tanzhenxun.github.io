@@ -36,9 +36,9 @@ include 'logincheck.php';
 </head>
 
 <body>
-<?php 
-   include 'navtop.php';
-   ?>
+    <?php
+    include 'navtop.php';
+    ?>
     <!-- container -->
     <div class="container full_page">
         <div class="page-header py-3">
@@ -88,39 +88,59 @@ include 'logincheck.php';
         <?php
         // check if form was submitted
         if ($_POST) {
-            try {
-                // write update query
-                // in this case, it seemed like we have so many fields to pass and
-                // it is better to label them and not use question marks
-                $query = "UPDATE products
-                  SET name=:name, description=:description,price=:price, promotion_price=:promotion_price, expired_date=:expired_date WHERE id = :id";
-                // prepare query for excecution
-                $stmt = $con->prepare($query);
-                // posted values
-                $name = htmlspecialchars(strip_tags($_POST['name']));
-                $description = htmlspecialchars(strip_tags($_POST['description']));
-                $price = htmlspecialchars(strip_tags($_POST['price']));
-                $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
-                $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
-                $expired_date = htmlspecialchars(strip_tags($_POST['expired_date']));
-                // bind the parameters
-                $stmt->bindParam(':name', $name);
-                $stmt->bindParam(':description', $description);
-                $stmt->bindParam(':price', $price);
-                $stmt->bindParam(':promotion_price', $promotion_price);
-                $stmt->bindParam(':manufacture_date', $manufacture_date);
-                $stmt->bindParam(':expired_date', $expired_date);
-                $stmt->bindParam(':id', $id);
-                // Execute the query
-                if ($stmt->execute()) {
-                    echo "<div class='alert alert-success'>Record was updated.</div>";
-                } else {
-                    echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+            $name = htmlspecialchars(strip_tags($_POST['name']));
+            $description = htmlspecialchars(strip_tags($_POST['description']));
+            $price = htmlspecialchars(strip_tags($_POST['price']));
+            $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
+            $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
+            $expired_date = htmlspecialchars(strip_tags($_POST['expired_date']));
+
+
+            if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
+                echo "<div class='alert alert-danger'>Please make sure your Name, Description, Price and Manufacture Date are not emplty!</div>";
+            } else if ($promotion_price > $price) {
+                echo "<div class='alert alert-danger'>Please correctly your promotion price need cheaper than original price!</div>";
+            } else if ($manufacture_date <= $expired_date || $expired_date == "") {
+                
+                if ($expired_date == "") {
+                    $expired_date = NULL;
                 }
-            }
-            // show errors
-            catch (PDOException $exception) {
-                die('ERROR: ' . $exception->getMessage());
+
+                if ($promotion_price == "") {
+                    $promotion_price = NULL;
+                }
+
+                try {
+                    // write update query
+                    // in this case, it seemed like we have so many fields to pass and
+                    // it is better to label them and not use question marks
+                    $query = "UPDATE products
+                  SET name=:name, description=:description,price=:price, promotion_price=:promotion_price,manufacture_date=:manufacture_date, expired_date=:expired_date WHERE id = :id";
+                    // prepare query for excecution
+                    $stmt = $con->prepare($query);
+                    // posted values
+                    
+                    // bind the parameters
+                    $stmt->bindParam(':name', $name);
+                    $stmt->bindParam(':description', $description);
+                    $stmt->bindParam(':price', $price);
+                    $stmt->bindParam(':promotion_price', $promotion_price);
+                    $stmt->bindParam(':manufacture_date', $manufacture_date);
+                    $stmt->bindParam(':expired_date', $expired_date);
+                    $stmt->bindParam(':id', $id);
+                    // Execute the query
+                    if ($stmt->execute()) {
+                        echo "<div class='alert alert-success'>Record was updated.</div>";
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    }
+                }
+                // show errors
+                catch (PDOException $exception) {
+                    die('ERROR: ' . $exception->getMessage());
+                }
+            } else {
+                echo "<div class='alert alert-danger'>Your manufacture date no longer than expired date!</div>";
             }
         } ?>
 

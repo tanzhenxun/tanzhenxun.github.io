@@ -52,26 +52,33 @@ include 'logincheck.php';
                     if (strpos(trim($username), ' ')) {
                         $flag = 1;
                         echo "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
+                    }else{
+                        $flag = 0;
+                        $username = $_POST['username'];
                     }
                 } else {
                     $flag = 1;
                     echo "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
                 }
 
-                if (strlen($password) <= 8) {
+                if (strlen($password) >= 8) {
+                    if ($uppercase || $lowercase || $number) {
+                        if ($password !== $confirm_password) {
+                            $flag = 1;
+                            echo "<div class='alert alert-danger'>Passwords do not match, please type again.</div>";
+                        } else{
+                            $password = md5($_POST['password']);
+                        }
+                    }else{
+                        $flag = 1;
+                        echo "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                    }
+                }else{
                     $flag = 1;
                     echo "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
                 }
 
-                if (!$uppercase || !$lowercase || !$number) {
-                    $flag = 1;
-                    echo "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
-                }
-
-                if ($password !== $confirm_password) {
-                    $flag = 1;
-                    echo "<div class='alert alert-danger'>Passwords do not match, please type again.</div>";
-                }
+                
 
                 $now_date = date('Y-m-d');
                 $diff = date_diff(date_create($now_date),date_create($date_of_birth));
@@ -80,6 +87,9 @@ include 'logincheck.php';
                 if ($year >= -18){
                     $flag = 1;
                     echo "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                } else{
+                    $flag = 0;
+                    $date_of_birth = $_POST['date_of_birth'];
                 }
 
 
@@ -135,11 +145,11 @@ include 'logincheck.php';
                 </tr>
                 <tr>
                     <td>Password</td>
-                    <td><input type='text' name='password' class='form-control' /></td>
+                    <td><input type='password' name='password' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Confirm Password</td>
-                    <td><input type='text' name='confirm_password' class='form-control' /></td>
+                    <td><input type='password' name='confirm_password' class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Gender</td>
