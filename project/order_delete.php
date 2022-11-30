@@ -7,7 +7,8 @@ try {
     $order_summary_id=isset($_GET['order_summary_id']) ? $_GET['order_summary_id'] :  die('ERROR: Record ID not found.');
 
     // delete query
-    $query = "DELETE FROM order_summary WHERE order_summary_id = ?";
+    $query = "DELETE order_summary, order_detail FROM order_summary Inner join order_detail On order_detail.order_summary_id = order_summary.order_summary_id WHERE order_detail.order_summary_id =?";
+    
     $stmt = $con->prepare($query);
     $stmt->bindParam(1, $order_summary_id);
      

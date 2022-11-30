@@ -62,7 +62,7 @@ include 'logincheck.php';
         <div class="container align-items-center justify-content-center mt-3">
             <div class="row">
                 <div class="col-4">
-                    <table class='table table-hover table-responsive table-borderless table-dark'>
+                    <table class='table table-responsive table-borderless table-dark'>
                         <tr>
                             <th>Total Customer</th>
                             <td class="table-light fw-bold"><?php echo $total_customer ?> person</td>
@@ -78,10 +78,10 @@ include 'logincheck.php';
                     </table>
                 </div>
                 <div class="col-8">
-                    <table class='table table-hover table-responsive table-striped table-dark table-bordered border-secondary'>
+                    <table class='table table-responsive table-striped table-light table-bordered'>
                         <thead>
                             <tr>
-                                <th colspan='4' class="text-center ">Latest Order Information</th>
+                                <th colspan='4' class="text-center table-dark">Latest Order Information</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,7 +101,7 @@ include 'logincheck.php';
                     </table>
                 </div>
                 <div class="col-4">
-                    <table class='table table-hover table-responsive table-striped table-bordered border-secondary text-center'>
+                    <table class='table table-responsive table-striped table-bordered border-secondary text-center'>
                         <tr class="table-dark">
                             <th>Our order highest purchased amount is...</th>
                         </tr>
@@ -109,7 +109,7 @@ include 'logincheck.php';
                             <th>RM <?php echo number_format(round($highest_amount, 1), 2) ?></th>
                         </tr>
                     </table>
-                    <table class='table table-hover table-responsive table-striped table-bordered border-secondary text-center'>
+                    <table class='table table-responsive table-striped table-bordered border-secondary text-center'>
                         <tr class="table-dark">
                             <th colspan="2">Products that never purchased by any customer is...</th>
                         </tr>
@@ -134,7 +134,7 @@ include 'logincheck.php';
                     <table class='table table-responsive table-striped table-bordered table-light'>
                     <thead>
                             <tr>
-                                <th colspan="3" class="text-center">Top 5 selling Products</th>
+                                <th colspan="3" class="text-center table-dark">Top 5 selling Products</th>
                             </tr>
                         </thead>
                         <tbody>
