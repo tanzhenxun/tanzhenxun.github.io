@@ -39,6 +39,10 @@ include 'logincheck.php';
             echo "<div class='alert alert-success'>Record was deleted.</div>";
         }
 
+        if ($action == 'cancel') {
+            echo "<div class='alert alert-danger'>This data is used in other sections.</div>";
+        }
+
         // select all data
         $query = "SELECT id, username, register_date, account_status FROM customers ORDER BY id DESC";
         $stmt = $con->prepare($query);

@@ -34,11 +34,11 @@ $web_name = basename($_SERVER["PHP_SELF"]);
                     </ul>
                 </div>
                 <div class="dropdown">
-                    <a class="text-decoration-none nav-link dropdown-toggle <?php if($web_name=="create_order.php" || $web_name == "order_read.php" || $web_name == "order_read_one.php"){echo "active";}?>" href="create_order.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="text-decoration-none nav-link dropdown-toggle <?php if($web_name=="order_create.php" || $web_name == "order_read.php" || $web_name == "order_read_one.php"){echo "active";}?>" href="order_create.php" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Order
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item <?php if($web_name=="create_order.php"){echo "active";}?>" href="create_order.php">Create Order</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="order_create.php"){echo "active";}?>" href="order_create.php">Create Order</a></li>
                         <li><a class="dropdown-item <?php if($web_name=="order_read.php"){echo "active";}?>" href="order_read.php">Order List</a></li>
                     </ul>
                 </div>

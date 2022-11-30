@@ -123,7 +123,7 @@ include 'logincheck.php';
                 ?>
                 <tr>
                     <th colspan="4" class="text-end pe-5">Total Amount</th>
-                    <td class=" fw-bold" class="text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1),2), ENT_QUOTES);  ?></td>
+                    <td class=" fw-bold text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1),2), ENT_QUOTES);  ?></td>
                 </tr>
             </table>
             <a href='order_read.php' class='btn btn-danger'>Back to order list</a>

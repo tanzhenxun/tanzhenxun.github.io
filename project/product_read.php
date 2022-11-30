@@ -38,6 +38,10 @@ include 'logincheck.php';
             echo "<div class='alert alert-success'>Record was deleted.</div>";
         }
 
+        if($action=='cancel'){
+            echo "<div class='alert alert-danger'>This data is used in other sections.</div>";
+        }
+
 
         // delete message prompt will be here
 

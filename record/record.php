@@ -109,3 +109,8 @@
         // ON cus.id = smry.customer_id
         // Order by order_summary_id DESC";
         ?>
+
+<div class="d-sm-flex container align-items-center justify-content-evenly py-sm-5 py-2 mb-sm-5 mb-2 flex-sm-row flex-column text-center">
+        <a href="product_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30 m-sm-0 m-2" role="button">Create Product</button></a>
+        <a href="customer_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30 m-sm-0 m-2" role="button">Create Customer</button></a>
+        </div>

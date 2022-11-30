@@ -35,7 +35,7 @@ include 'logincheck.php';
 
         // if it was redirected from delete.php
         if ($action == 'deleted') {
-            echo "<div class='alert alert-success'>Record was deleted.</div>";
+             echo "<div class='alert alert-success'>Customer has an order that cannot be deleted.</div>";
         }
 
         // select all data
