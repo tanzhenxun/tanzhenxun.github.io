@@ -127,14 +127,14 @@ include 'logincheck.php';
                   SET name=:name, description=:description,price=:price, promotion_price=:promotion_price,manufacture_date=:manufacture_date, expired_date=:expired_date, image=:image WHERE id = :id";
                     // prepare query for excecution
                     $stmt = $con->prepare($query);
-                    
+
                     $image = !empty($_FILES["image"]["name"])
                         ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
                         : $old_image; //pathinfo($old_image, PATHINFO_BASENAME);
                     $image = htmlspecialchars(strip_tags($image));
 
-                    
-                    
+
+
                     // bind the parameters
                     $stmt->bindParam(':name', $name);
                     $stmt->bindParam(':description', $description);
@@ -217,14 +217,13 @@ include 'logincheck.php';
                                 $image_error = false;
                             }
                         }
-                        if ($image_error == true) {
-                            if ($stmt->execute()) {
-                                echo "<div class='alert alert-success'>Record was updated.</div>";
-                            }
-                        } else {
-                            echo "tan";
-                            echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    }
+                    if (empty($_FILES["image"]["name"]) || $image_error == true) {
+                        if ($stmt->execute()) {
+                            echo "<div class='alert alert-success'>Record was updated.</div>";
                         }
+                    } else {
+                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                     }
                 }
                 // show errors
