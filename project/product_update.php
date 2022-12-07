@@ -97,12 +97,90 @@ include 'logincheck.php';
         <?php
         // check if form was submitted
         if ($_POST) {
+            $image = !empty($_FILES["image"]["name"])
+                ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                : $old_image; //pathinfo($old_image, PATHINFO_BASENAME);
+            $image = htmlspecialchars(strip_tags($image));
+
             $name = htmlspecialchars(strip_tags($_POST['name']));
             $description = htmlspecialchars(strip_tags($_POST['description']));
             $price = htmlspecialchars(strip_tags($_POST['price']));
             $promotion_price = htmlspecialchars(strip_tags($_POST['promotion_price']));
             $manufacture_date = htmlspecialchars(strip_tags($_POST['manufacture_date']));
             $expired_date = htmlspecialchars(strip_tags($_POST['expired_date']));
+
+            if (!empty($_FILES["image"]["name"])) {
+                if ($image && $image != "NULL") {
+                    // upload to file to folder
+                    $target_directory = "uploads/";
+                    $target_file = $target_directory . $image; // uploads/(image name)
+                    $file_type = pathinfo($target_file, PATHINFO_EXTENSION); // find the image format like jpg, png ..
+
+                    // error message is empty
+                    $file_upload_error_messages = "";
+                    $image_error = true;
+                    // make sure that file is a real image
+                    $check = getimagesize($_FILES["image"]["tmp_name"]);
+                    //echo $target_file;
+                    //print_r($check); 
+                    //The getimagesize() function will determine the size of any supported given image file and return the dimensions along with the file type and a height/width text string to be used inside a normal HTML IMG tag and the correspondent HTTP content type.
+                    //echo $_FILES["image"]["tmp_name"] = C:\wamp64\tmp\php44C0.tmp
+                    //$_FILES["file"]["name"] //stores the original filename from the client
+                    //$_FILES["file"]["tmp_name"] //stores the name of the temporary file
+
+
+                    if ($check !== false) {
+                        // submitted file is an image
+                        // make sure certain file types are allowed
+                        $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                        if (!in_array($file_type, $allowed_file_types)) {
+                            $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                            $image_error = false;
+                        }
+                        // make sure file does not exist
+                        if (file_exists($target_file)) {
+                            $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+                            $image_error = false;
+                        }
+                        // make sure submitted file is not too large, can't be larger than 1 MB
+                        if ($_FILES['image']['size'] > (1024000)) {
+                            $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+                            $image_error = false;
+                        }
+                        // make sure the 'uploads' folder exists
+                        // if not, create it
+                        if (!is_dir($target_directory)) {
+                            mkdir($target_directory, 0777, true);
+                        }
+                    } else {
+                        $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
+                        $image_error = false;
+                    }
+                    // if $file_upload_error_messages is still empty
+                    if (empty($file_upload_error_messages)) {
+                        // it means there are no errors, so try to upload the file
+                        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                            // it means photo was uploaded
+                        } else {
+                            echo "<div class='alert alert-danger'>";
+                            echo "<div>Unable to upload photo.</div>";
+                            echo "<div>Update the record to upload photo.</div>";
+                            echo "</div>";
+                            $image_error = false;
+                        }
+                    }
+
+                    // if $file_upload_error_messages is NOT empty
+                    else {
+                        // it means there are some errors, so show them to user
+                        echo "<div class='alert alert-danger'>";
+                        echo "<div>{$file_upload_error_messages}</div>";
+                        echo "<div>Update the record to upload photo.</div>";
+                        echo "</div>";
+                        $image_error = false;
+                    }
+                }
+            }
 
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
                 echo "<div class='alert alert-danger'>Please make sure your Name, Description, Price and Manufacture Date are not emplty!</div>";
@@ -118,120 +196,41 @@ include 'logincheck.php';
                     $promotion_price = NULL;
                 }
 
-
-                try {
-                    // write update query
-                    // in this case, it seemed like we have so many fields to pass and
-                    // it is better to label them and not use question marks
-                    $query = "UPDATE products
+                if (empty($_FILES["image"]["name"]) || $image_error == true) {
+                    try {
+                        // write update query
+                        // in this case, it seemed like we have so many fields to pass and
+                        // it is better to label them and not use question marks
+                        $query = "UPDATE products
                   SET name=:name, description=:description,price=:price, promotion_price=:promotion_price,manufacture_date=:manufacture_date, expired_date=:expired_date, image=:image WHERE id = :id";
-                    // prepare query for excecution
-                    $stmt = $con->prepare($query);
+                        // prepare query for excecution
+                        $stmt = $con->prepare($query);
 
-                    $image = !empty($_FILES["image"]["name"])
-                        ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                        : $old_image; //pathinfo($old_image, PATHINFO_BASENAME);
-                    $image = htmlspecialchars(strip_tags($image));
+                        // bind the parameters
+                        $stmt->bindParam(':name', $name);
+                        $stmt->bindParam(':description', $description);
+                        $stmt->bindParam(':price', $price);
+                        $stmt->bindParam(':promotion_price', $promotion_price);
+                        $stmt->bindParam(':manufacture_date', $manufacture_date);
+                        $stmt->bindParam(':expired_date', $expired_date);
+                        $stmt->bindParam(':image', $image);
+                        $stmt->bindParam(':id', $id);
 
-
-
-                    // bind the parameters
-                    $stmt->bindParam(':name', $name);
-                    $stmt->bindParam(':description', $description);
-                    $stmt->bindParam(':price', $price);
-                    $stmt->bindParam(':promotion_price', $promotion_price);
-                    $stmt->bindParam(':manufacture_date', $manufacture_date);
-                    $stmt->bindParam(':expired_date', $expired_date);
-                    $stmt->bindParam(':image', $image);
-                    $stmt->bindParam(':id', $id);
-
-                    // Execute the query
-                    if (!empty($_FILES["image"]["name"])) {
-                        if ($image && $image != "NULL") {
-                            // upload to file to folder
-                            $target_directory = "uploads/";
-                            $target_file = $target_directory . $image; // uploads/(image name)
-                            $file_type = pathinfo($target_file, PATHINFO_EXTENSION); // find the image format like jpg, png ..
-
-                            // error message is empty
-                            $file_upload_error_messages = "";
-                            $image_error = true;
-                            // make sure that file is a real image
-                            $check = getimagesize($_FILES["image"]["tmp_name"]);
-                            //echo $target_file;
-                            //print_r($check); 
-                            //The getimagesize() function will determine the size of any supported given image file and return the dimensions along with the file type and a height/width text string to be used inside a normal HTML IMG tag and the correspondent HTTP content type.
-                            //echo $_FILES["image"]["tmp_name"] = C:\wamp64\tmp\php44C0.tmp
-                            //$_FILES["file"]["name"] //stores the original filename from the client
-                            //$_FILES["file"]["tmp_name"] //stores the name of the temporary file
+                        // Execute the query
 
 
-                            if ($check !== false) {
-                                // submitted file is an image
-                                // make sure certain file types are allowed
-                                $allowed_file_types = array("jpg", "jpeg", "png", "gif");
-                                if (!in_array($file_type, $allowed_file_types)) {
-                                    $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-                                    $image_error = false;
-                                }
-                                // make sure file does not exist
-                                if (file_exists($target_file)) {
-                                    $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
-                                    $image_error = false;
-                                }
-                                // make sure submitted file is not too large, can't be larger than 1 MB
-                                if ($_FILES['image']['size'] > (1024000)) {
-                                    $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
-                                    $image_error = false;
-                                }
-                                // make sure the 'uploads' folder exists
-                                // if not, create it
-                                if (!is_dir($target_directory)) {
-                                    mkdir($target_directory, 0777, true);
-                                }
-                            } else {
-                                $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
-                                $image_error = false;
-                            }
-                            // if $file_upload_error_messages is still empty
-                            if (empty($file_upload_error_messages)) {
-                                // it means there are no errors, so try to upload the file
-                                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                    // it means photo was uploaded
-                                } else {
-                                    echo "<div class='alert alert-danger'>";
-                                    echo "<div>Unable to upload photo.</div>";
-                                    echo "<div>Update the record to upload photo.</div>";
-                                    echo "</div>";
-                                    $image_error = false;
-                                }
-                            }
-
-                            // if $file_upload_error_messages is NOT empty
-                            else {
-                                // it means there are some errors, so show them to user
-                                echo "<div class='alert alert-danger'>";
-                                echo "<div>{$file_upload_error_messages}</div>";
-                                echo "<div>Update the record to upload photo.</div>";
-                                echo "</div>";
-                                $image_error = false;
-                            }
-                        }
-                    }
-                    if (empty($_FILES["image"]["name"]) || $image_error == true) {
                         if ($stmt->execute()) {
                             echo "<div class='alert alert-success'>Record was updated.</div>";
+                        } else {
+                            echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                         }
-                    } else {
-                        echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
+                    }
+                    // show errors
+                    catch (PDOException $exception) {
+                        die('ERROR: ' . $exception->getMessage());
                     }
                 }
-                // show errors
-                catch (PDOException $exception) {
-                    die('ERROR: ' . $exception->getMessage());
-                }
             } else {
-                echo "1ac";
                 echo "<div class='alert alert-danger'>Your manufacture date no longer than expired date!</div>";
             }
         } ?>
