@@ -37,7 +37,7 @@ include 'logincheck.php';
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, name, description, price FROM products WHERE id = :id ";
+            $query = "SELECT id, name, description, price,created, promotion_price , manufacture_date, expired_date, image FROM products WHERE id = :id ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
@@ -53,19 +53,43 @@ include 'logincheck.php';
             $name = $row['name'];
             $description = $row['description'];
             $price = $row['price'];
+            $created = $row['created'];
+            $promotion_price = $row['promotion_price'];
+            $manufacture_date = $row['manufacture_date'];
+            $expired_date = $row['expired_date'];
+            $image = $row['image'];
             // shorter way to do that is extract($row)
+
+            if($promotion_price == "NULL" || $promotion_price == ""){
+                $promotion_price = "-";
+            }
+            if($expired_date == "NULL" || $expired_date == ""){
+                $expired_date = "-";
+            }
+            if($manufacture_date == "NULL" || $manufacture_date == ""){
+                $manufacture_date = "-";
+            }
+            if($image == "NULL" || $image == ""){
+                $image = "no_image.jpg";
+            }
+
         }
 
         // show error
         catch (PDOException $exception) {
             die('ERROR: ' . $exception->getMessage());
         }
+        
         ?>
 
 
         <!-- HTML read one record table will be here -->
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
+            <tr>
+                <td>Image</td>
+                <td ><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" width="200"></td>
+            </tr>
             <tr>
                 <td>Name</td>
                 <td><?php echo htmlspecialchars($name, ENT_QUOTES);  ?></td>
@@ -77,6 +101,22 @@ include 'logincheck.php';
             <tr>
                 <td>Price</td>
                 <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Created</td>
+                <td><?php echo htmlspecialchars($created, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Promotion Price</td>
+                <td><?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Manufacture Date</td>
+                <td><?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Expired Date</td>
+                <td><?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td></td>
