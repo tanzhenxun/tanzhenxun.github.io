@@ -114,3 +114,23 @@
         <a href="product_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30 m-sm-0 m-2" role="button">Create Product</button></a>
         <a href="customer_create" class="text-decoration-none buttoncolor text-dark"><button class="button-30 m-sm-0 m-2" role="button">Create Customer</button></a>
         </div>
+
+
+        <?php
+        
+        
+        
+        $path_parts = pathinfo('/www/htdocs/inc/create.php');
+
+        echo $path_parts['dirname'], "\n";// echo /www/htdocs/inc
+        echo $path_parts['basename'], "\n";// echo create.php
+        echo $path_parts['extension'], "\n";// echo php
+        echo $path_parts['filename'], "\n";// echo create
+        // Answer
+        // /www/htdocs/inc
+        // lib.inc.php
+        // php
+        // lib.inc
+                
+        
+        ?>
