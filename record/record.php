@@ -122,7 +122,7 @@
         
         $path_parts = pathinfo('/www/htdocs/inc/create.php');
 
-        echo $path_parts['dirname'], "\n";// echo /www/htdocs/inc
+        echo $path_parts['dirname'], "\n";// echo /www/htdocs/inc //directory name
         echo $path_parts['basename'], "\n";// echo create.php
         echo $path_parts['extension'], "\n";// echo php
         echo $path_parts['filename'], "\n";// echo create
@@ -131,6 +131,8 @@
         // lib.inc.php
         // php
         // lib.inc
-                
+       // array 排屋 里面有什么
+       
+
         
         ?>

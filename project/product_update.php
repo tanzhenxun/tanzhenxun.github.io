@@ -184,16 +184,29 @@ include 'logincheck.php';
 
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
                 echo "<div class='alert alert-danger'>Please make sure your Name, Description, Price and Manufacture Date are not emplty!</div>";
-            } else if ($promotion_price > $price) {
-                echo "<div class='alert alert-danger'>Please correctly your promotion price need cheaper than original price!</div>";
-            } else if ($manufacture_date <= $expired_date || $expired_date == "") {
-
-                if ($expired_date == "") {
-                    $expired_date = NULL;
-                }
+            } else {
 
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
+                } else {
+                    if ($promotion_price > $price) {
+                        $file_upload_error_messages .= "<div>Please correctly your promotion price need cheaper than original price!</div>";
+                        $validation  = false;
+                    }
+                }
+
+                if ($expired_date == "") {
+                    $expired_date = NULL;
+                } else {
+                    if ($manufacture_date >= $expired_date && $expired_date != "") {
+                        $file_upload_error_messages .= "<div>Your manufacture date no longer than expired date!</div>";
+                        $validation  = false;
+                    }
+                }
+
+                if ($price >= 1000 || $price < 0) {
+                    $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 1000 or less than 0 price!</div>";
+                    $validation  = false;
                 }
 
                 if (empty($_FILES["image"]["name"]) || $image_error == true) {
@@ -230,13 +243,12 @@ include 'logincheck.php';
                         die('ERROR: ' . $exception->getMessage());
                     }
                 }
-            } else {
-                echo "<div class='alert alert-danger'>Your manufacture date no longer than expired date!</div>";
             }
         } ?>
 
         <!-- HTML form to update record will be here -->
-        <!--we have our html form here where new record information can be updated-->
+        <!--we have our html form here where new record information can be updated 
+    get method have maximun size-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="POST" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>

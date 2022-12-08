@@ -44,18 +44,28 @@ include 'logincheck.php';
             $manufacture_date = $_POST['manufacture_date'];
             $expired_date = $_POST['expired_date'];
 
+            // error message is empty
+            $file_upload_error_messages = "";
+
             // include database connection
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
-            } else if ($promotion_price > $price) {
-                echo "<div class='alert alert-danger'>Please correctly your promotion price need cheaper than original price!</div>";
-            } else if ($manufacture_date <= $expired_date || $expired_date == "") {
-                if ($expired_date == "") {
-                    $expired_date = NULL;
-                }
+            } else {
 
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
+                } else {
+                    if ($promotion_price > $price) {
+                        $file_upload_error_messages .= "<div>Please correctly your promotion price need cheaper than original price!</div>";
+                    }
+                }
+
+                if ($expired_date == "") {
+                    $expired_date = NULL;
+                } else {
+                    if ($manufacture_date >= $expired_date && $expired_date != "") {
+                        $file_upload_error_messages .= "<div>Your manufacture date no longer than expired date!</div>";
+                    }
                 }
 
                 // now, if image is not empty, try to upload the image
@@ -66,9 +76,6 @@ include 'logincheck.php';
                     $target_file = $target_directory . $image;
                     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 
-                    // error message is empty
-                    $file_upload_error_messages = "";
-                    $image_error = true;
                     // make sure that file is a real image
                     $check = getimagesize($_FILES["image"]["tmp_name"]);
                     if ($check !== false) {
@@ -77,17 +84,14 @@ include 'logincheck.php';
                         $allowed_file_types = array("jpg", "jpeg", "png", "gif");
                         if (!in_array($file_type, $allowed_file_types)) {
                             $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-                            $image_error = false;
                         }
                         // make sure file does not exist
                         if (file_exists($target_file)) {
                             $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
-                            $image_error = false;
                         }
                         // make sure submitted file is not too large, can't be larger than 1 MB
                         if ($_FILES['image']['size'] > (1024000)) {
                             $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
-                            $image_error = false;
                         }
                         // make sure the 'uploads' folder exists
                         // if not, create it
@@ -96,33 +100,27 @@ include 'logincheck.php';
                         }
                     } else {
                         $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
-                        $image_error = false;
                     }
                     // if $file_upload_error_messages is still empty
                     if (empty($file_upload_error_messages)) {
                         // it means there are no errors, so try to upload the file
-                        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                             // it means photo was uploaded
-                        } else {
                             echo "<div class='alert alert-danger'>";
                             echo "<div>Unable to upload photo.</div>";
                             echo "<div>Update the record to upload photo.</div>";
                             echo "</div>";
-                            $image_error = false;
                         }
                     }
 
                     // if $file_upload_error_messages is NOT empty
                     else {
                         // it means there are some errors, so show them to user
-                        echo "<div class='alert alert-danger'>";
-                        echo "<div>{$file_upload_error_messages}</div>";
-                        echo "<div>Update the record to upload photo.</div>";
-                        echo "</div>";
-                        $image_error = false;
+                        $file_upload_error_messages .= "<div>Update the record to upload photo.</div>";
                     }
                 }
-                if ($image_error == true) {
+
+                if (empty($file_upload_error_messages)) {
                     try {
                         // insert query
                         $query = "INSERT INTO products SET name=:name, description=:description, price=:price, created=:created, promotion_price=:promotion_price, manufacture_date=:manufacture_date, image=:image, expired_date=:expired_date";
@@ -151,9 +149,11 @@ include 'logincheck.php';
                     catch (PDOException $exception) {
                         die('ERROR: ' . $exception->getMessage());
                     }
+                }else{
+                    echo "<div class='alert alert-danger'>";
+                    echo "<div>{$file_upload_error_messages}</div>";
+                    echo "</div>";
                 }
-            } else {
-                echo "<div class='alert alert-danger'>Your manufacture date no longer than expired date!</div>";
             }
         }
 
