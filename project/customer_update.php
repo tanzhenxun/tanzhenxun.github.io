@@ -163,6 +163,11 @@ include 'logincheck.php';
                         $file_upload_error_messages .= "<div>You must be above 18 age old!</div>";
                     }
 
+                    if (isset($_POST['images_remove']) && $_POST['images_remove'] != "" && !empty($_FILES['image']['name'])) {
+                        //isset vs empty dash
+                        $file_upload_error_messages .= "<div>Please note that you cannot select a new image while checking for image deletion, please select one.</div>";
+                    }
+
                     if (!empty($_FILES["image"]["name"])) {
                         if ($image && $image != "NULL") {
                             // upload to file to folder
