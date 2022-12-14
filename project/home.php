@@ -126,6 +126,10 @@ include 'logincheck.php';
                                 echo "</tr>";
                                 $count ++;
                             }
+                        }else{
+                            echo "<tr class=\"table-light\">";
+                            echo "<th class=\"text-center\"></th>";
+                            echo "</tr>";
                         }
                         ?>
                     </table>

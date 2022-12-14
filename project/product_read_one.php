@@ -88,7 +88,7 @@ include 'logincheck.php';
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
                 <td>Image</td>
-                <td ><img src="uploads/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" width="200"></td>
+                <td ><img src="upload_products/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" width="200"></td>
             </tr>
             <tr>
                 <td>Name</td>

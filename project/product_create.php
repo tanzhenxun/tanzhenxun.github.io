@@ -60,16 +60,19 @@ include 'logincheck.php';
                     }
                 }
 
-                //date1 = data_create(manufacture_date)
-                 //date2 = data_create(expired_date)
-                 //$diff =data_diff($date1, $date2)
-
-                if ($expired_date == "") {
+                 if ($expired_date == "") {
                     $expired_date = NULL;
                 } else {
-                    if ($manufacture_date >= $expired_date && $expired_date != "") {
+                    $date1 = date_create($manufacture_date);
+                    $date2 = date_create($expired_date);
+                    $diff = date_diff($date1, $date2);
+                    
+                    //https://linuxhint.com/calculate-date-difference-php/
+
+                    if(($diff->format("%R%a days")) < 0){
                         $file_upload_error_messages .= "<div>Your manufacture date no longer than expired date!</div>";
                     }
+
                 }
 
                 // now, if image is not empty, try to upload the image

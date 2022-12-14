@@ -43,8 +43,13 @@ include 'logincheck.php';
             echo "<div class='alert alert-danger'>This data is used in other sections.</div>";
         }
 
+        if($action=='sucessful'){
+            echo "<div class='alert alert-success'>Record was updated.</div>";
+        }
+
+
         // select all data
-        $query = "SELECT id, username, register_date, account_status FROM customers ORDER BY id DESC";
+        $query = "SELECT id, username, register_date, image_cus, account_status FROM customers ORDER BY id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -63,6 +68,7 @@ include 'logincheck.php';
             //creating our table heading
             echo "<tr>";
             echo "<th>ID</th>";
+            echo "<th>Photo</th>";
             echo "<th>Username</th>";
             echo "<th>Register Date</th>";
             echo "<th>Account Status</th>";
@@ -75,9 +81,16 @@ include 'logincheck.php';
                 // extract row
                 // this will make $row['firstname'] to just $firstname only
                 extract($row);
+                if (empty($image_cus) || $image_cus == "NULL") {
+                    $image_cus = "no_image.jpg";
+                }
+                $store_pro_img = "upload_customer/";
                 // creating new table row per record
+                $image_profile = $store_pro_img . $image_cus;
+                
                 echo "<tr>";
                 echo "<td>{$id}</td>";
+                echo "<td><img src=\"{$image_profile}\" alt=\"$username\" width=\"50\" height=\"auto\"></td>";
                 echo "<td>{$username}</td>";
                 echo "<td>{$register_date}</td>";
                 echo "<td>{$account_status}</td>";

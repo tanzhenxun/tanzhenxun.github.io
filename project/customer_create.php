@@ -13,14 +13,14 @@ include 'logincheck.php';
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link rel="stylesheet" href="css/index.css">
-    
+
 </head>
 
 <body>
     <!-- container -->
-    <?php 
-   include 'navtop.php';
-   ?>
+    <?php
+    include 'navtop.php';
+    ?>
     <div class="container full_page">
         <div class="page-header py-3">
             <h3>Create Customer</h3>
@@ -39,68 +39,116 @@ include 'logincheck.php';
             $account_status = $_POST['account_status'];
             $confirm_password = $_POST['confirm_password'];
 
+            // new 'image' field
+            $image = !empty($_FILES["image"]["name"])
+                ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                : "NULL";
+            $image = htmlspecialchars(strip_tags($image));
+
             $uppercase = preg_match('@[A-Z]@', $password);
             $lowercase = preg_match('@[a-z]@', $password);
             $number    = preg_match('@[0-9]@', $password);
-            $flag = 0;
+
+            // error message is empty
+            $file_upload_error_messages = "";
 
             if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "") {
-                $flag = 1;
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                $file_upload_error_messages .= "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {
                 if (strlen($username) >= 6) {
                     if (strpos(trim($username), ' ')) {
-                        $flag = 1;
-                        echo "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
-                    }else{
-                        $flag = 0;
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
+                    } else {
                         $username = $_POST['username'];
                     }
                 } else {
-                    $flag = 1;
-                    echo "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
                 }
 
                 if (strlen($password) >= 8) {
                     if ($uppercase || $lowercase || $number) {
                         if ($password !== $confirm_password) {
-                            $flag = 1;
-                            echo "<div class='alert alert-danger'>Passwords do not match, please type again.</div>";
-                        } else{
+                            $file_upload_error_messages .= "<div class='alert alert-danger'>Passwords do not match, please type again.</div>";
+                        } else {
                             $password = md5($_POST['password']);
                         }
-                    }else{
-                        $flag = 1;
-                        echo "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                    } else {
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
                     }
-                }else{
-                    $flag = 1;
-                    echo "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
+                } else {
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
                 }
 
-                
+
 
                 $now_date = date('Y-m-d');
-                $diff = date_diff(date_create($now_date),date_create($date_of_birth));
+                $diff = date_diff(date_create($now_date), date_create($date_of_birth));
                 $year = (int)$diff->format("%R%y");
 
-                if ($year >= -18){
-                    $flag = 1;
-                    echo "<div class='alert alert-danger'>You must be above 18 age old!</div>";
-                } else{
-                    $flag = 0;
+                if ($year >= -18) {
+                    $file_upload_error_messages .= "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                } else {
                     $date_of_birth = $_POST['date_of_birth'];
                 }
 
+                // now, if image is not empty, try to upload the image
+                if ($image && $image != "NULL") {
 
-                if ($flag == 0) {
-                    // include database connection
+                    // upload to file to folder
+                    $target_directory = "upload_customer/";
+                    $target_file = $target_directory . $image;
+                    $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+
+                    // make sure that file is a real image
+                    $check = getimagesize($_FILES["image"]["tmp_name"]);
+                    if ($check !== false) {
+                        // submitted file is an image
+                        // make sure certain file types are allowed
+                        $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                        if (!in_array($file_type, $allowed_file_types)) {
+                            $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                        }
+                        // make sure file does not exist
+                        if (file_exists($target_file)) {
+                            $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+                        }
+                        // make sure submitted file is not too large, can't be larger than 1 MB
+                        if ($_FILES['image']['size'] > (1024000)) {
+                            $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+                        }
+                        // make sure the 'uploads' folder exists
+                        // if not, create it
+                        if (!is_dir($target_directory)) {
+                            mkdir($target_directory, 0777, true);
+                        }
+                    } else {
+                        $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
+                    }
+                    // if $file_upload_error_messages is still empty
+                    if (empty($file_upload_error_messages)) {
+                        // it means there are no errors, so try to upload the file
+                        if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                            // it means photo was uploaded
+                            $file_upload_error_messages .= "<div>Unable to upload photo.</div>";
+                        }
+                    }
+                }
+
+
+                if (!empty($file_upload_error_messages)) {
+                    echo "<div class='alert alert-danger'>";
+                    echo "<div>{$file_upload_error_messages}</div>";
+                    echo "</div>";
+                } else {
                     try {
                         // insert query
-                        $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, register_date=:register_date";
+                        $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, register_date=:register_date, image_cus=:image_cus";
                         // prepare query for execution
                         $stmt = $con->prepare($query);
                         $gender = $_POST['gender'];
+                        // to record whether same image
+                        $flag_same_image = false;
+
                         // bind the parameters
                         $stmt->bindParam(':username', $username);
                         $stmt->bindParam(':password', $password);
@@ -111,6 +159,7 @@ include 'logincheck.php';
                         $stmt->bindParam(':gender', $gender);
                         $stmt->bindParam(':date_of_birth', $date_of_birth);
                         $stmt->bindParam(':account_status', $account_status);
+                        $stmt->bindParam(':image_cus', $image);
                         // Execute the query
                         if ($stmt->execute()) {
                             echo "<div class='alert alert-success'>Record was saved.</div>";
@@ -129,8 +178,12 @@ include 'logincheck.php';
         ?>
 
         <!-- html form here where the product information will be entered -->
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST"  enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
+                <tr>
+                    <td>Photo</td>
+                    <td><input type='file' name='image'/></td>
+                </tr>
                 <tr>
                     <td>Username</td>
                     <td><input type='text' name='username' class='form-control' /></td>

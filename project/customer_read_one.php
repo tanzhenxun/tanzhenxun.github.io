@@ -37,7 +37,7 @@ include 'logincheck.php';
         // read current record's data
         try {
             // prepare select query
-            $query = "SELECT id, username, firstname, lastname, gender, date_of_birth, register_date, account_status FROM customers WHERE id = :id ";
+            $query = "SELECT id, username, firstname, image_cus, lastname, gender, date_of_birth, register_date, account_status FROM customers WHERE id = :id ";
             $stmt = $con->prepare($query);
 
             // Bind the parameter
@@ -57,7 +57,12 @@ include 'logincheck.php';
             $date_of_birth = $row['date_of_birth'];
             $register_date = $row['register_date'];
             $account_status = $row['account_status'];
+            $image = $row['image_cus'];
             // shorter way to do that is extract($row)
+
+            if($image == "NULL" || $image == ""){
+                $image = "no_image.jpg";
+            }
         }
 
         // show error
@@ -70,6 +75,10 @@ include 'logincheck.php';
         <!-- HTML read one record table will be here -->
         <!--we have our html table here where the record will be displayed-->
         <table class='table table-hover table-responsive table-bordered'>
+        <tr>
+                <td>Image</td>
+                <td ><img src="upload_customer/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" width="200"></td>
+            </tr>
             <tr>
                 <td>Username</td>
                 <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
@@ -101,6 +110,7 @@ include 'logincheck.php';
             <tr>
                 <td></td>
                 <td>
+                <a href='<?php echo "customer_update.php?id={$id}"?>' class='btn btn-primary me-1'>Edit</a>
                     <a href='customer_read.php' class='btn btn-danger'>Back to read customer</a>
                 </td>
             </tr>

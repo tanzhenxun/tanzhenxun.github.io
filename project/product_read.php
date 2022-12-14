@@ -43,14 +43,14 @@ include 'logincheck.php';
         }
 
         if($action=='sucessful'){
-            echo "<div class='alert alert-sucess'>Record was updated.</div>";
+            echo "<div class='alert alert-success'>Record was updated.</div>";
         }
 
 
         // delete message prompt will be here
 
         // select all data
-        $query = "SELECT id, name, description, price FROM products ORDER BY id DESC";
+        $query = "SELECT id, name, description,image, price FROM products ORDER BY id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -69,9 +69,10 @@ include 'logincheck.php';
             //creating our table heading
             echo "<tr>";
             echo "<th>ID</th>";
+            echo "<th>Picture</th>";
             echo "<th>Name</th>";
             echo "<th>Description</th>";
-            echo "<th>Price</th>";
+            echo "<th>Price (RM)</th>";
             echo "<th>Action</th>";
             echo "</tr>";
 
@@ -81,13 +82,22 @@ include 'logincheck.php';
                 // extract row
                 // this will make $row['firstname'] to just $firstname only //table inside call $_post('username') so $row['username'] if $_post('name') so $row['name'] 
                 extract($row);
+                if (empty($image) || $image == "NULL") {
+                    $image = "no_image.jpg";
+                }
+                $store_pro_img = "upload_products/";
                 // creating new table row per record
+                $image_profile = $store_pro_img . $image;
+                
                 echo "<tr>";
                 echo "<td>{$id}</td>";
+                echo "<td><img src=\"{$image_profile}\" alt=\"$name\" width=\"50\" height=\"auto\"></td>";
                 echo "<td>{$name}</td>";
                 echo "<td>{$description}</td>";
-                echo "<td>{$price}</td>";
+                $amount = number_format(round($price, 1),2);
+                echo "<td class= \"text-end\">{$amount}</td>";
                 echo "<td class\"\">";
+                
                 // read one record
                 echo "<a href='product_read_one.php?id={$id}' class='btn btn-info me-1'>Read</a>";
 

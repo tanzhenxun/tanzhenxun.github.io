@@ -76,6 +76,13 @@ include 'logincheck.php';
             $gender = $row['gender'];
             $date_of_birth = $row['date_of_birth'];
             $account_status = $row['account_status'];
+
+            $store_image = "upload_customer/";
+            if (!empty($row['image_cus']) && $row['image_cus'] != "NULL") {
+                $old_image = $store_image . $row['image_cus'];
+            } else {
+                $old_image = $store_image . "no_image.jpg";
+            }
         }
 
         // show error
@@ -93,70 +100,123 @@ include 'logincheck.php';
             $lowercase = preg_match('@[a-z]@', $_POST['new_pass']);
             $number    = preg_match('@[0-9]@', $_POST['new_pass']);
 
-            $check = 0;
+            $image = !empty($_FILES["image"]["name"])
+                ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                : NULL; //pathinfo($old_image, PATHINFO_BASENAME);
+            $image = htmlspecialchars(strip_tags($image));
+
+            if (empty($image) && $image == "NULL") {
+                $image = $store_image . "no_image.jpg";
+            }
+            // error message is empty
+            $file_upload_error_messages = "";
 
             if (empty($_POST['username']) || empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['gender']) || empty($_POST['date_of_birth'])) {
-                $check = 1;
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
-            }else{
+            } else {
                 if (!empty($_POST['old_pass']) || !empty($_POST['new_pass']) || !empty($_POST['con_pass'])) {
                     if (empty($_POST['old_pass'])) {
-                        echo "<div class='alert alert-danger mt-2'>If want to change new passward then old password field can not be empty!</div>";
-                        $check = 1;
+                        $file_upload_error_messages .= "<div class='alert alert-danger mt-2'>If want to change new passward then old password field can not be empty!</div>";
                     }
 
                     if (empty($_POST['new_pass'])) {
-                        echo "<div class='alert alert-danger mt-2'>If want to change new passward then new password field can not be empty!</div>";
-                        $check = 1;
+                        $file_upload_error_messages .= "<div class='alert alert-danger mt-2'>If want to change new passward then new password field can not be empty!</div>";
                     }
 
                     if (empty($_POST['con_pass'])) {
-                        echo "<div class='alert alert-danger mt-2'>If want to change new passward then confirm password field can not be empty!</div>";
-                        $check = 1;
+                        $file_upload_error_messages .= "<div class='alert alert-danger mt-2'>If want to change new passward then confirm password field can not be empty!</div>";
                     }
-                } 
-                
-                if($check == 0){ 
+
+                    if (!empty($file_upload_error_messages)) {
+                        echo "<div class='alert alert-danger'>";
+                        echo "<div>{$file_upload_error_messages}</div>";
+                        echo "<div>Update the record to upload photo.</div>";
+                        echo "</div>";
+                    }
+                }
+
+                if (empty($file_upload_error_messages)) {
                     if (strlen($username) >= 6) {
                         if (strpos(trim($username), ' ')) {
-                            $check = 1;
-                            echo "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
+                            $file_upload_error_messages .= "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
                         }
                     } else {
-                        $check = 1;
-                        echo "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
                     }
-                    if(!empty($_POST['old_pass']) && $_POST['old_pass'] != $oldpassword){
-                       $check = 1; 
-                        echo "<div class='alert alert-danger'>Wong old password same  your current password!</div>";
+                    if (!empty($_POST['old_pass']) && $_POST['old_pass'] != $oldpassword) {
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Wong old password same  your current password!</div>";
                     }
 
                     if (!empty($_POST['old_pass']) && strlen($_POST['new_pass']) <= 8) {
-                        $check = 1;
-                        echo "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
                     }
 
                     if (!empty($_POST['old_pass']) && (!$uppercase || !$lowercase || !$number)) {
-                        $check = 1;
-                        echo "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
                     }
 
                     if (!empty($_POST['old_pass']) && $_POST['new_pass'] !== $_POST['con_pass']) {
-                        $check = 1;
-                        echo "<div class='alert alert-danger'>Passwords do not match, please check again your new password or confirm password!</div>";
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>Passwords do not match, please check again your new password or confirm password!</div>";
                     }
 
                     $now_date = date('Y-m-d');
-                    $diff = date_diff(date_create($now_date),date_create($date_of_birth));
+                    $diff = date_diff(date_create($now_date), date_create($date_of_birth));
                     $year = (int)$diff->format("%R%y");
 
-                    if ($year >= -18){
-                        $check = 1;
-                        echo "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                    if ($year >= -18) {
+                        $file_upload_error_messages .= "<div class='alert alert-danger'>You must be above 18 age old!</div>";
                     }
 
+                    if (!empty($_FILES["image"]["name"])) {
+                        if ($image && $image != "NULL") {
+                            // upload to file to folder
+                            $target_directory = "upload_customer/";
+                            $target_file = $target_directory . $image; // uploads/(image name)
+                            $file_type = pathinfo($target_file, PATHINFO_EXTENSION); // find the image format like jpg, png ..
+                            // make sure that file is a real image
+                            $check = getimagesize($_FILES["image"]["tmp_name"]);
+
+                            if ($check !== false) {
+                                // submitted file is an image
+                                // make sure certain file types are allowed
+                                $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                                if (!in_array($file_type, $allowed_file_types)) {
+                                    $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                                }
+                                // make sure file does not exist
+                                if (file_exists($target_file)) {
+                                    $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+                                }
+                                // make sure submitted file is not too large, can't be larger than 1 MB
+                                if ($_FILES['image']['size'] > (1024000)) {
+                                    $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+                                }
+                                // make sure the 'uploads' folder exists
+                                // if not, create it
+                                if (!is_dir($target_directory)) {
+                                    mkdir($target_directory, 0777, true);
+                                }
+                            } else {
+                                $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
+                            }
+                            // if $file_upload_error_messages is still empty
+                            if (empty($file_upload_error_messages)) {
+                                // it means there are no errors, so try to upload the file
+                                if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                    // it means photo was uploaded
+                                    $file_upload_error_messages .= "<div>Unable to upload photo.</div>";
+                                }
+                            }
+                        }
+                    }
+
+
                     // check if form was submitted
-                    if ($check == 0) {
+                    if (!empty($file_upload_error_messages)) {
+                        echo "<div class='alert alert-danger'>";
+                        echo "<div>{$file_upload_error_messages}</div>";
+                        echo "</div>";
+                    } else {
                         try {
                             // write update query
                             // in this case, it seemed like we have so many fields to pass and
@@ -165,7 +225,7 @@ include 'logincheck.php';
                         SET username=:username, password=:password,
                         firstname=:firstname, lastname=:lastname, 
                         gender=:gender, date_of_birth=:date_of_birth,
-                        account_status=:account_status WHERE id=:id";
+                        account_status=:account_status, image_cus=:image WHERE id=:id";
                             // prepare query for excecution
                             $stmt = $con->prepare($query);
                             // posted values
@@ -174,11 +234,18 @@ include 'logincheck.php';
                             $lastname = htmlspecialchars(strip_tags($_POST['lastname']));
                             $gender = htmlspecialchars(strip_tags($_POST['gender']));
                             $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
-                            if(!empty($_POST['new_pass'])){
+                            if (!empty($_POST['new_pass'])) {
                                 $oldpassword =  str_replace(" ", "", htmlspecialchars(strip_tags($_POST['new_pass'])));
                             }
                             $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
-
+                            // not checked and not upload new image
+                            if ($image == "NULL" && empty($_POST['images_remove'])) {
+                                $image = pathinfo($old_image, PATHINFO_BASENAME);
+                                $flag_same_image = true;
+                                // checked and not upload new image
+                            } else if ($image == "NULL" && !empty($_POST['images_remove'])) {
+                                $image = "NULL";
+                            }
                             // bind the parameters
                             $stmt->bindParam(':username', $username);
                             $stmt->bindParam(':firstname', $firstname);
@@ -188,9 +255,15 @@ include 'logincheck.php';
                             $stmt->bindParam(':password', $oldpassword);
                             $stmt->bindParam(':account_status', $account_status);
                             $stmt->bindParam(':id', $id);
+                            $stmt->bindParam(':image', $image);
                             // Execute the query
                             if ($stmt->execute()) {
-                                echo "<div class='alert alert-success'>Record was updated.</div>";
+                                // if the image not same then remove previous one and not the default one
+                                if (!$flag_same_image && !strpos($old_image, "no_image.jpg")) {
+                                    unlink($old_image);
+                                }
+
+                                echo "<script type=\"text/javascript\"> window.location.href='customer_read.php?action=sucessful'</script>";
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
@@ -206,8 +279,19 @@ include 'logincheck.php';
 
         <!-- HTML form to update record will be here -->
         <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post">
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post"  enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
+                <tr>
+                    <td>Photo</td>
+                    <td>
+                        <img src="<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200" id="delete_images">
+                        <br>
+                        <input class="mb-3" type="checkbox" id="images_remove" name="images_remove" value="Yes" />
+                        <label for="images_remove">Empty/Default Image</label>
+                        <br>
+                        <input type="file" name='image' class="pt-2">
+                    </td>
+                </tr>
                 <tr>
                     <td>Name</td>
                     <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES);  ?>" class='form-control' /></td>
@@ -235,9 +319,13 @@ include 'logincheck.php';
                 <tr>
                     <td>Gender</td>
                     <td class="d-flex align-item-center">
-                        <input type="radio" name="gender" id="gender1" value="male" class="ms-1 mx-2" <?php if($gender == "male"){echo"checked";} ?>>
+                        <input type="radio" name="gender" id="gender1" value="male" class="ms-1 mx-2" <?php if ($gender == "male") {
+                                                                                                            echo "checked";
+                                                                                                        } ?>>
                         <label for="gender1" class="me-4">Male</label>
-                        <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if($gender == "female"){echo"checked";} ?>>
+                        <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if ($gender == "female") {
+                                                                                                            echo "checked";
+                                                                                                        } ?>>
                         <label for="gender2">Female</label>
                     </td>
                 </tr>

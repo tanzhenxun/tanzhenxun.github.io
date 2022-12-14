@@ -19,7 +19,7 @@ include 'logincheck.php';
     include 'navtop.php';
     ?>
     <!-- container -->
-    <div class="container full_page">
+    <div class="container full_page mb-3">
         <div class="page-header py-3">
             <h3>Order Detail</h3>
         </div>
