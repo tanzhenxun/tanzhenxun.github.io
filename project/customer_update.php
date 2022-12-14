@@ -102,7 +102,7 @@ include 'logincheck.php';
 
             $image = !empty($_FILES["image"]["name"])
                 ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                : NULL; //pathinfo($old_image, PATHINFO_BASENAME);
+                : "NULL"; //pathinfo($old_image, PATHINFO_BASENAME);
             $image = htmlspecialchars(strip_tags($image));
 
             if (empty($image) && $image == "NULL") {
@@ -159,11 +159,7 @@ include 'logincheck.php';
                         $file_upload_error_messages .= "<div>Passwords do not match, please check again your new password or confirm password!</div>";
                     }
 
-                    $now_date = date('Y-m-d');
-                    $diff = date_diff(date_create($now_date), date_create($date_of_birth));
-                    $year = (int)$diff->format("%R%y");
-
-                    if ($year >= -18) {
+                    if (((int)date_diff(date_create(date('Y-m-d')), date_create($_POST["date_of_birth"]))->format("%R%y")) >= -18) {
                         $file_upload_error_messages .= "<div>You must be above 18 age old!</div>";
                     }
 
@@ -239,6 +235,7 @@ include 'logincheck.php';
                             }
                             $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
                             // not checked and not upload new image
+                            $flag_same_image = false;
                             if ($image == "NULL" && empty($_POST['images_remove'])) {
                                 $image = pathinfo($old_image, PATHINFO_BASENAME);
                                 $flag_same_image = true;
@@ -263,7 +260,7 @@ include 'logincheck.php';
                                     unlink($old_image);
                                 }
 
-                                echo "<script type=\"text/javascript\"> window.location.href='customer_read.php?action=sucessful'</script>";
+                               echo "<script type=\"text/javascript\"> window.location.href='customer_read.php?action=sucessful'</script>";
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
