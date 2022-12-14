@@ -147,11 +147,11 @@ include 'logincheck.php';
                 }
 
                 if ($price >= 10000 || $price < 0) {
-                    $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 1000 or less than 0 price!</div>";
+                    $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 10000 or less than 0 price!</div>";
                 }
 
                 if (isset($_POST['images_remove']) && $_POST['images_remove'] != "" && !empty($_FILES['image']['name'])) {
-                    $file_upload_error_messages .= "<div>Please notice that you cannot be checked the image remove and choose a new image at the same time, please select one.</div>";
+                    $file_upload_error_messages .= "<div>Please note that you cannot select a new image while checking for image deletion, please select one.</div>";
                 }
 
                 // now, if image is not empty, try to upload the image

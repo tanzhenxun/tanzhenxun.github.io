@@ -74,6 +74,9 @@ include 'logincheck.php';
                     }
 
                 }
+                if ($price >= 10000 || $price < 0) {
+                    $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 10000 or less than 0 price!</div>";
+                }
 
                 // now, if image is not empty, try to upload the image
                 if ($image && $image != "NULL") {
