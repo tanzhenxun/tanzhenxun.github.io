@@ -143,7 +143,7 @@ include 'logincheck.php';
                     } else {
                         $file_upload_error_messages .= "<div>Your username must contain at least 6 characters!</div>";
                     }
-                    if (!empty($_POST['old_pass']) && $_POST['old_pass'] != $oldpassword) {
+                    if (!empty($_POST['old_pass']) && md5($_POST['old_pass']) != $oldpassword) {
                         $file_upload_error_messages .= "<div>Wong old password same  your current password!</div>";
                     }
 
