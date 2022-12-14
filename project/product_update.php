@@ -101,7 +101,7 @@ include 'logincheck.php';
 
             $image = !empty($_FILES["image"]["name"])
                 ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                : NULL; //pathinfo($old_image, PATHINFO_BASENAME);
+                : "NULL"; //pathinfo($old_image, PATHINFO_BASENAME);
             $image = htmlspecialchars(strip_tags($image));
 
 
@@ -228,7 +228,7 @@ include 'logincheck.php';
                             // checked and not upload new image
                         } else if ($image == "NULL" && !empty($_POST['images_remove'])) {
                             $image = "NULL";
-                        }
+                        } 
 
                         // bind the parameters
                         $stmt->bindParam(':name', $name);
