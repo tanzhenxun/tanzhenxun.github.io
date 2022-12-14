@@ -120,8 +120,8 @@ include 'logincheck.php';
             $file_upload_error_messages = "";
 
             // include database connection
-            if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+            if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" ) {
+                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>"; 
             } else {
 
                 if ($promotion_price == "") {
@@ -147,11 +147,16 @@ include 'logincheck.php';
 
                 }
 
+                if(!is_numeric($price) || !is_numeric($promotion_price)){
+                    $file_upload_error_messages .= "<div>Make sure your fields in only numbers in the price or promotion!</div>";
+                }
+                
                 if ($price >= 10000 || $price < 0) {
                     $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 10000 or less than 0 price!</div>";
                 }
 
                 if (isset($_POST['images_remove']) && $_POST['images_remove'] != "" && !empty($_FILES['image']['name'])) {
+                    //isset vs empty dash
                     $file_upload_error_messages .= "<div>Please note that you cannot select a new image while checking for image deletion, please select one.</div>";
                 }
 
