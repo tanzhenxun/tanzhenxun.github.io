@@ -116,15 +116,15 @@ include 'logincheck.php';
             } else {
                 if (!empty($_POST['old_pass']) || !empty($_POST['new_pass']) || !empty($_POST['con_pass'])) {
                     if (empty($_POST['old_pass'])) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger mt-2'>If want to change new passward then old password field can not be empty!</div>";
+                        $file_upload_error_messages .= "<div>If want to change new passward then old password field can not be empty!</div>";
                     }
 
                     if (empty($_POST['new_pass'])) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger mt-2'>If want to change new passward then new password field can not be empty!</div>";
+                        $file_upload_error_messages .= "<div>If want to change new passward then new password field can not be empty!</div>";
                     }
 
                     if (empty($_POST['con_pass'])) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger mt-2'>If want to change new passward then confirm password field can not be empty!</div>";
+                        $file_upload_error_messages .= "<div>If want to change new passward then confirm password field can not be empty!</div>";
                     }
 
                     if (!empty($file_upload_error_messages)) {
@@ -138,25 +138,25 @@ include 'logincheck.php';
                 if (empty($file_upload_error_messages)) {
                     if (strlen($username) >= 6) {
                         if (strpos(trim($username), ' ')) {
-                            $file_upload_error_messages .= "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
+                            $file_upload_error_messages .= "<div>Username should not contain whitespace!</div>";
                         }
                     } else {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
+                        $file_upload_error_messages .= "<div>Your username must contain at least 6 characters!</div>";
                     }
                     if (!empty($_POST['old_pass']) && $_POST['old_pass'] != $oldpassword) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Wong old password same  your current password!</div>";
+                        $file_upload_error_messages .= "<div>Wong old password same  your current password!</div>";
                     }
 
                     if (!empty($_POST['old_pass']) && strlen($_POST['new_pass']) <= 8) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
+                        $file_upload_error_messages .= "<div>Your password must contain at least 8 characters!</div>";
                     }
 
                     if (!empty($_POST['old_pass']) && (!$uppercase || !$lowercase || !$number)) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                        $file_upload_error_messages .= "<div>Your password must contain at least one uppercase, one lowercase and one number!</div>";
                     }
 
                     if (!empty($_POST['old_pass']) && $_POST['new_pass'] !== $_POST['con_pass']) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Passwords do not match, please check again your new password or confirm password!</div>";
+                        $file_upload_error_messages .= "<div>Passwords do not match, please check again your new password or confirm password!</div>";
                     }
 
                     $now_date = date('Y-m-d');
@@ -164,7 +164,7 @@ include 'logincheck.php';
                     $year = (int)$diff->format("%R%y");
 
                     if ($year >= -18) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                        $file_upload_error_messages .= "<div>You must be above 18 age old!</div>";
                     }
 
                     if (!empty($_FILES["image"]["name"])) {

@@ -15,10 +15,10 @@ include 'logincheck.php';
 </head>
 
 <body>
-     <!-- container -->
-     <?php 
-   include 'navtop.php';
-   ?>
+    <!-- container -->
+    <?php
+    include 'navtop.php';
+    ?>
     <!-- container -->
     <div class="container full_page">
         <div class="page-header my-3">
@@ -35,7 +35,7 @@ include 'logincheck.php';
 
         // if it was redirected from delete.php
         if ($action == 'deleted') {
-             echo "<div class='alert alert-success'>Record was deleted.<</div>";
+            echo "<div class='alert alert-success'>Record was deleted.<</div>";
         }
 
         // select all data
@@ -62,7 +62,7 @@ include 'logincheck.php';
 
         //check if more than 0 record found
         if ($num > 0) {
-            
+
             // data from database will be here
             echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
 
@@ -87,7 +87,7 @@ include 'logincheck.php';
                 echo "<td>{$firstname}</td>";
                 echo "<td>{$lastname}</td>";
                 echo "<td>{$order_date}</td>";
-                echo "<td class=\"text-end\">".number_format(round($total_amount, 1),2)."</td>";
+                echo "<td class=\"text-end\">" . number_format(round($total_amount, 1), 2) . "</td>";
                 echo "<td class\"\">";
                 // read one record
                 echo "<a href='order_read_one.php?order_summary_id={$order_summary_id}' class='btn btn-info me-1'>Read</a>";
@@ -122,15 +122,15 @@ include 'logincheck.php';
         </div>
     </footer>
     <script>
-    function delete_order( order_summary_id ){
-            
-            if (confirm('Are you sure?')){
+        function delete_order(order_summary_id) {
+
+            if (confirm('Are you sure?')) {
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query
                 window.location = 'order_delete.php?order_summary_id=' + order_summary_id;
             }
         }
-        </script>
+    </script>
 
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

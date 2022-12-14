@@ -282,15 +282,15 @@ include 'logincheck.php';
                 </tr>
 
                 <tr>
-                    <td>Name</td>
+                    <td>Name<p class="text-danger">*</p></td>
                     <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Description</td>
+                    <td>Description<p class="text-danger">*</p></td>
                     <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
                 </tr>
                 <tr>
-                    <td>Price</td>
+                    <td>Price<p class="text-danger">*</p></td>
                     <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
@@ -298,7 +298,7 @@ include 'logincheck.php';
                     <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Manufacture Date</td>
+                    <td>Manufacture Date<p class="text-danger">*</p></td>
                     <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>

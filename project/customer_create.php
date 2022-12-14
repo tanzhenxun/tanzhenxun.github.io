@@ -52,31 +52,31 @@ include 'logincheck.php';
             // error message is empty
             $file_upload_error_messages = "";
 
-            if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "") {
-                $file_upload_error_messages .= "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+            if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "" || $date_of_birth == "" ) {
+                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {
                 if (strlen($username) >= 6) {
                     if (strpos(trim($username), ' ')) {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Username should not contain whitespace!</div>";
+                        $file_upload_error_messages .= "<div>Username should not contain whitespace!</div>";
                     } else {
                         $username = $_POST['username'];
                     }
                 } else {
-                    $file_upload_error_messages .= "<div class='alert alert-danger'>Your username must contain at least 6 characters!</div>";
+                    $file_upload_error_messages .= "<div>Your username must contain at least 6 characters!</div>";
                 }
 
                 if (strlen($password) >= 8) {
                     if ($uppercase || $lowercase || $number) {
                         if ($password !== $confirm_password) {
-                            $file_upload_error_messages .= "<div class='alert alert-danger'>Passwords do not match, please type again.</div>";
+                            $file_upload_error_messages .= "<div>Passwords do not match, please type again.</div>";
                         } else {
                             $password = md5($_POST['password']);
                         }
                     } else {
-                        $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                        $file_upload_error_messages .= "<div>Your password must contain at least one uppercase, one lowercase and one number!</div>";
                     }
                 } else {
-                    $file_upload_error_messages .= "<div class='alert alert-danger'>Your password must contain at least 8 characters!</div>";
+                    $file_upload_error_messages .= "<div>Your password must contain at least 8 characters!</div>";
                 }
 
 
@@ -86,7 +86,7 @@ include 'logincheck.php';
                 $year = (int)$diff->format("%R%y");
 
                 if ($year >= -18) {
-                    $file_upload_error_messages .= "<div class='alert alert-danger'>You must be above 18 age old!</div>";
+                    $file_upload_error_messages .= "<div>You must be above 18 age old!</div>";
                 } else {
                     $date_of_birth = $_POST['date_of_birth'];
                 }
@@ -207,7 +207,7 @@ include 'logincheck.php';
                 <tr>
                     <td>Gender</td>
                     <td class="d-flex align-item-center">
-                        <input type="radio" name="gender" value="male" class="ms-1 mx-2">
+                        <input type="radio" name="gender" value="male" class="ms-1 mx-2" checked>
                         <label for="gender" class="me-4">Male</label>
                         <input type="radio" name="gender" value="female" class="ms-1 mx-2">
                         <label for="gender">Female</label>
