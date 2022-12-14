@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include 'logincheck.php';
 ?>
 
@@ -246,8 +247,9 @@ include 'logincheck.php';
                             if (!$flag_same_image && !strpos($old_image, "no_image.jpg")) {
                                 unlink($old_image);
                             }
-                        
-                            echo "<script type=\"text/javascript\"> window.location.href='product_read.php?action=sucessful'</script>";
+                            header('Location: product_read.php?action=sucessful');
+                            
+                            //echo "<script type=\"text/javascript\"> window.location.href='product_read.php?action=sucessful'</script>";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                         }
