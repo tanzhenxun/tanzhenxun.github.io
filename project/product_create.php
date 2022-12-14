@@ -60,6 +60,10 @@ include 'logincheck.php';
                     }
                 }
 
+                //date1 = data_create(manufacture_date)
+                 //date2 = data_create(expired_date)
+                 //$diff =data_diff($date1, $date2)
+
                 if ($expired_date == "") {
                     $expired_date = NULL;
                 } else {
@@ -106,19 +110,12 @@ include 'logincheck.php';
                         // it means there are no errors, so try to upload the file
                         if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
                             // it means photo was uploaded
-                            echo "<div class='alert alert-danger'>";
-                            echo "<div>Unable to upload photo.</div>";
-                            echo "<div>Update the record to upload photo.</div>";
-                            echo "</div>";
+                            $file_upload_error_messages .= "<div>Unable to upload photo.</div>";
                         }
                     }
-
-                    // if $file_upload_error_messages is NOT empty
-                    else {
-                        // it means there are some errors, so show them to user
-                        $file_upload_error_messages .= "<div>Update the record to upload photo.</div>";
-                    }
                 }
+
+                
 
                 if (empty($file_upload_error_messages)) {
                     try {
@@ -149,9 +146,10 @@ include 'logincheck.php';
                     catch (PDOException $exception) {
                         die('ERROR: ' . $exception->getMessage());
                     }
-                }else{
+                } else {
                     echo "<div class='alert alert-danger'>";
                     echo "<div>{$file_upload_error_messages}</div>";
+                    echo "<div>Update the record to upload photo.</div>";
                     echo "</div>";
                 }
             }
@@ -168,15 +166,18 @@ include 'logincheck.php';
                     <td><input type="file" name="image" /></td>
                 </tr>
                 <tr>
-                    <td>Name</td>
+                    <td class="d-flex">Name <p class="text-danger">*</p>
+                    </td>
                     <td><input type='text' name='name' class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Description</td>
+                    <td class="d-flex">Description <p class="text-danger">*</p>
+                    </td>
                     <td><textarea rows="5" cols="33" name='description' class='form-control'></textarea></td>
                 </tr>
                 <tr>
-                    <td>Price</td>
+                    <td class="d-flex">Price <p class="text-danger">*</p>
+                    </td>
                     <td><input type='text' name='price' class='form-control' /></td>
                 </tr>
                 <tr>
@@ -184,7 +185,8 @@ include 'logincheck.php';
                     <td><input type='text' name='promotion_price' class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Manufacture Date</td>
+                    <td class="d-flex">Manufacture Date <p class="text-danger">*</p>
+                    </td>
                     <td><input type='date' name='manufacture_date' class='form-control' /></td>
                 </tr>
                 <tr>

@@ -42,6 +42,10 @@ include 'logincheck.php';
             echo "<div class='alert alert-danger'>This data is used in other sections.</div>";
         }
 
+        if($action=='sucessful'){
+            echo "<div class='alert alert-sucess'>Record was updated.</div>";
+        }
+
 
         // delete message prompt will be here
 

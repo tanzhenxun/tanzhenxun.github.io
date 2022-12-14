@@ -97,10 +97,16 @@ include 'logincheck.php';
         <?php
         // check if form was submitted
         if ($_POST) {
+            echo '<script type="text/javascript">
+            function det_img() {
+                $image = NULL;
+            }
+                    </script>';
             $image = !empty($_FILES["image"]["name"])
                 ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
                 : $old_image; //pathinfo($old_image, PATHINFO_BASENAME);
             $image = htmlspecialchars(strip_tags($image));
+            
 
             $name = htmlspecialchars(strip_tags($_POST['name']));
             $description = htmlspecialchars(strip_tags($_POST['description']));
@@ -204,7 +210,7 @@ include 'logincheck.php';
                     }
                 }
 
-                if ($price >= 1000 || $price < 0) {
+                if ($price >= 10000 || $price < 0) {
                     $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 1000 or less than 0 price!</div>";
                     $validation  = false;
                 }
@@ -230,10 +236,8 @@ include 'logincheck.php';
                         $stmt->bindParam(':id', $id);
 
                         // Execute the query
-
-
                         if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was updated.</div>";
+                            echo "<script type=\"text/javascript\"> window.location.href='product_read.php?action=sucessful'</script>";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                         }
@@ -244,7 +248,7 @@ include 'logincheck.php';
                     }
                 }
             }
-        } ?>
+        }?>
 
         <!-- HTML form to update record will be here -->
         <!--we have our html form here where new record information can be updated 
@@ -253,7 +257,15 @@ include 'logincheck.php';
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Photo</td>
-                    <td class="d-flex flex-column"><img src="uploads/<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200"><input type="file" name='image' class="pt-2"></td>
+                    <td id="delete">
+                        <div class="d-flex align-items-center" id="delete_images">
+                            <img src="uploads/<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200">
+                            <?php if($old_image != "no_image.jpg"){
+                            echo "<a onclick=\"det_img()\" class=''><i class=\"fa-solid fa-circle-minus\"></i>Delete</a>";}
+                            ?>
+                        </div>
+                        <input type="file" name='image' class="pt-2">
+                    </td>
                 </tr>
 
                 <tr>
@@ -300,6 +312,16 @@ include 'logincheck.php';
             </div>
         </div>
     </footer>
+    <script>
+        function det_img() {
+            document.getElementById("delete_images").remove();
+            <?php
+            $old_image == "no_image.jpg"
+            ?>
+        }
+    </script>
+    
+
     <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>

@@ -121,6 +121,7 @@ include 'logincheck.php';
             <tr>
                 <td></td>
                 <td>
+                    <a href='<?php echo "product_update.php?id={$id}"?>' class='btn btn-primary me-1'>Edit</a>
                     <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
                 </td>
             </tr>
