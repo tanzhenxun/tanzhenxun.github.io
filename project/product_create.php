@@ -155,7 +155,6 @@ include 'logincheck.php';
                 } else {
                     echo "<div class='alert alert-danger'>";
                     echo "<div>{$file_upload_error_messages}</div>";
-                    echo "<div>Update the record to upload photo.</div>";
                     echo "</div>";
                 }
             }

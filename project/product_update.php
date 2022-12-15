@@ -121,7 +121,7 @@ include 'logincheck.php';
 
             // include database connection
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" ) {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>"; 
+                echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>"; 
             } else {
 
                 if ($promotion_price == "") {
@@ -289,15 +289,15 @@ include 'logincheck.php';
                 </tr>
 
                 <tr>
-                    <td>Name<p class="text-danger">*</p></td>
+                    <td class="d-flex">Name<p class="text-danger">*</p></td>
                     <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Description<p class="text-danger">*</p></td>
+                    <td class="d-flex">Description<p class="text-danger">*</p></td>
                     <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
                 </tr>
                 <tr>
-                    <td>Price<p class="text-danger">*</p></td>
+                    <td class="d-flex">Price<p class="text-danger">*</p></td>
                     <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
@@ -305,11 +305,11 @@ include 'logincheck.php';
                     <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Manufacture Date<p class="text-danger">*</p></td>
+                    <td class="d-flex">Manufacture Date<p class="text-danger">*</p></td>
                     <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Expired Date</td>
+                    <td >Expired Date</td>
                     <td><input type='date' name='expired_date' value="<?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?>" class='form-control' /></td>
                 </tr>
                 <tr>
