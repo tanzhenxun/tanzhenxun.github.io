@@ -62,6 +62,8 @@ include 'logincheck.php';
 
             if($promotion_price == "NULL" || $promotion_price == ""){
                 $promotion_price = "-";
+            } else{
+                $promotion_price = number_format(round($promotion_price, 1),2);
             }
             if($expired_date == "NULL" || $expired_date == ""){
                 $expired_date = "-";
@@ -100,15 +102,15 @@ include 'logincheck.php';
             </tr>
             <tr>
                 <td>Price</td>
-                <td><?php echo htmlspecialchars($price, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Created</td>
-                <td><?php echo htmlspecialchars($created, ENT_QUOTES);  ?></td>
+                <td><?php echo htmlspecialchars(number_format(round($price, 1),2), ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td>Promotion Price</td>
                 <td><?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?></td>
+            </tr>
+            <tr>
+                <td>Created</td>
+                <td><?php echo htmlspecialchars($created, ENT_QUOTES);  ?></td>
             </tr>
             <tr>
                 <td>Manufacture Date</td>
