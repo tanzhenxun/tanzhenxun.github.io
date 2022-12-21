@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include 'logincheck.php';
 ?>
 
@@ -49,7 +50,7 @@ include 'logincheck.php';
 
             // include database connection
             if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>";
             } else {
 
                 if ($promotion_price == "") {
@@ -143,7 +144,8 @@ include 'logincheck.php';
 
                         // Execute the query
                         if ($stmt->execute()) {
-                            echo "<div class='alert alert-success'>Record was saved.</div>";
+                            header('Location: product_read.php?action=sucessful');
+                            die();
                         } else {
                             echo "<div class='alert alert-danger'>Unable to save record.</div>";
                         }

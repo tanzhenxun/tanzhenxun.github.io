@@ -52,7 +52,7 @@ include 'logincheck.php';
             // error message is empty
             $file_upload_error_messages = "";
 
-            if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "" || $date_of_birth == "" ) {
+            if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "" || $date_of_birth == "") {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
             } else {
                 if (strlen($username) >= 6) {
@@ -178,51 +178,95 @@ include 'logincheck.php';
         ?>
 
         <!-- html form here where the product information will be entered -->
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST"  enctype="multipart/form-data">
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
             <table class='table table-hover table-responsive table-bordered'>
                 <tr>
                     <td>Photo</td>
-                    <td><input type='file' name='image'/></td>
+                    <td><input type='file' name='image' /></td>
                 </tr>
                 <tr>
-                    <td>Username</td>
-                    <td><input type='text' name='username' class='form-control' /></td>
+                    <td class="d-flex">Username <p class="text-danger">*</td>
+                    <td><input type='text' name='username' class='form-control' value="<?php if (isset($_POST['username'])) {
+                                                                                            echo $_POST['username'];
+                                                                                        } else {
+                                                                                            echo "";
+                                                                                        } ?>" /></td>
                 </tr>
                 <tr>
-                    <td>First Name</td>
-                    <td><input type='text' name='firstname' class='form-control' /></td>
+                    <td class="d-flex">First Name <p class="text-danger">*</td>
+                    <td><input type='text' name='firstname' class='form-control' value="<?php if (isset($_POST['firstname'])) {
+                                                                                            echo $_POST['firstname'];
+                                                                                        } else {
+                                                                                            echo "";
+                                                                                        } ?>" /></td>
                 </tr>
                 <tr>
-                    <td>Last Name</td>
-                    <td><input type='text' name='lastname' class='form-control' /></td>
+                    <td class="d-flex">Last Name <p class="text-danger">*</td>
+                    <td><input type='text' name='lastname' class='form-control' value="<?php if (isset($_POST['lastname'])) {
+                                                                                            echo $_POST['lastname'];
+                                                                                        } else {
+                                                                                            echo "";
+                                                                                        } ?>" /></td>
                 </tr>
                 <tr>
-                    <td>Password</td>
+                    <td class="d-flex">Password <p class="text-danger">*</td>
                     <td><input type='password' name='password' class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Confirm Password</td>
+                    <td class="d-flex">Confirm Password <p class="text-danger">*</td>
                     <td><input type='password' name='confirm_password' class='form-control' /></td>
                 </tr>
                 <tr>
-                    <td>Gender</td>
-                    <td class="d-flex align-item-center">
-                        <input type="radio" name="gender" value="male" class="ms-1 mx-2" checked>
+                    <td class="d-flex">Gender <p class="text-danger">*</td>
+                    <td class="align-item-center">
+                        <input type="radio" name="gender" value="male" class="ms-1 mx-2" <?php
+                                                                                            if (isset($_POST['gender'])) {
+                                                                                                if ($_POST['gender'] == "male") {
+                                                                                                    echo "checked";
+                                                                                                }
+                                                                                            }else{
+                                                                                                echo "checked";
+                                                                                            } ?>>
                         <label for="gender" class="me-4">Male</label>
-                        <input type="radio" name="gender" value="female" class="ms-1 mx-2">
+                        <input type="radio" name="gender" value="female" class="ms-1 mx-2" <?php
+                                                                                            if (isset($_POST['gender'])) {
+                                                                                                if ($_POST['gender'] == "female") {
+                                                                                                    echo "checked";
+                                                                                                }
+                                                                                            }else{
+                                                                                                echo "";
+                                                                                            } ?>>
                         <label for="gender">Female</label>
                     </td>
                 </tr>
                 <tr>
-                    <td>Date of Birth</td>
-                    <td><input type='date' name='date_of_birth' class='form-control' /></td>
+                    <td class="d-flex">Date of Birth <p class="text-danger">*</td>
+                    <td><input type='date' name='date_of_birth' class='form-control' value="<?php if (isset($_POST['date_of_birth'])) {
+                                                                                            echo $_POST['date_of_birth'];
+                                                                                        } else {
+                                                                                            echo "";
+                                                                                        } ?>"/></td>
                 </tr>
                 <tr>
-                    <td>Account Status</td>
+                    <td class="d-flex">Account Status <p class="text-danger">*</td>
                     <td>
                         <select class="form-select" aria-label="Default select example" name="account_status">
-                            <option value="active" selected>Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="active" <?php
+                                                                                            if (isset($_POST['account_status'])) {
+                                                                                                if ($_POST['account_status'] == "active") {
+                                                                                                    echo "selected";
+                                                                                                }
+                                                                                            }else{
+                                                                                                echo "selected";
+                                                                                            } ?>>Active</option>
+                            <option value="inactive" <?php
+                                                                                            if (isset($_POST['account_status'])) {
+                                                                                                if ($_POST['account_status'] == "inactive") {
+                                                                                                    echo "selected";
+                                                                                                }
+                                                                                            }else{
+                                                                                                echo "";
+                                                                                            } ?>>Inactive</option>
                         </select>
                     </td>
                 </tr>

@@ -38,9 +38,13 @@ include 'logincheck.php';
             echo "<div class='alert alert-success'>Record was deleted.<</div>";
         }
 
+        if($action=='sucessful'){
+            echo "<div class='alert alert-success'>Record was updated.</div>";
+        }
+
         // select all data
 
-        $query = "SELECT smry.order_summary_id, firstname, order_date, lastname, SUM(quantity*price) AS total_amount
+        $query = "SELECT smry.order_summary_id, firstname, username, order_date, lastname, SUM(quantity*price) AS total_amount
         FROM order_summary AS smry
         INNER JOIN customers AS cus
         ON smry.customer_id = cus.id
@@ -69,6 +73,7 @@ include 'logincheck.php';
             //creating our table heading
             echo "<tr>";
             echo "<th>ID</th>";
+            echo "<th>Username</th>";
             echo "<th>First Name</th>";
             echo "<th>Last Name</th>";
             echo "<th>Order Date</th>";
@@ -84,6 +89,7 @@ include 'logincheck.php';
                 // creating new table row per record
                 echo "<tr>";
                 echo "<td>{$order_summary_id}</td>";
+                echo "<td>{$username}</td>";
                 echo "<td>{$firstname}</td>";
                 echo "<td>{$lastname}</td>";
                 echo "<td>{$order_date}</td>";
@@ -100,9 +106,6 @@ include 'logincheck.php';
                 echo "</td>";
                 echo "</tr>";
             }
-
-
-
             // end table
             echo "</table>";
         } else {

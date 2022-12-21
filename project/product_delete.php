@@ -22,7 +22,15 @@ try {
         if ($stmt->execute()) {
             // redirect to read records page and
             // tell the user record was deleted
+            $query_image = "SELECT image FROM products WHERE id = ?";
+            $stmt_image = $con->prepare($query_image);
+            $stmt_image->bindParam(1, $id);
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt->execute();
+            unlink($row[$image]);
+            
             header('Location: product_read.php?action=deleted');
+
         } else {
             die('Unable to delete record.');
         }

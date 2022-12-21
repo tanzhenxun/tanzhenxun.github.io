@@ -103,7 +103,7 @@ include 'logincheck.php';
             }
         }
         ?>
-        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+        <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" id="myFrom">
             <div class="mb-3 row">
                 <div class="mab-3 col">
                     <label for="customerSelect" class="form-label">Customer</label>
@@ -132,11 +132,22 @@ include 'logincheck.php';
                                 // this will make $row['firstname'] to just $firstname only
                                 extract($row);
 
-                                echo "<option value={$id}>{$username}</option>";
+                                echo "<option value={$id} ";
+
+                                // if the option is selected then auto select it
+                                if (isset($_POST["customerSelect"]) && $_POST["customerSelect"] == $id) {
+                                    echo "selected";
+                                }
+    
+                                echo ">{$username}</option>";
+
+                                
                             }
                         } else {
                             echo "<option selected value=-1>No records found</option>";
                         }
+
+                        
                         ?>
                     </select>
                 </div>
@@ -156,14 +167,23 @@ include 'logincheck.php';
                     // select all data
                     $query = "SELECT id, name, price FROM products ORDER BY id DESC";
                     $stmt = $con->prepare($query);
-                    $stmt->execute();
+                    
+                    $count = 0;
+                    $productSelectedCount = 0;
 
+                    if (isset($_POST["productSelect"])) {
+                        $productSelectedCount = count($_POST['productSelect']);
+                    }
+                    do{
+                    $stmt->execute();
                     $num = $stmt->rowCount();
 
                     //for ($pdct_tbl = 1; $pdct_tbl  <= 1; $pdct_tbl ++) {
                     //    $stmt->execute();
                     echo "<tr class = \"pRow\">";
-                    echo "<th scope=\"row\">1</th>";
+                    echo "<th scope=\"row\">";
+                        echo ($count +1);
+                        echo "</th>";
                     echo "<td>";
                     echo "<div class=\"my-2 col\">";
 
@@ -178,7 +198,13 @@ include 'logincheck.php';
                             // this will make $row['firstname'] to just $firstname only
                             extract($row);
                             
-                            echo "<option value={$id}>{$name}</option>";
+                            echo "<option value={$id} ";
+
+                                // if the option is selected then auto select it
+                                if (isset($_POST["ProductSelect"]) && $_POST["ProductSelect"][$count] == $id) {
+                                    echo "selected";
+                                }
+                                echo ">{$name}</option>";
                         }
                     } else {
                         echo "<option selected value=-1>No records found</option>";
@@ -189,11 +215,17 @@ include 'logincheck.php';
 
                     echo "<td>";
                     echo "<div class=\"my-2 col\">";
-                    echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\">";
+                    echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\" value=\"";
+                    if (isset($_POST["InputOrderQuantity"])) {
+                        echo $_POST["InputOrderQuantity"][$count];
+                    }
+                    echo "\">";
                     echo "</div>";
                     echo "</td>";
 
                     echo "</tr>";
+                    $count++;
+                } while ($productSelectedCount > $count);
                     //}
                     ?>
                 </tbody>
@@ -203,7 +235,7 @@ include 'logincheck.php';
                     <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-3 mx-2" />
                     <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-2 mx-2" />
                 </div>
-                <button type="submit" class="btn btn-secondary mb-3 col-3">Submit</button>
+                <button type="button" onclick="checkDuplicate()" class="btn btn-secondary mb-3 col-3">Submit</button>
             </div>
         </form>
     </div> <!-- end .container -->
@@ -240,6 +272,20 @@ include 'logincheck.php';
 
             }
         }, false);
+
+        function checkDuplicate(){
+            var newarray = [];
+            var selects = document.getElementsByTagName('select');
+            for(var i = 0; i<selects.length; i++){
+                newarray.push(selects[i].value);
+            }
+
+            if(newarray.length !== new Set(newarray).size){
+                alert("There are duplicate items in the array");
+            }else{
+                document.getElementById("myFrom").submit();
+            }
+        }
     </script>
 </body>
 
