@@ -56,7 +56,7 @@ include 'logincheck.php';
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
                 } else {
-                    if ($promotion_price > $price) {
+                    if ($promotion_price >= $price) {
                         $file_upload_error_messages .= "<div>Please correctly your promotion price need cheaper than original price!</div>";
                     }
                 }
@@ -83,7 +83,7 @@ include 'logincheck.php';
                 if ($image && $image != "NULL") {
 
                     // upload to file to folder
-                    $target_directory = "uploads/";
+                    $target_directory = "upload_products/";
                     $target_file = $target_directory . $image;
                     $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
 

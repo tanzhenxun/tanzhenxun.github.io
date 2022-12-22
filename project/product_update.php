@@ -127,7 +127,7 @@ include 'logincheck.php';
                 if ($promotion_price == "") {
                     $promotion_price = NULL;
                 } else {
-                    if ($promotion_price > $price) {
+                    if ($promotion_price >= $price) {
                         $file_upload_error_messages .= "<div>Please correctly your promotion price need cheaper than original price!</div>";
                     }
                 }

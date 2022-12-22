@@ -36,8 +36,12 @@ include 'logincheck.php';
                 $flag = 1;
             }
             for ($check = 0; $check < count($_POST['ProductSelect']); $check++) {
-                if ($_POST['ProductSelect'][$check] == -1 ) {
+                if ($_POST['ProductSelect'][$check] == -1) {
                     echo "<div class='alert alert-danger'>Please make sure your product are not emplty!</div>";
+                    $flag = 1;
+                }
+                if ($_POST["InputOrderQuantity"][$check] != 0) {
+                    echo "<div class='alert alert-danger'>Please make sure your quantity are not emplty!</div>";
                     $flag = 1;
                 }
             }

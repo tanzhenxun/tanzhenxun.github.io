@@ -295,7 +295,11 @@ include 'logincheck.php';
                 </tr>
                 <tr>
                     <td>Name</td>
-                    <td><input type='text' name='username' value="<?php echo htmlspecialchars($username, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    <td><input type='text' name='username' value="<?php if (isset($_POST['username'])) {
+                                                                                            echo $_POST['username'];
+                                                                                        } else {
+                                                                                            echo htmlspecialchars($username, ENT_QUOTES);
+                                                                                        } ?>" class='form-control' /></td>
                 </tr>
                 <tr>
                     <td>Old password</td>
@@ -311,7 +315,11 @@ include 'logincheck.php';
                 </tr>
                 <tr>
                     <td>First Name</td>
-                    <td><input type='text' name='firstname' class='form-control' value="<?php echo htmlspecialchars($firstname, ENT_QUOTES);  ?>" /></td>
+                    <td><input type='text' name='firstname' class='form-control' value="<?php if (isset($_POST['firstname'])) {
+                                                                                            echo $_POST['firstname'];
+                                                                                        } else {
+                                                                                            echo htmlspecialchars($firstname, ENT_QUOTES);
+                                                                                        }  ?>" /></td>
                 </tr>
                 <tr>
                     <td>Last Name</td>
