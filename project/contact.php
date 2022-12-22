@@ -28,11 +28,23 @@ include 'logincheck.php';
         </div>
         <div class="container">
             <div class="row pb-5">
+                <?php
+                if($_POST){
+                    
+                $to = "tanzhenxun1118@.newera.edu.my";
+                $subject = "My subject";
+                $txt = "Hello world!";
+                $headers = "From: webmaster@example.com" . "\r\n" .
+                "CC: somebodyelse@example.com";
+                
+                mail($to,$subject,$txt,$headers);
+                }
+                ?>
                 <div class="col-12">
                     <h2 class="contact-title fs-3 my-3">Get in Touch</h2>
                 </div>
                 <div class="col-lg-8">
-                    <form class="form-contact contact_form" action="contact_process.php" method="post" id="contactForm" novalidate>
+                    <form class="form-contact contact_form" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="contactForm" novalidate>
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group my-2">
@@ -56,7 +68,7 @@ include 'logincheck.php';
                             </div>
                         </div>
                         <div class="form-group mt-3 rounded">
-                            <a href="#" class="btn_3 button-contactForm rounded py-2 px-3 text-decoration-none fw-bold">Send Message</a>
+                            <button type="button" class="btn_3 button-contactForm rounded py-2 px-3 text-decoration-none fw-bold">Send Message</button>
                         </div>
                     </form>
                 </div>

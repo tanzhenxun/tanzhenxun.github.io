@@ -46,7 +46,7 @@
 
                                     // Check username and password have empty or not 
                                     if (empty($_POST['username']) && empty($_POST['password'])) {
-                                        echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                                        echo "<div class='alert alert-danger'>Username and password make sure are not emplty!</div>";
                                     } else { // Run and check the username, password and account status correct or active.
                                         // select all data
                                         // username must correct then check the password

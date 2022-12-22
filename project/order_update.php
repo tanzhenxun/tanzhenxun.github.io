@@ -96,6 +96,10 @@ include 'logincheck.php';
                     echo "<div class='alert alert-danger'>Please make sure your product are not emplty!</div>";
                     $flag = 1;
                 }
+                if ($_POST["InputOrderQuantity"][$check] == 0) {
+                    echo "<div class='alert alert-danger'>Please make sure your quantity are not emplty!</div>";
+                    $flag = 1;
+                }
             }
 
             if ($flag == 0) {
@@ -211,6 +215,7 @@ include 'logincheck.php';
                         <th scope="col">No</th>
                         <th scope="col">Product name</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Drop</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -282,7 +287,9 @@ include 'logincheck.php';
                             echo ">";
                             echo "</div>";
                             echo "</td>";
-
+                            echo "<td>";
+                            echo "<div onclick=\"drop_item()\" class=\"btn btn-danger drop_item\">Delete</div>";
+                            echo "</td>";
                             echo "</tr>";
                             $index++;
                             $has_next = "";
@@ -325,11 +332,30 @@ include 'logincheck.php';
     </footer>
 
     <script>
+        function drop_item(){
+            document.querySelector('#order').onclick = function(ev) {
+                // only if the innerHTML (tag content) is "Delete"
+                if (ev.target.innerHTML == "Delete"){
+                    // get all the tag which name as ".pRow"
+                    var table = document.querySelectorAll('.pRow');
+                    var rowCount = table.length;
+
+                    // if the table row is lager than 1
+                    if(rowCount > 1){
+                        // get the row tag (tr)
+                        var table_row = ev.target.parentElement.parentElement;
+                        table_row.remove(table_row);
+                    }
+                    
+                }
+            }
+        }
         document.addEventListener('click', function(event) {
             if (event.target.matches('.add_one')) {
-                var element = document.querySelector('.pRow');
-                var clone = element.cloneNode(true);
-                element.after(clone);
+                var table = document.querySelectorAll('.pRow');
+                var rowCount = table.length;
+                var clone = table[rowCount - 1].cloneNode(true);
+                table[rowCount - 1].after(clone);
             }
             if (event.target.matches('.delete_one')) {
                 var total = document.querySelectorAll('.pRow').length;

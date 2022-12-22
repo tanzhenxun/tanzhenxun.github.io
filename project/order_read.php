@@ -62,7 +62,7 @@ include 'logincheck.php';
         $num = $stmt->rowCount();
 
         // link to create record form
-        echo "<a href='create_order.php' class='btn btn-primary mb-3 '>Create New Order</a>";
+        echo "<a href='order_create.php' class='btn btn-primary mb-3 '>Create New Order</a>";
 
         //check if more than 0 record found
         if ($num > 0) {
@@ -78,6 +78,7 @@ include 'logincheck.php';
             echo "<th>Last Name</th>";
             echo "<th>Order Date</th>";
             echo "<th>Total Amount (RM)</th>";
+            echo "<th>Action</th>";
             echo "</tr>";
 
             // table body will be here
@@ -127,7 +128,7 @@ include 'logincheck.php';
     <script>
         function delete_order(order_summary_id) {
 
-            if (confirm('Are you sure?')) {
+            if (confirm('Are you sure delete this order?')) {
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query
                 window.location = 'order_delete.php?order_summary_id=' + order_summary_id;

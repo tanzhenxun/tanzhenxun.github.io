@@ -49,7 +49,7 @@ include 'logincheck.php';
 
 
         // select all data
-        $query = "SELECT id, username, register_date, image_cus, account_status FROM customers ORDER BY id DESC";
+        $query = "SELECT id, firstname, lastname, register_date, image_cus, account_status FROM customers ORDER BY id DESC";
         $stmt = $con->prepare($query);
         $stmt->execute();
 
@@ -69,7 +69,8 @@ include 'logincheck.php';
             echo "<tr>";
             echo "<th>ID</th>";
             echo "<th>Photo</th>";
-            echo "<th>Username</th>";
+            echo "<th>First Name</th>";
+            echo "<th>Last Name</th>";
             echo "<th>Register Date</th>";
             echo "<th>Account Status</th>";
             echo "<th>Action</th>";
@@ -87,11 +88,12 @@ include 'logincheck.php';
                 $store_pro_img = "upload_customer/";
                 // creating new table row per record
                 $image_profile = $store_pro_img . $image_cus;
-                
+                $fullname = $firstname . $lastname;
                 echo "<tr>";
                 echo "<td>{$id}</td>";
-                echo "<td><img src=\"{$image_profile}\" alt=\"$username\" width=\"50\" height=\"auto\"></td>";
-                echo "<td>{$username}</td>";
+                echo "<td><img src=\"{$image_profile}\" alt=\"$fullname\" width=\"50\" height=\"auto\"></td>";
+                echo "<td>{$firstname}</td>";
+                echo "<td>{$lastname}</td>";
                 echo "<td>{$register_date}</td>";
                 echo "<td>{$account_status}</td>";
                 echo "<td class\"\">";
@@ -130,7 +132,7 @@ include 'logincheck.php';
     <script>
         function delete_user(id) {
 
-            if (confirm('Are you sure?')) {
+            if (confirm('Are you sure delete this customer?')) {
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query
                 window.location = 'customer_delete.php?id=' + id;

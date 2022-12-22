@@ -135,7 +135,7 @@ include 'logincheck.php';
         // confirm record deletion
         function delete_product( id ){
             
-            if (confirm('Are you sure?')){
+            if (confirm('Are you sure delete this product?')){
                 // if user clicked ok,
                 // pass the id to delete.php and execute the delete query
                 window.location = 'product_delete.php?id=' + id;

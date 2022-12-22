@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include 'logincheck.php';
 ?>
 
@@ -40,7 +41,7 @@ include 'logincheck.php';
                     echo "<div class='alert alert-danger'>Please make sure your product are not emplty!</div>";
                     $flag = 1;
                 }
-                if ($_POST["InputOrderQuantity"][$check] != 0) {
+                if ($_POST["InputOrderQuantity"][$check] == 0) {
                     echo "<div class='alert alert-danger'>Please make sure your quantity are not emplty!</div>";
                     $flag = 1;
                 }
@@ -86,14 +87,11 @@ include 'logincheck.php';
                                     $stmt_order_detail->bindParam(':order_summary_id', $order_id);
                                     // Execute the query
                                     if ($stmt_order_detail->execute()) {
-                                        $flag = 0;
+                                        header('Location: order_read_one.php?order_summary_id='.$order_id.'&& action=sucessful');
                                     } else {
                                         echo "<div class='alert alert-danger'>Unable to save product.</div>";
                                     }
                                 }
-                            }
-                            if ($flag == 0) {
-                                echo "<div class='alert alert-success'>Product was saved.</div>";
                             }
                         }
                         // show error
@@ -257,9 +255,10 @@ include 'logincheck.php';
     <script>
         document.addEventListener('click', function(event) {
             if (event.target.matches('.add_one')) {
-                var element = document.querySelector('.pRow');
-                var clone = element.cloneNode(true);
-                element.after(clone);
+                var table = document.querySelectorAll('.pRow');
+                var rowCount = table.length;
+                var clone = table[rowCount - 1].cloneNode(true);
+                table[rowCount - 1].after(clone);
             }
             if (event.target.matches('.delete_one')) {
                 var total = document.querySelectorAll('.pRow').length;

@@ -29,6 +29,18 @@ include 'logincheck.php';
         // get passed parameter value, in this case, the record ID
         // isset() is a PHP function used to verify if a value is there or not
         $order_summary_id = isset($_GET['order_summary_id']) ? $_GET['order_summary_id'] : die('ERROR: Record ID not found.');
+        // delete message prompt will be here
+        $action = isset($_GET['action']) ? $_GET['action'] : "";
+
+        // if it was redirected from delete.php
+        if ($action == 'deleted') {
+            echo "<div class='alert alert-success'>Record was deleted.<</div>";
+        }
+
+        if ($action == 'sucessful') {
+            echo "<div class='alert alert-success'>Record was updated.</div>";
+        }
+
 
         //include database connection
         include 'config/database.php';
@@ -123,7 +135,7 @@ include 'logincheck.php';
                 ?>
                 <tr>
                     <th colspan="4" class="text-end pe-5">Total Amount</th>
-                    <td class=" fw-bold text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1),2), ENT_QUOTES);  ?></td>
+                    <td class=" fw-bold text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1), 2), ENT_QUOTES);  ?></td>
                 </tr>
             </table>
             <a href='order_read.php' class='btn btn-danger'>Back to order list</a>
