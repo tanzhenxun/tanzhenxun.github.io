@@ -235,7 +235,7 @@ include 'logincheck.php';
                             $gender = htmlspecialchars(strip_tags($_POST['gender']));
                             $date_of_birth = htmlspecialchars(strip_tags($_POST['date_of_birth']));
                             if (!empty($_POST['new_pass'])) {
-                                $oldpassword =  str_replace(" ", "", htmlspecialchars(strip_tags($_POST['new_pass'])));
+                                $oldpassword =  md5(str_replace(" ", "", htmlspecialchars(strip_tags($_POST['new_pass']))));
                             }
                             $account_status = htmlspecialchars(strip_tags($_POST['account_status']));
                             // not checked and not upload new image
