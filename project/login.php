@@ -7,14 +7,13 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.104.2">
-    <title>Signin Template · Bootstrap v5.2</title>
+    <title>Login</title>
 
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
-
-    <!-- Custom styles for this template -->
-    <link href="css/index.css" rel="stylesheet">
 </head>
 
 <body>
@@ -26,16 +25,24 @@
                     <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
                         <div class="card shadow-2-strong shadow" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
-                                <?php if (isset($_GET['error'])) { ?>
-
-                                    <div class='alert alert-danger'><?php echo $_GET['error']; ?></div>
-
-                                <?php } ?>
-
                                 <a href="home.php"><img src="images/tanzxlogo.png" alt="Tanzx Logo" class="logo al"></a>
                                 <h3 class="mb-3">Sign in</h3>
                                 <?php
                                 session_start();
+                                $action = isset($_GET['action']) ? $_GET['action']  : "";
+
+                                if($action =="logout"){
+                                    echo "<div class='alert alert-success'>You have been logged out successfully.</div>";
+                                }
+                                if($action =="logincheck"){
+                                    echo "<div class='alert alert-danger'>Please login again!</div>";
+                                }
+
+                                if($action =="sucessful"){
+                                    echo "<div class='alert alert-success'>You account has been successfully created!</div>";
+                                }
+                                
+                                
                                // $error = isset($_GET['error']) ? $_GET['error'] : NULL;
                                // if ($error == Please login again ){echo "<div class='alert alert-dark'>Please login again</div>"}
                                 if ($_POST) {
@@ -88,6 +95,8 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-secondary btn-lg btn-block">Sign in</button>
+                                
+                                <div class="mt-3 mb-3 text-muted">Don't have an account? <a href="register.php" class=" text-dark">Signup now</a></div>
 
                                 <p class="mt-3 mb-3 text-muted">&copy; 2022 TANZX</p>
                             </div>

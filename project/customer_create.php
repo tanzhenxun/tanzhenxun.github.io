@@ -233,9 +233,7 @@ include 'logincheck.php';
                                                                                                 if ($_POST['gender'] == "female") {
                                                                                                     echo "checked";
                                                                                                 }
-                                                                                            }else{
-                                                                                                echo "";
-                                                                                            } ?>>
+                                                                                            }?>>
                         <label for="gender">Female</label>
                     </td>
                 </tr>

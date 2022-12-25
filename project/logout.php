@@ -3,7 +3,7 @@ session_start();
 
 session_unset();
 session_destroy();
-header("Location: login.php?error=Please login again");
+header("Location: login.php?action=logout");
 
 
 ?>
