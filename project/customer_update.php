@@ -7,7 +7,7 @@ include 'logincheck.php';
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Latest compiled and minified Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
@@ -264,7 +264,7 @@ include 'logincheck.php';
                                     unlink($old_image);
                                 }
 
-                               echo "<script type=\"text/javascript\"> window.location.href='customer_read.php?action=sucessful'</script>";
+                                echo "<script type=\"text/javascript\"> window.location.href='customer_read.php?action=sucessful'</script>";
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
                             }
@@ -280,89 +280,92 @@ include 'logincheck.php';
 
         <!-- HTML form to update record will be here -->
         <!--we have our html form here where new record information can be updated-->
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post"  enctype="multipart/form-data">
-            <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Photo</td>
-                    <td>
-                        <img src="<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200" id="delete_images">
-                        <br>
-                        <input class="mb-3" type="checkbox" id="images_remove" name="images_remove" value="Yes" />
-                        <label for="images_remove">Empty/Default Image</label>
-                        <br>
-                        <input type="file" name='image' class="pt-2">
-                    </td>
-                </tr>
-                <tr>
-                    <td>Name</td>
-                    <td><input type='text' name='username' value="<?php if (isset($_POST['username'])) {
-                                                                                            echo $_POST['username'];
-                                                                                        } else {
-                                                                                            echo htmlspecialchars($username, ENT_QUOTES);
-                                                                                        } ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Old password</td>
-                    <td><input name='old_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
-                </tr>
-                <tr>
-                    <td>New password</td>
-                    <td><input name='new_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
-                </tr>
-                <tr>
-                    <td>Confirm password</td>
-                    <td><input name='con_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
-                </tr>
-                <tr>
-                    <td>First Name</td>
-                    <td><input type='text' name='firstname' class='form-control' value="<?php if (isset($_POST['firstname'])) {
-                                                                                            echo $_POST['firstname'];
-                                                                                        } else {
-                                                                                            echo htmlspecialchars($firstname, ENT_QUOTES);
-                                                                                        }  ?>" /></td>
-                </tr>
-                <tr>
-                    <td>Last Name</td>
-                    <td><input type='text' name='lastname' class='form-control' value="<?php echo htmlspecialchars($lastname, ENT_QUOTES);  ?>" /></td>
-                </tr>
-                <tr>
-                    <td>Gender</td>
-                    <td class="d-flex align-item-center">
-                        <input type="radio" name="gender" id="gender1" value="male" class="ms-1 mx-2" <?php if ($gender == "male") {
-                                                                                                            echo "checked";
-                                                                                                        } ?>>
-                        <label for="gender1" class="me-4">Male</label>
-                        <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if ($gender == "female") {
-                                                                                                            echo "checked";
-                                                                                                        } ?>>
-                        <label for="gender2">Female</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Date of Birth</td>
-                    <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" /></td>
-                </tr>
-                <tr>
-                    <td>Account Status</td>
-                    <td>
-                        <select class="form-select" aria-label="Default select example" name="account_status">
-                            <option value="active" <?php if (htmlspecialchars($account_status, ENT_QUOTES) == "active") {
-                                                        echo "selected";
-                                                    } ?>>Active</option>
-                            <option value="inactive" <?php if (htmlspecialchars($account_status, ENT_QUOTES) == "inactive") {
-                                                            echo "selected";
-                                                        } ?>>Inactive</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='customer_read.php' class='btn btn-danger'>Back to read customers</a>
-                    </td>
-                </tr>
-            </table>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="post" enctype="multipart/form-data">
+            <div class="table-responvise">
+                <table class='table table-hover table-bordered'>
+                    <tr>
+                        <td>Photo</td>
+                        <td>
+                            <img src="<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200" id="delete_images">
+                            <br>
+                            <input class="mb-3" type="checkbox" id="images_remove" name="images_remove" value="Yes" />
+                            <label for="images_remove">Empty/Default Image</label>
+                            <br>
+                            <input type="file" name='image' class="pt-2">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td><input type='text' name='username' value="<?php if (isset($_POST['username'])) {
+                                                                            echo $_POST['username'];
+                                                                        } else {
+                                                                            echo htmlspecialchars($username, ENT_QUOTES);
+                                                                        } ?>" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Old password</td>
+                        <td><input name='old_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
+                    </tr>
+                    <tr>
+                        <td>New password</td>
+                        <td><input name='new_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
+                    </tr>
+                    <tr>
+                        <td>Confirm password</td>
+                        <td><input name='con_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
+                    </tr>
+                    <tr>
+                        <td>First Name</td>
+                        <td><input type='text' name='firstname' class='form-control' value="<?php if (isset($_POST['firstname'])) {
+                                                                                                echo $_POST['firstname'];
+                                                                                            } else {
+                                                                                                echo htmlspecialchars($firstname, ENT_QUOTES);
+                                                                                            }  ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td><input type='text' name='lastname' class='form-control' value="<?php echo htmlspecialchars($lastname, ENT_QUOTES);  ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>Gender</td>
+                        <td class="d-flex align-item-center">
+                            <input type="radio" name="gender" id="gender1" value="male" class="ms-1 mx-2" <?php if ($gender == "male") {
+                                                                                                                echo "checked";
+                                                                                                            } ?>>
+                            <label for="gender1" class="me-4">Male</label>
+                            <input type="radio" name="gender" id="gender2" value="female" class="ms-1 mx-2" <?php if ($gender == "female") {
+                                                                                                                echo "checked";
+                                                                                                            } ?>>
+                            <label for="gender2">Female</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date of Birth</td>
+                        <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td>Account Status</td>
+                        <td>
+
+                            <input type="radio" name="account_status" value="active" id="active" class="ms-1 mx-2" <?php if (htmlspecialchars($account_status, ENT_QUOTES) == "active") {
+                                                                                                                        echo "checked";
+                                                                                                                    } ?>>
+                            <label for="active" class="me-4">Active</label>
+                            <input type="radio" name="account_status" value="inactive" id="inactive" class="ms-1 mx-2" <?php if (htmlspecialchars($account_status, ENT_QUOTES) == "inactive") {
+                                                                                                                            echo "checked";
+                                                                                                                        } ?>>
+                            <label for="inactive">Inactive</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type='submit' value='Save Changes' class='btn btn-primary' />
+                            <a href='customer_read.php' class='btn btn-danger'>Back to read customers</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </form>
 
     </div>

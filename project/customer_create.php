@@ -179,7 +179,8 @@ include 'logincheck.php';
 
         <!-- html form here where the product information will be entered -->
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-            <table class='table table-hover table-responsive table-bordered'>
+        <div class="table-respobnive">
+            <table class='table table-hover table-bordered'>
                 <tr>
                     <td>Photo</td>
                     <td><input type='file' name='image' /></td>
@@ -219,7 +220,7 @@ include 'logincheck.php';
                 <tr>
                     <td class="d-flex">Gender <p class="text-danger">*</td>
                     <td class="align-item-center">
-                        <input type="radio" name="gender" value="male" class="ms-1 mx-2" <?php
+                        <input type="radio" name="gender" value="male" id="male" class="ms-1 mx-2" <?php
                                                                                             if (isset($_POST['gender'])) {
                                                                                                 if ($_POST['gender'] == "male") {
                                                                                                     echo "checked";
@@ -227,14 +228,14 @@ include 'logincheck.php';
                                                                                             }else{
                                                                                                 echo "checked";
                                                                                             } ?>>
-                        <label for="gender" class="me-4">Male</label>
-                        <input type="radio" name="gender" value="female" class="ms-1 mx-2" <?php
+                        <label for="male" class="me-4">Male</label>
+                        <input type="radio" name="gender" value="female" id="female" class="ms-1 mx-2" <?php
                                                                                             if (isset($_POST['gender'])) {
                                                                                                 if ($_POST['gender'] == "female") {
                                                                                                     echo "checked";
                                                                                                 }
                                                                                             }?>>
-                        <label for="gender">Female</label>
+                        <label for="female">Female</label>
                     </td>
                 </tr>
                 <tr>
@@ -248,24 +249,22 @@ include 'logincheck.php';
                 <tr>
                     <td class="d-flex">Account Status <p class="text-danger">*</td>
                     <td>
-                        <select class="form-select" aria-label="Default select example" name="account_status">
-                            <option value="active" <?php
+                    <input type="radio" name="account_status" value="active" id="active" class="ms-1 mx-2" <?php
                                                                                             if (isset($_POST['account_status'])) {
                                                                                                 if ($_POST['account_status'] == "active") {
-                                                                                                    echo "selected";
+                                                                                                    echo "checked";
                                                                                                 }
                                                                                             }else{
-                                                                                                echo "selected";
-                                                                                            } ?>>Active</option>
-                            <option value="inactive" <?php
+                                                                                                echo "checked";
+                                                                                            } ?>>
+                        <label for="active" class="me-4">Active</label>
+                        <input type="radio" name="account_status" value="inactive" id="inactive" class="ms-1 mx-2" <?php
                                                                                             if (isset($_POST['account_status'])) {
                                                                                                 if ($_POST['account_status'] == "inactive") {
-                                                                                                    echo "selected";
+                                                                                                    echo "checked";
                                                                                                 }
-                                                                                            }else{
-                                                                                                echo "";
-                                                                                            } ?>>Inactive</option>
-                        </select>
+                                                                                            }?>>
+                        <label for="inactive">Inactive</label>
                     </td>
                 </tr>
                 <tr>
@@ -275,6 +274,7 @@ include 'logincheck.php';
                     </td>
                 </tr>
             </table>
+            </div>
         </form>
     </div>
     <footer class="container-fluid py-3 bg-dark">

@@ -82,62 +82,65 @@ include 'logincheck.php';
 
             <!-- HTML read one record table will be here -->
             <!--we have our html table here where the record will be displayed-->
-            <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <th>ID</th>
-                    <td><?php echo htmlspecialchars($customer_id, ENT_QUOTES); ?></td>
-                </tr>
-                <tr>
-                    <th>Username</th>
-                    <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
-                </tr>
-                <tr>
-                    <th>Order Date</th>
-                    <td><?php echo htmlspecialchars($order_date, ENT_QUOTES);  ?></td>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class='table table-hover table-bordered'>
+                    <tr>
+                        <th>ID</th>
+                        <td><?php echo htmlspecialchars($customer_id, ENT_QUOTES); ?></td>
+                    </tr>
+                    <tr>
+                        <th>Username</th>
+                        <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                    </tr>
+                    <tr>
+                        <th>Order Date</th>
+                        <td><?php echo htmlspecialchars($order_date, ENT_QUOTES);  ?></td>
+                    </tr>
+                </table>
+            </div>
             <hr class="my-3 ">
             <div>
                 <p class="fw-bold text-center">Order Product List</p>
             </div>
+            <div class="table-responsive">
+                <table class='table table-hover table-bordered'>
 
-            <table class='table table-hover table-responsive table-bordered'>
+                    <?php
+                    $stmt->execute();
+                    $num = $stmt->rowCount();
+                    echo "<tr>";
+                    echo "<th>ID</th>";
+                    echo "<th>Product Name</th>";
+                    echo "<th>Price</th>";
+                    echo "<th>Quatity</th>";
+                    echo "<th>Total (RM)</th>";
+                    echo "</tr>";
+                    $count = 1;
+                    $totalamount = 0;
+                    if ($num > 0) {
+                        while ($row_p = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            extract($row_p);
+                            number_format($price, 2);
+                            echo "<tr>";
+                            echo "<th scope=\"row\">$count</th>";
+                            echo "<td name=\"name\">$name</td>";
+                            echo "<td name=\"price\" class=\"text-end\">" . number_format($price, 2) . "</td>";
+                            echo "<td name=\"quantity\">$quantity</td>";
+                            $total = $quantity * $price;
+                            echo "<td name=\"total\" class=\"text-end\">" . number_format($total, 2) . "</td>";
+                            echo "</tr>";
 
-                <?php
-                $stmt->execute();
-                $num = $stmt->rowCount();
-                echo "<tr>";
-                echo "<th>ID</th>";
-                echo "<th>Product Name</th>";
-                echo "<th>Price</th>";
-                echo "<th>Quatity</th>";
-                echo "<th>Total (RM)</th>";
-                echo "</tr>";
-                $count = 1;
-                $totalamount = 0;
-                if ($num > 0) {
-                    while ($row_p = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        extract($row_p);
-                        number_format($price, 2);
-                        echo "<tr>";
-                        echo "<th scope=\"row\">$count</th>";
-                        echo "<td name=\"name\">$name</td>";
-                        echo "<td name=\"price\" class=\"text-end\">" . number_format($price, 2) . "</td>";
-                        echo "<td name=\"quantity\">$quantity</td>";
-                        $total = $quantity * $price;
-                        echo "<td name=\"total\" class=\"text-end\">" . number_format($total, 2) . "</td>";
-                        echo "</tr>";
-
-                        $count++;
-                        $totalamount += $quantity * $price;
+                            $count++;
+                            $totalamount += $quantity * $price;
+                        }
                     }
-                }
-                ?>
-                <tr>
-                    <th colspan="4" class="text-end pe-5">Total Amount</th>
-                    <td class=" fw-bold text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1), 2), ENT_QUOTES);  ?></td>
-                </tr>
-            </table>
+                    ?>
+                    <tr>
+                        <th colspan="4" class="text-end pe-5">Total Amount</th>
+                        <td class=" fw-bold text-end"><?php echo htmlspecialchars(number_format(round($totalamount, 1), 2), ENT_QUOTES);  ?></td>
+                    </tr>
+                </table>
+            </div>
             <a href='order_read.php' class='btn btn-danger'>Back to order list</a>
         <?php
         }

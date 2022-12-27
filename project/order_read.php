@@ -20,7 +20,7 @@ include 'logincheck.php';
     include 'navtop.php';
     ?>
     <!-- container -->
-    <div class="container full_page">
+    <div class="container full_page ">
         <div class="page-header my-3">
             <h1>Order List</h1>
         </div>
@@ -68,7 +68,7 @@ include 'logincheck.php';
         if ($num > 0) {
 
             // data from database will be here
-            echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+            echo "<table class='table table-hover table-bordered'>"; //start table
 
             //creating our table heading
             echo "<tr>";
