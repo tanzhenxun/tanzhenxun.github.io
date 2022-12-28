@@ -18,7 +18,7 @@
 </head>
 
 <body>
-    <div class=" login-bg">
+    <div class="vh-100 login-bg">
         <div class="container-fluid py-5 h-100 ">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-12 col-lg-8">
@@ -29,157 +29,194 @@
                                 <h5 class="mb-3 fw-bold">Resgister</h5>
                             </div>
                             <?php
-                    if ($_POST) {
-                        include 'config/database.php';
-                        $username = $_POST['username'];
-                        $password = $_POST['password'];
-                        $firstname = $_POST['firstname'];
-                        $lastname = $_POST['lastname'];
-                        $date_of_birth = $_POST['date_of_birth'];
-                        $confirm_password = $_POST['confirm_password'];
 
-                        // new 'image' field
-                        $image = !empty($_FILES["image"]["name"])
-                            ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
-                            : "NULL";
-                        $image = htmlspecialchars(strip_tags($image));
+                            //include database connection
+                            include 'config/database.php';
 
-                        $uppercase = preg_match('@[A-Z]@', $password);
-                        $lowercase = preg_match('@[a-z]@', $password);
-                        $number    = preg_match('@[0-9]@', $password);
+                            // read current record's data
+                            try {
+                                // prepare select query
+                                $query = "SELECT username FROM customers";
+                                $stmt = $con->prepare($query);
 
-                        // error message is empty
-                        $file_upload_error_messages = "";
+                                // execute our query
+                                $stmt->execute();
 
-                        if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "" || $date_of_birth == "" || empty($POST['gender'])) {
-                            echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
-                        } else {
-                            if (strlen($username) >= 6) {
-                                if (strpos(trim($username), ' ')) {
-                                    $file_upload_error_messages .= "<div>Username should not contain whitespace!</div>";
-                                } else {
-                                    $username = $_POST['username'];
-                                }
-                            } else {
-                                $file_upload_error_messages .= "<div>Your username must contain at least 6 characters!</div>";
+                                // store retrieved row to a variable
+                                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                                // values to fill up our form
+                                $oldusername = $row['username'];
+                                $arrayoldusername = array($oldusername);
                             }
 
-                            if (strlen($password) >= 8) {
-                                if ($uppercase || $lowercase || $number) {
-                                    if ($password !== $confirm_password) {
-                                        $file_upload_error_messages .= "<div>Passwords do not match, please type again.</div>";
-                                    } else {
-                                        $password = md5($_POST['password']);
-                                    }
-                                } else {
-                                    $file_upload_error_messages .= "<div>Your password must contain at least one uppercase, one lowercase and one number!</div>";
-                                }
-                            } else {
-                                $file_upload_error_messages .= "<div>Your password must contain at least 8 characters!</div>";
+                            // show error
+                            catch (PDOException $exception) {
+                                die('ERROR: ' . $exception->getMessage());
                             }
 
-
-
-                            $now_date = date('Y-m-d');
-                            $diff = date_diff(date_create($now_date), date_create($date_of_birth));
-                            $year = (int)$diff->format("%R%y");
-
-                            if ($year >= -18) {
-                                $file_upload_error_messages .= "<div>You must be above 18 age old!</div>";
-                            } else {
+                            ?>
+                            <?php
+                            if ($_POST) {
+                                include 'config/database.php';
+                                $username = $_POST['username'];
+                                $password = $_POST['password'];
+                                $firstname = $_POST['firstname'];
+                                $lastname = $_POST['lastname'];
                                 $date_of_birth = $_POST['date_of_birth'];
-                            }
+                                $confirm_password = $_POST['confirm_password'];
 
-                            // now, if image is not empty, try to upload the image
-                            if ($image && $image != "NULL") {
+                                // new 'image' field
+                                $image = !empty($_FILES["image"]["name"])
+                                    ? sha1_file($_FILES['image']['tmp_name']) . "-" . basename($_FILES["image"]["name"])
+                                    : "NULL";
+                                $image = htmlspecialchars(strip_tags($image));
 
-                                // upload to file to folder
-                                $target_directory = "upload_customer/";
-                                $target_file = $target_directory . $image;
-                                $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+                                $uppercase = preg_match('@[A-Z]@', $password);
+                                $lowercase = preg_match('@[a-z]@', $password);
+                                $number    = preg_match('@[0-9]@', $password);
 
-                                // make sure that file is a real image
-                                $check = getimagesize($_FILES["image"]["tmp_name"]);
-                                if ($check !== false) {
-                                    // submitted file is an image
-                                    // make sure certain file types are allowed
-                                    $allowed_file_types = array("jpg", "jpeg", "png", "gif");
-                                    if (!in_array($file_type, $allowed_file_types)) {
-                                        $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
-                                    }
-                                    // make sure file does not exist
-                                    if (file_exists($target_file)) {
-                                        $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
-                                    }
-                                    // make sure submitted file is not too large, can't be larger than 1 MB
-                                    if ($_FILES['image']['size'] > (1024000)) {
-                                        $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
-                                    }
-                                    // make sure the 'uploads' folder exists
-                                    // if not, create it
-                                    if (!is_dir($target_directory)) {
-                                        mkdir($target_directory, 0777, true);
-                                    }
+                                // error message is empty
+                                $file_upload_error_messages = "";
+
+                                if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == ""  || $date_of_birth == "" || empty($_POST['gender'])) {
+                                    echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
                                 } else {
-                                    $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
-                                }
-                                // if $file_upload_error_messages is still empty
-                                if (empty($file_upload_error_messages)) {
-                                    // it means there are no errors, so try to upload the file
-                                    if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                                        // it means photo was uploaded
-                                        $file_upload_error_messages .= "<div>Unable to upload photo.</div>";
-                                    }
-                                }
-                            }
-
-
-                            if (!empty($file_upload_error_messages)) {
-                                echo "<div class='alert alert-danger'>";
-                                echo "<div>{$file_upload_error_messages}</div>";
-                                echo "</div>";
-                            } else {
-                                try {
-                                    // insert query
-                                    $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, register_date=:register_date, image_cus=:image_cus";
-                                    // prepare query for execution
-                                    $stmt = $con->prepare($query);
-                                    $gender = $_POST['gender'];
-                                    $account_status = 'active';
-
-                                    // bind the parameters
-                                    $stmt->bindParam(':username', $username);
-                                    $stmt->bindParam(':password', $password);
-                                    $stmt->bindParam(':firstname', $firstname);
-                                    $stmt->bindParam(':lastname', $lastname);
-                                    $register_date = date('Y-m-d H:i:s'); // get the current date and time
-                                    $stmt->bindParam(':register_date', $register_date);
-                                    $stmt->bindParam(':gender', $gender);
-                                    $stmt->bindParam(':date_of_birth', $date_of_birth);
-                                    $stmt->bindParam(':account_status', $account_status);
-                                    $stmt->bindParam(':image_cus', $image);
-                                    // Execute the query
-                                    if ($stmt->execute()) {
-                                        header('Location:login.php?action=sucessful');
-                                        echo "<div class='alert alert-success'>Record was saved.</div>";
+                                    if (strlen($username) >= 6) {
+                                        if (strpos(trim($username), ' ')) {
+                                            $file_upload_error_messages .= "<div>Username should not contain whitespace!</div>";
+                                        } else {
+                                            for ($i = 0; $i < count($arrayoldusername); $i++) {
+                                                if ($arrayoldusername[$i] == $username) {
+                                                    $file_upload_error_messages .= "<div>Username already exists! Please type again</div>";
+                                                } else {
+                                                    $username = $_POST['username'];
+                                                }
+                                            }
+                                        }
                                     } else {
-                                        echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                                        $file_upload_error_messages .= "<div>Your username must contain at least 6 characters!</div>";
+                                    }
+
+                                    if (strlen($password) >= 8) {
+                                        if ($uppercase || $lowercase || $number) {
+                                            if ($password !== $confirm_password) {
+                                                $file_upload_error_messages .= "<div>Passwords do not match, please type again.</div>";
+                                            } else {
+                                                $password = md5($_POST['password']);
+                                            }
+                                        } else {
+                                            $file_upload_error_messages .= "<div>Your password must contain at least one uppercase, one lowercase and one number!</div>";
+                                        }
+                                    } else {
+                                        $file_upload_error_messages .= "<div>Your password must contain at least 8 characters!</div>";
+                                    }
+
+
+
+                                    $now_date = date('Y-m-d');
+                                    $diff = date_diff(date_create($now_date), date_create($date_of_birth));
+                                    $year = (int)$diff->format("%R%y");
+
+                                    if ($year >= -18) {
+                                        $file_upload_error_messages .= "<div>You must be above 18 age old!</div>";
+                                    } else {
+                                        $date_of_birth = $_POST['date_of_birth'];
+                                    }
+
+                                    // now, if image is not empty, try to upload the image
+                                    if ($image && $image != "NULL") {
+
+                                        // upload to file to folder
+                                        $target_directory = "upload_customer/";
+                                        $target_file = $target_directory . $image;
+                                        $file_type = pathinfo($target_file, PATHINFO_EXTENSION);
+
+                                        // make sure that file is a real image
+                                        $check = getimagesize($_FILES["image"]["tmp_name"]);
+                                        if ($check !== false) {
+                                            // submitted file is an image
+                                            // make sure certain file types are allowed
+                                            $allowed_file_types = array("jpg", "jpeg", "png", "gif");
+                                            if (!in_array($file_type, $allowed_file_types)) {
+                                                $file_upload_error_messages .= "<div>Only JPG, JPEG, PNG, GIF files are allowed.</div>";
+                                            }
+                                            // make sure file does not exist
+                                            if (file_exists($target_file)) {
+                                                $file_upload_error_messages .= "<div>Image already exists. Try to change file name.</div>";
+                                            }
+                                            // make sure submitted file is not too large, can't be larger than 1 MB
+                                            if ($_FILES['image']['size'] > (1024000)) {
+                                                $file_upload_error_messages .= "<div>Image must be less than 1 MB in size.</div>";
+                                            }
+                                            // make sure the 'uploads' folder exists
+                                            // if not, create it
+                                            if (!is_dir($target_directory)) {
+                                                mkdir($target_directory, 0777, true);
+                                            }
+                                        } else {
+                                            $file_upload_error_messages .= "<div>Submitted file is not an image.</div>";
+                                        }
+                                        // if $file_upload_error_messages is still empty
+                                        if (empty($file_upload_error_messages)) {
+                                            // it means there are no errors, so try to upload the file
+                                            if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                                                // it means photo was uploaded
+                                                $file_upload_error_messages .= "<div>Unable to upload photo.</div>";
+                                            }
+                                        }
+                                    }
+
+
+                                    if (!empty($file_upload_error_messages)) {
+                                        echo "<div class='alert alert-danger'>";
+                                        echo "<div>{$file_upload_error_messages}</div>";
+                                        echo "</div>";
+                                    } else {
+                                        try {
+                                            // insert query
+                                            $query = "INSERT INTO customers SET username=:username, password=:password, firstname=:firstname, lastname=:lastname, gender=:gender, date_of_birth=:date_of_birth, account_status=:account_status, register_date=:register_date, image_cus=:image_cus";
+                                            // prepare query for execution
+                                            $stmt = $con->prepare($query);
+                                            $gender = $_POST['gender'];
+                                            $account_status = 'active';
+
+                                            // bind the parameters
+                                            $stmt->bindParam(':username', $username);
+                                            $stmt->bindParam(':password', $password);
+                                            $stmt->bindParam(':firstname', $firstname);
+                                            $stmt->bindParam(':lastname', $lastname);
+                                            $register_date = date('Y-m-d H:i:s'); // get the current date and time
+                                            $stmt->bindParam(':register_date', $register_date);
+                                            $stmt->bindParam(':gender', $gender);
+                                            $stmt->bindParam(':date_of_birth', $date_of_birth);
+                                            $stmt->bindParam(':account_status', $account_status);
+                                            $stmt->bindParam(':image_cus', $image);
+                                            // Execute the query
+                                            if ($stmt->execute()) {
+                                                header('Location:login.php?action=sucessful');
+                                            } else {
+                                                echo "<div class='alert alert-danger'>Unable to save record.</div>";
+                                            }
+                                        }
+                                        // show error
+                                        catch (PDOException $exception) {
+                                            die('ERROR: ' . $exception->getMessage());
+                                        }
                                     }
                                 }
-                                // show error
-                                catch (PDOException $exception) {
-                                    die('ERROR: ' . $exception->getMessage());
-                                }
                             }
-                        }
-                    }
 
-                    ?>
+                            ?>
                             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
                                 <div class="row mb-3 pt-3">
                                     <div class="form-outline text-start col-sm-6 col-12">
                                         <label for="username" class="fw-semibold">Username</label>
-                                        <input type="type" id="username" name="username" class="form-control form-control-md" />
+                                        <input type="type" id="username" name="username" class="form-control form-control-md" value="<?php if (isset($_POST['username'])) {
+                                                                                                                                            echo $_POST['username'];
+                                                                                                                                        } else {
+                                                                                                                                            echo "";
+                                                                                                                                        } ?>" />
                                     </div>
                                     <div class="form-outline text-start col-sm-6 col-12">
                                         <label for="image" class="fw-semibold">Photo</label>
@@ -189,11 +226,19 @@
                                 <div class="row mb-3 ">
                                     <div class="form-outline text-start col-sm-6 col-12">
                                         <label for="firstname" class="fw-semibold">First Name</label>
-                                        <input type="type" id="firstname" name="firstname" class="form-control form-control-md" />
+                                        <input type="type" id="firstname" name="firstname" class="form-control form-control-md" value="<?php if (isset($_POST['firstname'])) {
+                                                                                                                                            echo $_POST['firstname'];
+                                                                                                                                        } else {
+                                                                                                                                            echo "";
+                                                                                                                                        } ?>" />
                                     </div>
                                     <div class="form-outline text-start col-sm-6 col-12 mt-3 mt-sm-0">
                                         <label for="lastname" class="fw-semibold">Last Name</label>
-                                        <input type="type" id="lastname" name="lastname" class="form-control form-control-md" />
+                                        <input type="type" id="lastname" name="lastname" class="form-control form-control-md" value="<?php if (isset($_POST['lastname'])) {
+                                                                                                                                            echo $_POST['lastname'];
+                                                                                                                                        } else {
+                                                                                                                                            echo "";
+                                                                                                                                        } ?>" />
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -209,22 +254,40 @@
                                 <div class="row mb-4">
                                     <div class="form-outline text-start col-sm-6 col-12">
                                         <label for="date_of_birth" class="fw-semibold">Date of Birth</label>
-                                        <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-md" />
+                                        <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-md" value="<?php if (isset($_POST['date_of_birth'])) {
+                                                                                                                                                    echo $_POST['date_of_birth'];
+                                                                                                                                                } else {
+                                                                                                                                                    echo "";
+                                                                                                                                                } ?>" />
                                     </div>
                                     <div class="form-outline  text-start col-sm-6 col-12 mt-3 mt-sm-0">
                                         <div class="fw-semibold">Gender</div>
                                         <div class="mt-2 me-2">
-                                            <input type="radio" name="gender" value="male" class="">
-                                            <label for="gender" class="me-4">Male</label>
-                                            <input type="radio" name="gender" value="female" class="">
-                                            <label for="gender">Female</label>
+                                            <input type="radio" name="gender" value="male" id="male" <?php
+                                                                                                        if (isset($_POST['gender'])) {
+                                                                                                            if ($_POST['gender'] == "male") {
+                                                                                                                echo "checked";
+                                                                                                            }
+                                                                                                        } else {
+                                                                                                            echo "checked";
+                                                                                                        } ?>>
+                                            <label for="male" class="me-4">Male</label>
+                                            <input type="radio" name="gender" value="female" id="female" <?php
+                                                                                                            if (isset($_POST['gender'])) {
+                                                                                                                if ($_POST['gender'] == "female") {
+                                                                                                                    echo "checked";
+                                                                                                                }
+                                                                                                            } else {
+                                                                                                                echo "checked";
+                                                                                                            } ?>>
+                                            <label for="female">Female</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-center text-sm-start">
                                     <button type="submit" class="btn btn-secondary btn-md btn-block">Resgister</button>
 
-                                    <div class="mt-3 mb-3 text-muted">Have already an account? <a href="register.php" class=" text-dark">Login here</a></div>
+                                    <div class="mt-3 mb-3 text-muted">Have already an account? <a href="login.php" class=" text-dark">Login here</a></div>
 
                                     <div class="mt-3 text-muted">&copy; 2022 TANZX</div>
                                 </div>

@@ -38,12 +38,25 @@ body {
 
 
 .bg-images {
-    background-image: url('../images/abstract-technology-background.webp');
+    background-image: url('../images/abstract-technology-background.webp'); 
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
-
+.hover-blacktogrey:hover{
+    border-radius: 4px;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    background-color: rgba(108,117,125,1)  !important;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+.hover-greytoback:hover{
+    border-radius: 4px;
+    box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);
+    background-color: rgba(33,37,41,1) !important;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
 .bg-color-contact {
     background-color: #C4B6B6;
 }

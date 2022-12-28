@@ -87,6 +87,8 @@ include 'logincheck.php';
         if ($_POST) {
             $customer_id = $_POST['customerSelect'];
             $flag = 0;
+            $product = 0;
+            $quantity = 0;
             if ($customer_id == -1) {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
                 $flag = 1;
@@ -95,12 +97,16 @@ include 'logincheck.php';
                 if ($_POST['ProductSelect'][$check] == -1) {
                     echo "<div class='alert alert-danger'>Please make sure your product are not emplty!</div>";
                     $flag = 1;
+                    break;
                 }
-                if ($_POST["InputOrderQuantity"][$check] == 0) {
+                if ($_POST["InputOrderQuantity"][$check] <= 0) {
                     echo "<div class='alert alert-danger'>Please make sure your quantity are not emplty!</div>";
                     $flag = 1;
+                    break;
                 }
+                
             }
+
 
             if ($flag == 0) {
                 $query_delete_order_detail = "DELETE FROM order_detail where  order_summary_id = ?";
@@ -345,6 +351,8 @@ include 'logincheck.php';
                         // get the row tag (tr)
                         var table_row = ev.target.parentElement.parentElement;
                         table_row.remove(table_row);
+                    }else{
+                        alert("You remain at least one row at the table");
                     }
                     
                 }

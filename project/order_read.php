@@ -98,7 +98,7 @@ include 'logincheck.php';
                 echo "<td class\"\">";
                 // read one record
                 echo "<a href='order_read_one.php?order_summary_id={$order_summary_id}' class='btn btn-info me-1'>Read</a>";
-
+                
                 // we will use this links on next part of this post
                 echo "<a href='order_update.php?order_summary_id={$order_summary_id}' class='btn btn-primary me-1'>Edit</a>";
 
@@ -116,15 +116,9 @@ include 'logincheck.php';
 
 
     </div> <!-- end .container -->
-    <footer class="container-fluid py-3 bg-dark">
-        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
-            <div class="d-flex justify-content-evenly">
-                <div class="mx-3">Terms of Use</div>
-                <div class="mx-3">Privacy Policy</div>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include 'footer.php';
+    ?>
     <script>
         function delete_order(order_summary_id) {
 

@@ -18,9 +18,9 @@ include 'logincheck.php';
 
 <body>
     <!-- container -->
-    <?php 
-   include 'navtop.php';
-   ?>
+    <?php
+    include 'navtop.php';
+    ?>
     <!-- container -->
     <div class="container full_page">
         <div class="page-header">
@@ -32,6 +32,8 @@ include 'logincheck.php';
             include 'config/database.php';
             $customer_id = $_POST['customerSelect'];
             $flag = 0;
+
+
             if ($customer_id == -1) {
                 echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
                 $flag = 1;
@@ -40,15 +42,21 @@ include 'logincheck.php';
                 if ($_POST['ProductSelect'][$check] == -1) {
                     echo "<div class='alert alert-danger'>Please make sure your product are not emplty!</div>";
                     $flag = 1;
+                    break;
                 }
-                if ($_POST["InputOrderQuantity"][$check] == 0) {
+                if ($_POST["InputOrderQuantity"][$check] <= 0) {
                     echo "<div class='alert alert-danger'>Please make sure your quantity are not emplty!</div>";
                     $flag = 1;
+                    break;
                 }
+            }
+            
+            if (!in_array(-1,$_POST["ProductSelect"]) && count($_POST["ProductSelect"]) != count(array_unique($_POST["ProductSelect"]))) {
+                echo "<div class='alert alert-danger'>There are duplicate items in the array</div>";
+                $flag = 1;
             }
 
             if ($flag == 0) {
-
                 $order_id = 0;
 
                 if ($flag == 0) {
@@ -60,12 +68,12 @@ include 'logincheck.php';
                     $order_date = date('Y-m-d H:i:s');
                     $stmt->bindParam(':order_date', $order_date);
 
-                    if ($stmt->execute()) {      
+                    if ($stmt->execute()) {
                         $query_summary = "SELECT MAX(order_summary_id) from order_summary";
                         $stmt_summary = $con->prepare($query_summary);
                         $stmt_summary->execute();
                         $num = $stmt_summary->rowCount();
-    
+
                         if ($num > 0) {
                             $row = $stmt_summary->fetch(PDO::FETCH_ASSOC);
                             $order_id = $row['MAX(order_summary_id)'];
@@ -87,7 +95,7 @@ include 'logincheck.php';
                                     $stmt_order_detail->bindParam(':order_summary_id', $order_id);
                                     // Execute the query
                                     if ($stmt_order_detail->execute()) {
-                                        header('Location: order_read_one.php?order_summary_id='.$order_id.'&& action=sucessful');
+                                        header('Location: order_read_one.php?order_summary_id=' . $order_id . '&& action=sucessful');
                                     } else {
                                         echo "<div class='alert alert-danger'>Unable to save product.</div>";
                                     }
@@ -104,6 +112,7 @@ include 'logincheck.php';
                 }
             }
         }
+
         ?>
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" id="myFrom">
             <div class="mb-3 row">
@@ -140,16 +149,14 @@ include 'logincheck.php';
                                 if (isset($_POST["customerSelect"]) && $_POST["customerSelect"] == $id) {
                                     echo "selected";
                                 }
-    
-                                echo ">{$username}</option>";
 
-                                
+                                echo ">{$username}</option>";
                             }
                         } else {
                             echo "<option selected value=-1>No records found</option>";
                         }
 
-                        
+
                         ?>
                     </select>
                 </div>
@@ -169,75 +176,77 @@ include 'logincheck.php';
                     // select all data
                     $query = "SELECT id, name, price FROM products ORDER BY id DESC";
                     $stmt = $con->prepare($query);
-                    
+
                     $count = 0;
                     $productSelectedCount = 0;
 
-                    if (isset($_POST["productSelect"])) {
-                        $productSelectedCount = count($_POST['productSelect']);
+                    if (isset($_POST["ProductSelect"])) {
+                        $productSelectedCount = count($_POST['ProductSelect']);
                     }
-                    do{
-                    $stmt->execute();
-                    $num = $stmt->rowCount();
+                    do {
+                        $stmt->execute();
+                        $num = $stmt->rowCount();
 
-                    //for ($pdct_tbl = 1; $pdct_tbl  <= 1; $pdct_tbl ++) {
-                    //    $stmt->execute();
-                    echo "<tr class = \"pRow\">";
-                    echo "<th scope=\"row\">";
-                        echo ($count +1);
+                        //for ($pdct_tbl = 1; $pdct_tbl  <= 1; $pdct_tbl ++) {
+                        //    $stmt->execute();
+                        echo "<tr class = \"pRow\">";
+                        echo "<th scope=\"row\">";
+
+                        echo ($count + 1);
                         echo "</th>";
-                    echo "<td>";
-                    echo "<div class=\"my-2 col\">";
+                        echo "<td>";
+                        echo "<div class=\"my-2 col\">";
 
-                    echo "<select class=\"form-select\" id=\"ProductSelect\" name=\"ProductSelect[]\">";
-                    //check if more than 0 record found
-                    if ($num > 0) {
-                        echo "<option selected value=-1>--Option--</option>";
+                        echo "<select class=\"form-select\" id=\"ProductSelect\" name=\"ProductSelect[]\">";
+                        //check if more than 0 record found
+                        if ($num > 0) {
+                            echo "<option selected value=-1>--Option--</option>";
 
-                        // retrieve our table contents
-                        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                            // extract row
-                            // this will make $row['firstname'] to just $firstname only
-                            extract($row);
-                            
-                            echo "<option value={$id} ";
+                            // retrieve our table contents
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                // extract row
+                                // this will make $row['firstname'] to just $firstname only
+                                extract($row);
 
+                                echo "<option value={$id} ";
                                 // if the option is selected then auto select it
                                 if (isset($_POST["ProductSelect"]) && $_POST["ProductSelect"][$count] == $id) {
                                     echo "selected";
                                 }
                                 echo ">{$name}</option>";
+                            }
+                        } else {
+                            echo "<option selected value=-1>No records found</option>";
                         }
-                    } else {
-                        echo "<option selected value=-1>No records found</option>";
-                    }
 
-                    echo "</select>";
-                    echo "</td>";
+                        echo "</select>";
+                        echo "</td>";
 
-                    echo "<td>";
-                    echo "<div class=\"my-2 col\">";
-                    echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\" value=\"";
-                    if (isset($_POST["InputOrderQuantity"])) {
-                        echo $_POST["InputOrderQuantity"][$count];
-                    }
-                    echo "\">";
-                    echo "</div>";
-                    echo "</td>";
+                        echo "<td>";
+                        echo "<div class=\"my-2 col\">";
+                        echo "<input type=\"number\" class=\"form-control\" id=\"InputOrderQuantity\" name=\"InputOrderQuantity[]\" value=\"";
+                        if (isset($_POST["InputOrderQuantity"])) {
+                            echo $_POST["InputOrderQuantity"][$count];
+                        }
 
-                    echo "</tr>";
-                    $count++;
-                } while ($productSelectedCount > $count);
+
+                        echo "\">";
+                        echo "</div>";
+                        echo "</td>";
+
+                        echo "</tr>";
+                        $count++;
+                    } while ($productSelectedCount > $count);
                     //}
                     ?>
                 </tbody>
             </table>
-            <div class="row text-center d-flex justify-content-between">
-                <div class="d-flex row col-6">
-                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-3 mx-2" />
-                    <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-2 mx-2" />
+            <div class="row text-center d-flex justify-content-md-between justify-content-center">
+                <div class="d-flex row col-md-6 col-12">
+                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-lg-3 col-md-6 col-sm-8 col-12 mx-md-2 mx-0" />
+                    <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-lg-3 col-md-4 col-sm-6 col-12" />
                 </div>
-                <button type="button" onclick="checkDuplicate()" class="btn btn-secondary mb-3 col-3">Submit</button>
+                <button type="submit" onclick="checkDuplicate()" class="row btn btn-secondary mb-3 col-md-3 col-12 ">Submit</button>
             </div>
         </form>
     </div> <!-- end .container -->
@@ -276,19 +285,19 @@ include 'logincheck.php';
             }
         }, false);
 
-        function checkDuplicate(){
-            var newarray = [];
-            var selects = document.getElementsByTagName('select');
-            for(var i = 0; i<selects.length; i++){
-                newarray.push(selects[i].value);
-            }
+        // function checkDuplicate() {
+        //     var newarray = [];
+        //     var selects = document.getElementsByTagName('select');
+        //     for (var i = 0; i < selects.length; i++) {
+        //         newarray.push(selects[i].value);
+        //     }
 
-            if(newarray.length !== new Set(newarray).size){
-                alert("There are duplicate items in the array");
-            }else{
-                document.getElementById("myFrom").submit();
-            }
-        }
+        //     if (newarray.length !== new Set(newarray).size) {
+        //         alert("There are duplicate items in the array");
+        //     } else {
+        //         document.getElementById("myFrom").submit();
+        //     }
+        // }
     </script>
 </body>
 
