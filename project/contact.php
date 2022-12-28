@@ -1,4 +1,5 @@
 <?php
+ob_start();
 include 'logincheck.php';
 ?>
 
@@ -17,9 +18,9 @@ include 'logincheck.php';
 
 <body>
     <!-- container -->
-   <?php 
-   include 'navtop.php';
-   ?>
+    <?php
+    include 'navtop.php';
+    ?>
     <div class="bg-images full_page">
         <div class="bg-color-contact">
             <div class="container text-center py-5">
@@ -28,47 +29,100 @@ include 'logincheck.php';
         </div>
         <div class="container">
             <div class="row pb-5">
-                <?php
-                if($_POST){
-                    
-                $to = "tanzhenxun1118@.newera.edu.my";
-                $subject = "My subject";
-                $txt = "Hello world!";
-                $headers = "From: webmaster@example.com" . "\r\n" .
-                "CC: somebodyelse@example.com";
-                
-                mail($to,$subject,$txt,$headers);
-                }
-                ?>
                 <div class="col-12">
                     <h2 class="contact-title fs-3 my-3">Get in Touch</h2>
                 </div>
                 <div class="col-lg-8">
                     <form class="form-contact contact_form" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="contactForm" novalidate>
+                        <?php
+
+
+                        use PHPMailer\PHPMailer\PHPMailer;
+                        use PHPMailer\PHPMailer\Exception;
+
+                        require '../project/PHPMailer-master/src/Exception.php';
+                        require '../project/PHPMailer-master/src/PHPMailer.php';
+                        require '../project/PHPMailer-master/src/SMTP.php';
+
+                        if ($_POST) {
+
+                            if ($_POST && isset($_POST['name']) && isset($_POST['message']) && isset($_POST['email']) && isset($_POST['subject'])) {
+
+                                try {
+                                    $mail = new PHPMailer(true);
+
+                                    $mail->isSMTP();
+                                    $mail->Host = "smtp.gmail.com";
+                                    $mail->SMTPAuth = true;
+                                    $mail->Username = "tandun788@gmail.com";
+                                    $mail->Password = "acjzhzanldljgghm";
+                                    $mail->SMTPSecure = "ssl";
+                                    $mail->Port = 465;
+
+                                    // set email from where
+                                    $mail->setFrom("tandun788@gmail.com");
+
+                                    // set where the email send out 
+                                    // why both is our email address, because the google cannot help user send a email to the company email account 
+                                    $mail->addAddress('tandun788@gmail.com');
+
+                                    $mail->isHTML(true);
+
+                                    $mail->Subject = $_POST['subject'];
+
+                                    $context = "
+      <html>
+      <head>
+      </head>
+      <body>
+      <p>sender name:{$_POST['name']}</p>
+      <p>context:<br>{$_POST['message']}</p>
+      <p>from email:<br>{$_POST['email']}</p>
+      </body>
+      </html>
+      ";
+
+                                    // $mail->Body = $_POST['message']." \n form: ".$_POST['emailAddress'];
+                                    $mail->Body = $context;
+                                    $msg = wordwrap($mail->Body, 70);
+
+                                    $mail->send();
+                                    echo "<div class='alert alert-success'> Successfully Sending.</div>";
+                                
+                                } catch (PDOException $exception) {
+                                    echo "<div class='alert alert-success'> Some error occurrence.</div>";
+                                }
+
+                                // echo "<div class='alert alert-info'> Successfully Sending.</div>";
+                            } else {
+                                echo "<div class='alert alert-success'>Empty data is not allow</div>";
+                            }
+                        }
+                        ?>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-sm-6">
                                 <div class="form-group my-2">
-                                    <textarea class="form-control w-100" name="message" id="message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'" placeholder='Enter Message'></textarea>
+                                    <input class="form-control" name="name" id="name" type="text" value="<?php echo isset($_POST['name']) ? $_POST['name'] : "" ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'" placeholder='Enter your name'>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group my-2">
-                                    <input class="form-control" name="name" id="name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your name'" placeholder='Enter your name'>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group my-2">
-                                    <input class="form-control" name="email" id="email" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" placeholder='Enter email address'>
+                                    <input class="form-control" name="email" id="email" type="email" value="<?php echo isset($_POST['email']) ? $_POST['name'] : "" ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter email address'" placeholder='Enter email address'>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group my-2">
-                                    <input class="form-control" name="subject" id="subject" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Subject'" placeholder='Enter Subject'>
+                                    <input class="form-control" name="subject" id="subject" type="text" value="<?php echo isset($_POST['subject']) ? $_POST['name'] : "" ?>" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Subject'" placeholder='Enter Subject'>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group my-2">
+                                    <textarea class="form-control w-100" name="message" id="message" value="<?php echo isset($_POST['message']) ? $_POST['name'] : "" ?>" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Message'" placeholder='Enter Message'></textarea>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group mt-3 rounded">
-                            <button type="button" class="btn_3 button-contactForm rounded py-2 px-3 text-decoration-none fw-bold">Send Message</button>
+                            <button type="submit" class="btn_3 button-contactForm rounded py-2 px-3 text-decoration-none fw-bold">Send Message</button>
                         </div>
                     </form>
                 </div>
@@ -106,15 +160,9 @@ include 'logincheck.php';
     </div>
 
 
-    <footer class="container-fluid py-3 bg-dark">
-        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div>Copyright @ 2022 TANZX</div>
-            <div class="d-flex">
-                <div class="mx-3">Terms of Use</div>
-                <div class="mx-3">Privacy Policy</div>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include 'footer.php';
+    ?>
     <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
