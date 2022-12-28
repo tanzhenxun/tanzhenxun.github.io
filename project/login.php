@@ -71,7 +71,7 @@
                                             if (md5($pass) == $password) {
                                                 if ($account_status == "active") { // === check the datatype and value like "1" check string(datatype) and 1(value) (== check value like check "1" just 1 (value))
                                                     header("Location: home.php");
-                                                    $_SESSION['login'] = true;
+                                                    $_SESSION['login'] = $firstname." ".$lastname;
                                                 } else {
                                                     echo "<div class='alert alert-danger'>Your Account is suspended</div>";
                                                 }
@@ -96,7 +96,8 @@
                                 <button type="submit" class="btn btn-secondary btn-lg btn-block">Sign in</button>
                                 
                                 <div class="mt-3 mb-3 text-muted">Don't have an account? <a href="register.php" class=" text-dark">Signup now</a></div>
-
+                                
+                                <a href="contact.php" class="text-dark"> Contact Us</a>
                                 <p class="mt-3 mb-3 text-muted">&copy; 2022 TANZX</p>
                             </div>
                         </div>

@@ -12,6 +12,7 @@ include 'logincheck.php';
     <!-- Latest compiled and minified Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
 </head>
 
@@ -26,7 +27,7 @@ include 'logincheck.php';
                 <img src="images/Web-Development-Illustration.svg" alt="" >
             </div>-->
             <div class="header-text text-center">
-                <div class="fw-bold fs-1">Welcome Page</div>
+                <div class="fw-bold fs-1">Welcome <?php echo $_SESSION['login'] ?> Page</div>
             </div>
         </div>
         <?php
@@ -197,7 +198,7 @@ include 'logincheck.php';
                                     extract($row_topsell);
                                     echo "<tr>";
                                     echo "<th class=\"text-center\">$count</th>";
-                                    echo "<th>$name</th>";
+                                    echo "<th><a href=\"product_read_one.php?id={$id}\" class=\"text-black\">$name</a></th>";
                                     echo "<th>$total_quantity</th>";
                                     echo "</tr>";
                                     $count++;

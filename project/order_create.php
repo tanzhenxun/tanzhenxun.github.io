@@ -13,6 +13,7 @@ include 'logincheck.php';
     <!-- Latest compiled and minified Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
 
@@ -242,23 +243,18 @@ include 'logincheck.php';
                 </tbody>
             </table>
             <div class="row text-center d-flex justify-content-md-between justify-content-center">
-                <div class="d-flex row col-md-6 col-12">
-                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-lg-3 col-md-6 col-sm-8 col-12 mx-md-2 mx-0" />
-                    <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-lg-3 col-md-4 col-sm-6 col-12" />
+                <div class="col-md-6 col-12 text-lg-start text-center">
+                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 mx-md-2 mx-0 col-lg-6 col-12" />
                 </div>
-                <button type="submit" onclick="checkDuplicate()" class="row btn btn-secondary mb-3 col-md-3 col-12 ">Submit</button>
+                <div class="col-md-6 col-12  text-lg-end text-center">
+                <button type="submit" onclick="checkDuplicate()" class="row btn btn-secondary mb-3 mx-md-2 mx-0 col-lg-4 col-12">Submit</button>
+                </div>
             </div>
         </form>
     </div> <!-- end .container -->
-    <footer class="container-fluid py-3 bg-dark">
-        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
-            <div class="d-flex justify-content-evenly">
-                <div class="mx-3">Terms of Use</div>
-                <div class="mx-3">Privacy Policy</div>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include 'footer.php';
+    ?>
     <!-- confirm delete record will be here -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script>

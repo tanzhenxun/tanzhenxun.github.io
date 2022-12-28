@@ -11,6 +11,7 @@ include 'logincheck.php';
     <!-- Latest compiled and minified Bootstrap CSS -->
     <script src="https://kit.fontawesome.com/f9f6f2f33c.js" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
     <title>Customer Update</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
@@ -77,14 +78,6 @@ include 'logincheck.php';
             $date_of_birth = $row['date_of_birth'];
             $account_status = $row['account_status'];
 
-            $num = $stmt->rowCount();
-            if ($num > 0) {
-                while ($row_user = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                    // values to fill up our form
-                    $oldusername[] = $row_user['username'];
-                }
-            }
-
             $store_image = "upload_customer/";
             if (!empty($row['image_cus']) && $row['image_cus'] != "NULL") {
                 $old_image = $store_image . $row['image_cus'];
@@ -103,7 +96,6 @@ include 'logincheck.php';
         <!-- PHP post to update record will be here -->
         <?php
         if ($_POST) {
-            $username = $_POST['username'];
             $uppercase = preg_match('@[A-Z]@', $_POST['new_pass']);
             $lowercase = preg_match('@[a-z]@', $_POST['new_pass']);
             $number    = preg_match('@[0-9]@', $_POST['new_pass']);
@@ -143,8 +135,8 @@ include 'logincheck.php';
                 }
 
                 if (empty($file_upload_error_messages)) {
-                    if (strlen($username) >= 6) {
-                        if (strpos(trim($username), ' ')) {
+                    if (strlen($_POST['username']) >= 6) {
+                        if (strpos(trim($_POST['username']), ' ')) {
                             $file_upload_error_messages .= "<div>Username should not contain whitespace!</div>";
                         }
                     } else {
@@ -174,11 +166,15 @@ include 'logincheck.php';
                         //isset vs empty dash
                         $file_upload_error_messages .= "<div>Please note that you cannot select a new image while checking for image deletion, please select one.</div>";
                     }
-
-                    if (in_array($username, $oldusername)) {
-                        $file_upload_error_messages .= "<div>Username already exists! Please type again</div>";
-                    } else {
-                        $username = $_POST['username'];
+                    if ($_POST['username'] !== $oldusername) {
+                        $query_username = "SELECT username FROM customers WHERE username=:username";
+                        $stmt_username = $con->prepare($query_username);
+                        $stmt_username->bindParam(':username', $_POST['username']);
+                        $stmt_username->execute();
+                        $num_user = $stmt_username->rowCount();
+                        if ($num_user > 0) {
+                            $file_upload_error_messages .= "<div>Username already exists! Please type again</div>";
+                        }
                     }
 
                     if (!empty($_FILES["image"]["name"])) {
@@ -231,6 +227,7 @@ include 'logincheck.php';
                         echo "<div>{$file_upload_error_messages}</div>";
                         echo "</div>";
                     } else {
+
                         try {
                             // write update query
                             // in this case, it seemed like we have so many fields to pass and
@@ -277,7 +274,6 @@ include 'logincheck.php';
                                 if (!$flag_same_image && !strpos($old_image, "no_image.jpg")) {
                                     unlink($old_image);
                                 }
-
                                 echo "<script type=\"text/javascript\"> window.location.href='customer_read.php?action=sucessful'</script>";
                             } else {
                                 echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
@@ -355,7 +351,7 @@ include 'logincheck.php';
                     </tr>
                     <tr>
                         <td>Date of Birth</td>
-                        <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" onfocus="this.showPicker()"/></td>
+                        <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" onfocus="this.showPicker()" /></td>
                     </tr>
                     <tr>
                         <td>Account Status</td>
