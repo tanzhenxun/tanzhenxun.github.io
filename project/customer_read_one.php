@@ -119,15 +119,9 @@ include 'logincheck.php';
 
     </div> <!-- end .container -->
 
-    <footer class="container-fluid py-3 bg-dark">
-        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
-            <div class="d-flex justify-content-evenly">
-                <div class="mx-3">Terms of Use</div>
-                <div class="mx-3">Privacy Policy</div>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include 'footer.php';
+    ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     </body>
 
