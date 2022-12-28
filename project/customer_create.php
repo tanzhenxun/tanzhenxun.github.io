@@ -26,6 +26,37 @@ include 'logincheck.php';
             <h3>Create Customer</h3>
         </div>
 
+        <?php
+
+        //include database connection
+        include 'config/database.php';
+
+        // read current record's data
+        try {
+            // prepare select query
+            $query = "SELECT username FROM customers";
+            $stmt = $con->prepare($query);
+
+            // execute our query
+            $stmt->execute();
+
+            // store retrieved row to a variable
+            $num = $stmt->rowCount();
+            if ($num > 0) {
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    // values to fill up our form
+                    $oldusername[] = $row['username'];
+                }
+            }
+        }
+
+        // show error
+        catch (PDOException $exception) {
+            die('ERROR: ' . $exception->getMessage());
+        }
+
+        ?>
+
         <!-- html form to create product will be here -->
         <!-- PHP insert code will be here -->
         <?php
@@ -59,7 +90,11 @@ include 'logincheck.php';
                     if (strpos(trim($username), ' ')) {
                         $file_upload_error_messages .= "<div>Username should not contain whitespace!</div>";
                     } else {
-                        $username = $_POST['username'];
+                        if (in_array($username, $oldusername)) {
+                            $file_upload_error_messages .= "<div>Username already exists! Please type again</div>";
+                        } else {
+                            $username = $_POST['username'];
+                        }
                     }
                 } else {
                     $file_upload_error_messages .= "<div>Your username must contain at least 6 characters!</div>";
@@ -68,7 +103,7 @@ include 'logincheck.php';
                 if (strlen($password) >= 8) {
                     if ($uppercase || $lowercase || $number) {
                         if ($password !== $confirm_password) {
-                            $file_upload_error_messages .= "<div>Passwords do not match, please type again.</div>";
+                            $file_upload_error_messages .= "<div>Passwords do not match! Please type again.</div>";
                         } else {
                             $password = md5($_POST['password']);
                         }
@@ -178,114 +213,109 @@ include 'logincheck.php';
         ?>
 
         <!-- html form here where the product information will be entered -->
+
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-        <div class="table-respobnive">
-            <table class='table table-hover table-bordered'>
-                <tr>
-                    <td>Photo</td>
-                    <td><input type='file' name='image' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Username <p class="text-danger">*</td>
-                    <td><input type='text' name='username' class='form-control' value="<?php if (isset($_POST['username'])) {
-                                                                                            echo $_POST['username'];
-                                                                                        } else {
-                                                                                            echo "";
-                                                                                        } ?>" /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">First Name <p class="text-danger">*</td>
-                    <td><input type='text' name='firstname' class='form-control' value="<?php if (isset($_POST['firstname'])) {
-                                                                                            echo $_POST['firstname'];
-                                                                                        } else {
-                                                                                            echo "";
-                                                                                        } ?>" /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Last Name <p class="text-danger">*</td>
-                    <td><input type='text' name='lastname' class='form-control' value="<?php if (isset($_POST['lastname'])) {
-                                                                                            echo $_POST['lastname'];
-                                                                                        } else {
-                                                                                            echo "";
-                                                                                        } ?>" /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Password <p class="text-danger">*</td>
-                    <td><input type='password' name='password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Confirm Password <p class="text-danger">*</td>
-                    <td><input type='password' name='confirm_password' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Gender <p class="text-danger">*</td>
-                    <td class="align-item-center">
-                        <input type="radio" name="gender" value="male" id="male" class="ms-1 mx-2" <?php
-                                                                                            if (isset($_POST['gender'])) {
-                                                                                                if ($_POST['gender'] == "male") {
-                                                                                                    echo "checked";
-                                                                                                }
-                                                                                            }else{
-                                                                                                echo "checked";
-                                                                                            } ?>>
-                        <label for="male" class="me-4">Male</label>
-                        <input type="radio" name="gender" value="female" id="female" class="ms-1 mx-2" <?php
-                                                                                            if (isset($_POST['gender'])) {
-                                                                                                if ($_POST['gender'] == "female") {
-                                                                                                    echo "checked";
-                                                                                                }
-                                                                                            }?>>
-                        <label for="female">Female</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Date of Birth <p class="text-danger">*</td>
-                    <td><input type='date' name='date_of_birth' class='form-control' value="<?php if (isset($_POST['date_of_birth'])) {
-                                                                                            echo $_POST['date_of_birth'];
-                                                                                        } else {
-                                                                                            echo "";
-                                                                                        } ?>"/></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Account Status <p class="text-danger">*</td>
-                    <td>
-                    <input type="radio" name="account_status" value="active" id="active" class="ms-1 mx-2" <?php
-                                                                                            if (isset($_POST['account_status'])) {
-                                                                                                if ($_POST['account_status'] == "active") {
-                                                                                                    echo "checked";
-                                                                                                }
-                                                                                            }else{
-                                                                                                echo "checked";
-                                                                                            } ?>>
-                        <label for="active" class="me-4">Active</label>
-                        <input type="radio" name="account_status" value="inactive" id="inactive" class="ms-1 mx-2" <?php
-                                                                                            if (isset($_POST['account_status'])) {
-                                                                                                if ($_POST['account_status'] == "inactive") {
-                                                                                                    echo "checked";
-                                                                                                }
-                                                                                            }?>>
-                        <label for="inactive">Inactive</label>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="text-center">
-                        <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read customer</a>
-                    </td>
-                </tr>
-            </table>
+            <div class="table-responsive">
+                <table class='table table-hover table-bordered'>
+                    <tr>
+                        <td>Photo</td>
+                        <td><input type='file' name='image' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Username <p class="text-danger">*</td>
+                        <td><input type='text' name='username' class='form-control' value="<?php if (isset($_POST['username'])) {
+                                                                                                echo $_POST['username'];
+                                                                                            } else {
+                                                                                                echo "";
+                                                                                            } ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">First Name <p class="text-danger">*</td>
+                        <td><input type='text' name='firstname' class='form-control' value="<?php if (isset($_POST['firstname'])) {
+                                                                                                echo $_POST['firstname'];
+                                                                                            } else {
+                                                                                                echo "";
+                                                                                            } ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Last Name <p class="text-danger">*</td>
+                        <td><input type='text' name='lastname' class='form-control' value="<?php if (isset($_POST['lastname'])) {
+                                                                                                echo $_POST['lastname'];
+                                                                                            } else {
+                                                                                                echo "";
+                                                                                            } ?>" /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Password <p class="text-danger">*</td>
+                        <td><input type='password' name='password' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Confirm Password <p class="text-danger">*</td>
+                        <td><input type='password' name='confirm_password' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Gender <p class="text-danger">*</td>
+                        <td class="align-item-center">
+                            <input type="radio" name="gender" value="male" id="male" class="ms-1 mx-2" <?php
+                                                                                                        if (isset($_POST['gender'])) {
+                                                                                                            if ($_POST['gender'] == "male") {
+                                                                                                                echo "checked";
+                                                                                                            }
+                                                                                                        } else {
+                                                                                                            echo "checked";
+                                                                                                        } ?>>
+                            <label for="male" class="me-4">Male</label>
+                            <input type="radio" name="gender" value="female" id="female" class="ms-1 mx-2" <?php
+                                                                                                            if (isset($_POST['gender'])) {
+                                                                                                                if ($_POST['gender'] == "female") {
+                                                                                                                    echo "checked";
+                                                                                                                }
+                                                                                                            } ?>>
+                            <label for="female">Female</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Date of Birth <p class="text-danger">*</td>
+                        <td><input type='date' name='date_of_birth' class='form-control' value="<?php if (isset($_POST['date_of_birth'])) {
+                                                                                                    echo $_POST['date_of_birth'];
+                                                                                                } else {
+                                                                                                    echo "";
+                                                                                                } ?>"  onfocus="this.showPicker()"/></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Account Status <p class="text-danger">*</td>
+                        <td>
+                            <input type="radio" name="account_status" value="active" id="active" class="ms-1 mx-2" <?php
+                                                                                                                    if (isset($_POST['account_status'])) {
+                                                                                                                        if ($_POST['account_status'] == "active") {
+                                                                                                                            echo "checked";
+                                                                                                                        }
+                                                                                                                    } else {
+                                                                                                                        echo "checked";
+                                                                                                                    } ?>>
+                            <label for="active" class="me-4">Active</label>
+                            <input type="radio" name="account_status" value="inactive" id="inactive" class="ms-1 mx-2" <?php
+                                                                                                                        if (isset($_POST['account_status'])) {
+                                                                                                                            if ($_POST['account_status'] == "inactive") {
+                                                                                                                                echo "checked";
+                                                                                                                            }
+                                                                                                                        } ?>>
+                            <label for="inactive">Inactive</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="text-center">
+                            <input type='submit' value='Save' class='btn btn-primary' />
+                            <a href='index.php' class='btn btn-danger'>Back to read customer</a>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </form>
     </div>
-    <footer class="container-fluid py-3 bg-dark">
-        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
-            <div class="d-flex justify-content-evenly">
-                <div class="mx-3">Terms of Use</div>
-                <div class="mx-3">Privacy Policy</div>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include 'footer.php';
+    ?>
     <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
