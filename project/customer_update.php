@@ -69,13 +69,21 @@ include 'logincheck.php';
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
             // values to fill up our form
-            $username = $row['username'];
+            $oldusername = $row['username'];
             $oldpassword = $row['password'];
             $firstname = $row['firstname'];
             $lastname = $row['lastname'];
             $gender = $row['gender'];
             $date_of_birth = $row['date_of_birth'];
             $account_status = $row['account_status'];
+
+            $num = $stmt->rowCount();
+            if ($num > 0) {
+                while ($row_user = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    // values to fill up our form
+                    $oldusername[] = $row_user['username'];
+                }
+            }
 
             $store_image = "upload_customer/";
             if (!empty($row['image_cus']) && $row['image_cus'] != "NULL") {
@@ -165,6 +173,12 @@ include 'logincheck.php';
                     if (isset($_POST['images_remove']) && $_POST['images_remove'] != "" && !empty($_FILES['image']['name'])) {
                         //isset vs empty dash
                         $file_upload_error_messages .= "<div>Please note that you cannot select a new image while checking for image deletion, please select one.</div>";
+                    }
+
+                    if (in_array($username, $oldusername)) {
+                        $file_upload_error_messages .= "<div>Username already exists! Please type again</div>";
+                    } else {
+                        $username = $_POST['username'];
                     }
 
                     if (!empty($_FILES["image"]["name"])) {
@@ -299,20 +313,20 @@ include 'logincheck.php';
                         <td><input type='text' name='username' value="<?php if (isset($_POST['username'])) {
                                                                             echo $_POST['username'];
                                                                         } else {
-                                                                            echo htmlspecialchars($username, ENT_QUOTES);
+                                                                            echo htmlspecialchars($oldusername, ENT_QUOTES);
                                                                         } ?>" class='form-control' /></td>
                     </tr>
                     <tr>
                         <td>Old password</td>
-                        <td><input name='old_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
+                        <td><input name='old_pass' class='form-control' type="password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Please let it blank if you are not wanted to change a new password'" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
                     </tr>
                     <tr>
                         <td>New password</td>
-                        <td><input name='new_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
+                        <td><input name='new_pass' class='form-control' type="password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Please let it blank if you are not wanted to change a new password'" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
                     </tr>
                     <tr>
                         <td>Confirm password</td>
-                        <td><input name='con_pass' class='form-control' type="password" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
+                        <td><input name='con_pass' class='form-control' type="password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Please let it blank if you are not wanted to change a new password'" placeholder="Please let it blank if you are not wanted to change a new password"></input></td>
                     </tr>
                     <tr>
                         <td>First Name</td>
@@ -341,7 +355,7 @@ include 'logincheck.php';
                     </tr>
                     <tr>
                         <td>Date of Birth</td>
-                        <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" /></td>
+                        <td><input type='date' name='date_of_birth' class='form-control' value="<?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?>" onfocus="this.showPicker()"/></td>
                     </tr>
                     <tr>
                         <td>Account Status</td>
@@ -369,15 +383,9 @@ include 'logincheck.php';
         </form>
 
     </div>
-    <footer class="container-fluid py-3 bg-dark m-100">
-        <div class="m-auto foot-size d-sm-flex d-block justify-content-between text-white">
-            <div class="text-sm-start text-center">Copyright @ 2022 TANZX</div>
-            <div class="d-flex justify-content-evenly">
-                <div class="mx-3">Terms of Use</div>
-                <div class="mx-3">Privacy Policy</div>
-            </div>
-        </div>
-    </footer>
+    <?php
+    include 'footer.php';
+    ?>
     <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 </body>
