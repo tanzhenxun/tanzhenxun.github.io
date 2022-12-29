@@ -6,7 +6,7 @@ include 'logincheck.php';
 <html>
 
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PDO - Create a Record - PHP CRUD Tutorial</title>
     <!-- Latest compiled and minified Bootstrap CSS -->
@@ -15,15 +15,16 @@ include 'logincheck.php';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body>
-<?php 
-   include 'navtop.php';
-   ?>
- 
+    <?php
+    include 'navtop.php';
+    ?>
+
     <!-- container -->
     <div class="container full_page">
-        <div class="page-header">
-            <h1>Read Customer</h1>
+        <div class="page-header py-2">
+            <div class="fs-2 fw-bold">Read Customer</div>
         </div>
 
         <!-- PHP read one record will be here -->
@@ -61,7 +62,7 @@ include 'logincheck.php';
             $image = $row['image_cus'];
             // shorter way to do that is extract($row)
 
-            if($image == "NULL" || $image == ""){
+            if ($image == "NULL" || $image == "") {
                 $image = "no_image.jpg";
             }
         }
@@ -75,47 +76,49 @@ include 'logincheck.php';
 
         <!-- HTML read one record table will be here -->
         <!--we have our html table here where the record will be displayed-->
-        <table class='table table-hover table-responsive table-bordered'>
-        <tr>
-                <td>Image</td>
-                <td ><img src="upload_customer/<?php echo htmlspecialchars($image, ENT_QUOTES);?>" width="200"></td>
-            </tr>
-            <tr>
-                <td>Username</td>
-                <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>First Name</td>
-                <td><?php echo htmlspecialchars($firstname, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Last Name</td>
-                <td><?php echo htmlspecialchars($lastname, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Gender</td>
-                <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Date of Birth</td>
-                <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Resgister Date</td>
-                <td><?php echo htmlspecialchars($register_date, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td>Account Status</td>
-                <td><?php echo htmlspecialchars($account_status, ENT_QUOTES);  ?></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                <a href='<?php echo "customer_update.php?id={$id}"?>' class='btn btn-primary me-1'>Edit</a>
-                    <a href='customer_read.php' class='btn btn-danger'>Back to read customer</a>
-                </td>
-            </tr>
-        </table>
+        <div class="overflow-auto">
+            <table class='table table-hover table-bordered'>
+                <tr>
+                    <td>Image</td>
+                    <td><img src="upload_customer/<?php echo htmlspecialchars($image, ENT_QUOTES); ?>" width="200"></td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td><?php echo htmlspecialchars($username, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>First Name</td>
+                    <td><?php echo htmlspecialchars($firstname, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Last Name</td>
+                    <td><?php echo htmlspecialchars($lastname, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td><?php echo htmlspecialchars($gender, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td><?php echo htmlspecialchars($date_of_birth, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Resgister Date</td>
+                    <td><?php echo htmlspecialchars($register_date, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td>Account Status</td>
+                    <td><?php echo htmlspecialchars($account_status, ENT_QUOTES);  ?></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a href='<?php echo "customer_update.php?id={$id}" ?>' class='btn btn-primary me-1 '>Edit</a>
+                        <a href='customer_read.php' class='btn btn-danger'>Back to read customer</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
 
     </div> <!-- end .container -->
@@ -124,6 +127,6 @@ include 'logincheck.php';
     include 'footer.php';
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    </body>
+</body>
 
 </html>

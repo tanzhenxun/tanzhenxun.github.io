@@ -88,6 +88,7 @@ include 'logincheck.php';
 
         <!-- HTML read one record table will be here -->
         <!--we have our html table here where the record will be displayed-->
+        <div class="overflow-auto">
         <table class='table table-hover table-responsive table-bordered'>
             <tr>
                 <td>Image</td>
@@ -129,6 +130,7 @@ include 'logincheck.php';
                 </td>
             </tr>
         </table>
+        </div>
 
 
     </div> <!-- end .container -->

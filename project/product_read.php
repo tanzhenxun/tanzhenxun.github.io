@@ -65,7 +65,8 @@ include 'logincheck.php';
         if ($num > 0) {
             
             // data from database will be here
-            echo "<table class='table table-hover table-responsive table-bordered'>"; //start table
+            echo "<div class='overflow-auto'>";
+            echo "<table class='table table-hover table-bordered'>"; //start table
 
             //creating our table heading
             echo "<tr>";
@@ -115,6 +116,7 @@ include 'logincheck.php';
 
             // end table
             echo "</table>";
+            echo "</div>";
         } else {
             echo "<div class='alert alert-danger'>No records found.</div>";
         }

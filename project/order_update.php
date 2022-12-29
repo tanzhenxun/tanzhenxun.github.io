@@ -319,12 +319,13 @@ include 'logincheck.php';
                     ?>
                 </tbody>
             </table>
-            <div class="row text-center d-flex justify-content-between">
-                <div class="d-flex row col-6">
-                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 col-3 mx-2" />
-                    <input type="button" value="Delete" class="delete_one btn btn-outline-danger mb-3 col-2 mx-2" />
+            <div class="row text-center d-flex justify-content-md-between justify-content-center">
+                <div class="col-md-6 col-12 text-lg-start text-center">
+                    <input type="button" value="Add More Product" class="add_one btn btn-outline-primary mb-3 mx-md-2 mx-0 col-lg-6 col-12" />
                 </div>
-                <button type="button" onclick="checkDuplicate()" class="btn btn-secondary mb-3 col-3">Submit</button>
+                <div class="col-md-6 col-12  text-lg-end text-center">
+                <button type="submit" onclick="checkDuplicate()" class="row btn btn-secondary mb-3 mx-md-2 mx-0 col-lg-4 col-12">Submit</button>
+                </div>
             </div>
         </form>
     </div>

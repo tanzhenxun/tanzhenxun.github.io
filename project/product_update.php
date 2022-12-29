@@ -121,8 +121,8 @@ include 'logincheck.php';
             $file_upload_error_messages = "";
 
             // include database connection
-            if ($name == "" || $description == "" || $price == "" || $manufacture_date == "" ) {
-                echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>"; 
+            if ($name == "" || $description == "" || $price == "" || $manufacture_date == "") {
+                echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>";
             } else {
 
                 if ($promotion_price == "") {
@@ -139,19 +139,18 @@ include 'logincheck.php';
                     $date1 = date_create($manufacture_date);
                     $date2 = date_create($expired_date);
                     $diff = date_diff($date1, $date2);
-                    
+
                     //https://linuxhint.com/calculate-date-difference-php/
 
-                    if(($diff->format("%R%a days")) < 0){
+                    if (($diff->format("%R%a days")) < 0) {
                         $file_upload_error_messages .= "<div>Your manufacture date no longer than expired date!</div>";
                     }
-
                 }
 
-                if(!is_numeric($price) || !is_numeric($promotion_price)){
+                if (!is_numeric($price) || !is_numeric($promotion_price)) {
                     $file_upload_error_messages .= "<div>Make sure your fields in only numbers in the price or promotion!</div>";
                 }
-                
+
                 if ($price >= 10000 || $price < 0) {
                     $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 10000 or less than 0 price!</div>";
                 }
@@ -234,7 +233,7 @@ include 'logincheck.php';
                             // checked and not upload new image
                         } else if ($image == "NULL" && !empty($_POST['images_remove'])) {
                             $image = "NULL";
-                        } 
+                        }
 
                         // bind the parameters
                         $stmt->bindParam(':name', $name);
@@ -248,13 +247,13 @@ include 'logincheck.php';
 
                         // Execute the query
                         if ($stmt->execute()) {
-                            
+
                             // if the image not same then remove previous one and not the default one
                             if (!$flag_same_image && !strpos($old_image, "no_image.jpg")) {
                                 unlink($old_image);
                             }
                             header('Location: product_read.php?action=sucessful');
-                            
+
                             //echo "<script type=\"text/javascript\"> window.location.href='product_read.php?action=sucessful'</script>";
                         } else {
                             echo "<div class='alert alert-danger'>Unable to update record. Please try again.</div>";
@@ -276,61 +275,67 @@ include 'logincheck.php';
         <!--we have our html form here where new record information can be updated 
     get method have maximun size-->
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"] . "?id={$id}"); ?>" method="POST" enctype="multipart/form-data">
-            <table class='table table-hover table-responsive table-bordered'>
-                <tr>
-                    <td>Photo</td>
-                    <td>
-                        <img src="<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200" id="delete_images">
-                        <br>
-                        <input class="mb-3" type="checkbox" id="images_remove" name="images_remove" value="Yes" />
-                        <label for="images_remove">Empty/Default Image</label>
-                        <br>
-                        <input type="file" name='image' class="pt-2">
-                    </td>
-                </tr>
+            <div class="overflow-auto">
+                <table class='table table-hover table-bordered'>
+                    <tr>
+                        <td>Photo</td>
+                        <td>
+                            <img src="<?php echo htmlspecialchars($old_image, ENT_QUOTES); ?>" width="200" id="delete_images">
+                            <br>
+                            <input class="mb-3" type="checkbox" id="images_remove" name="images_remove" value="Yes" />
+                            <label for="images_remove">Empty/Default Image</label>
+                            <br>
+                            <input type="file" name='image' class="pt-2">
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td class="d-flex">Name<p class="text-danger">*</p></td>
-                    <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Description<p class="text-danger">*</p></td>
-                    <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Price<p class="text-danger">*</p></td>
-                    <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Promotion Price</td>
-                    <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Manufacture Date<p class="text-danger">*</p></td>
-                    <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td >Expired Date</td>
-                    <td><input type='date' name='expired_date' value="<?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?>" class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <input type='submit' value='Save Changes' class='btn btn-primary' />
-                        <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
-                    </td>
-                </tr>
-            </table>
+                    <tr>
+                        <td class="d-flex">Name<p class="text-danger">*</p>
+                        </td>
+                        <td><input type='text' name='name' value="<?php echo htmlspecialchars($name, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Description<p class="text-danger">*</p>
+                        </td>
+                        <td><textarea name='description' class='form-control'><?php echo htmlspecialchars($description, ENT_QUOTES);  ?></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Price<p class="text-danger">*</p>
+                        </td>
+                        <td><input type='text' name='price' value="<?php echo htmlspecialchars($price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Promotion Price</td>
+                        <td><input type='text' name='promotion_price' value="<?php echo htmlspecialchars($promotion_price, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Manufacture Date<p class="text-danger">*</p>
+                        </td>
+                        <td><input type='date' name='manufacture_date' value="<?php echo htmlspecialchars($manufacture_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Expired Date</td>
+                        <td><input type='date' name='expired_date' value="<?php echo htmlspecialchars($expired_date, ENT_QUOTES);  ?>" class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type='submit' value='Save Changes' class='btn btn-primary' />
+                            <a href='product_read.php' class='btn btn-danger'>Back to read products</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </form>
 
     </div>
     <?php
     include 'footer.php';
     ?>
-<script>
-    
+    <script>
 
-</script>
+
+    </script>
 
     <!-- end .container -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>

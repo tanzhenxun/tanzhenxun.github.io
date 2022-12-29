@@ -83,7 +83,7 @@ include 'logincheck.php';
 
             <!-- HTML read one record table will be here -->
             <!--we have our html table here where the record will be displayed-->
-            <div class="table-responsive">
+            <div class="overflow-auto">
                 <table class='table table-hover table-bordered'>
                     <tr>
                         <th>ID</th>
@@ -147,6 +147,7 @@ include 'logincheck.php';
                    
                 </table>
             </div>
+            <a href='<?php echo "order_update.php?order_summary_id={$order_summary_id}" ?>' class='btn btn-primary me-1 '>Edit</a>
             <a href='order_read.php' class='btn btn-danger'>Back to order list</a>
         <?php
         }

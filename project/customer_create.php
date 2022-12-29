@@ -307,7 +307,7 @@ include 'logincheck.php';
                     <tr>
                         <td colspan="2" class="text-center">
                             <input type='submit' value='Save' class='btn btn-primary' />
-                            <a href='index.php' class='btn btn-danger'>Back to read customer</a>
+                            <a href='customer_read.php' class='btn btn-danger'>Back to read customer</a>
                         </td>
                     </tr>
                 </table>

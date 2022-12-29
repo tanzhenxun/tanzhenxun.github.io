@@ -62,19 +62,18 @@ include 'logincheck.php';
                     }
                 }
 
-                 if ($expired_date == "") {
+                if ($expired_date == "") {
                     $expired_date = NULL;
                 } else {
                     $date1 = date_create($manufacture_date);
                     $date2 = date_create($expired_date);
                     $diff = date_diff($date1, $date2);
-                    
+
                     //https://linuxhint.com/calculate-date-difference-php/
 
-                    if(($diff->format("%R%a days")) < 0){
+                    if (($diff->format("%R%a days")) < 0) {
                         $file_upload_error_messages .= "<div>Your manufacture date no longer than expired date!</div>";
                     }
-
                 }
                 if ($price >= 10000 || $price < 0) {
                     $file_upload_error_messages .= "<div>Make sure your field in the price blank wouldn't more than 10000 or less than 0 price!</div>";
@@ -123,7 +122,7 @@ include 'logincheck.php';
                     }
                 }
 
-                
+
 
                 if (empty($file_upload_error_messages)) {
                     try {
@@ -168,47 +167,49 @@ include 'logincheck.php';
 
         <!-- html form here where the product information will be entered -->
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-            <table class='table table-hover table-responsive table-bordered '>
-                <tr>
-                    <td>Photo</td>
-                    <td><input type="file" name="image" /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Name <p class="text-danger">*</p>
-                    </td>
-                    <td><input type='text' name='name' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Description <p class="text-danger">*</p>
-                    </td>
-                    <td><textarea rows="5" cols="33" name='description' class='form-control'></textarea></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Price <p class="text-danger">*</p>
-                    </td>
-                    <td><input type='text' name='price' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Promotion Price</td>
-                    <td><input type='text' name='promotion_price' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td class="d-flex">Manufacture Date <p class="text-danger">*</p>
-                    </td>
-                    <td><input type='date' name='manufacture_date' class='form-control' /></td>
-                </tr>
-                <tr>
-                    <td>Expired Date</td>
-                    <td><input type='date' name='expired_date' class='form-control' /></td>
-                </tr>
-                <tr>
+            <div class="overflow-auto">
+                <table class='table table-hover table-bordered '>
+                    <tr>
+                        <td>Photo</td>
+                        <td><input type="file" name="image" /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Name <p class="text-danger">*</p>
+                        </td>
+                        <td><input type='text' name='name' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Description <p class="text-danger">*</p>
+                        </td>
+                        <td><textarea rows="5" cols="33" name='description' class='form-control'></textarea></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Price <p class="text-danger">*</p>
+                        </td>
+                        <td><input type='text' name='price' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Promotion Price</td>
+                        <td><input type='text' name='promotion_price' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td class="d-flex">Manufacture Date <p class="text-danger">*</p>
+                        </td>
+                        <td><input type='date' name='manufacture_date' class='form-control' /></td>
+                    </tr>
+                    <tr>
+                        <td>Expired Date</td>
+                        <td><input type='date' name='expired_date' class='form-control' /></td>
+                    </tr>
+                    <tr>
 
-                    <td colspan="2" class="text-center">
-                        <input type='submit' value='Save' class='btn btn-primary' />
-                        <a href='index.php' class='btn btn-danger'>Back to read products</a>
-                    </td>
-                </tr>
-            </table>
+                        <td colspan="2" class="text-center">
+                            <input type='submit' value='Save' class='btn btn-primary' />
+                            <a href='index.php' class='btn btn-danger'>Back to read products</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </form>
     </div>
     <?php

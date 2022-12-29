@@ -117,7 +117,7 @@ include 'logincheck.php';
         ?>
         <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" id="myFrom">
             <div class="mb-3 row">
-                <div class="mab-3 col">
+                <div class="mab-3">
                     <label for="customerSelect" class="form-label">Customer</label>
                     <select class="form-select" id="customerSelect" name="customerSelect">
                         <?php

@@ -33,7 +33,7 @@ ob_start();
         <div class="container ">
             <div class="row pb-5">
                 <div class="col-12">
-                    <h2 class="contact-title fs-3 my-3">Get in Touch</h2>
+                    <h2 class="contact-title fs-3 my-3 fw-bold">Get in Touch</h2>
                 </div>
                 <div class="col-lg-8">
                     <form class="form-contact contact_form" action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="post" id="contactForm" novalidate>
