@@ -85,7 +85,7 @@ include 'logincheck.php';
             $file_upload_error_messages = "";
 
             if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == "" || $account_status == "" || $date_of_birth == "") {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>";
             } else {
                 if (strlen($username) >= 6) {
                     if (strpos(trim($username), ' ')) {

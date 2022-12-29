@@ -21,7 +21,7 @@ $web_name = basename($_SERVER["PHP_SELF"]);
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item <?php if($web_name=="product_create.php"){echo "active";}?>" href="product_create.php">Create Product</a></li>
-                        <li><a class="dropdown-item <?php if($web_name=="product_read.php"){echo "active";}?>" href="product_read">Product List</a></li>
+                        <li><a class="dropdown-item <?php if($web_name=="product_read.php"){echo "active";}?>" href="product_read.php">Product List</a></li>
                     </ul>
                 </div>
                 <div class="dropdown">

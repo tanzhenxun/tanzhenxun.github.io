@@ -112,7 +112,7 @@ include 'logincheck.php';
             $file_upload_error_messages = "";
 
             if (empty($_POST['username']) || empty($_POST['firstname']) || empty($_POST['lastname']) || empty($_POST['gender']) || empty($_POST['date_of_birth'])) {
-                echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>";
             } else {
                 if (!empty($_POST['old_pass']) || !empty($_POST['new_pass']) || !empty($_POST['con_pass'])) {
                     if (empty($_POST['old_pass'])) {

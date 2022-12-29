@@ -80,7 +80,7 @@
                                 $file_upload_error_messages = "";
 
                                 if ($username == "" || $password == "" || $confirm_password == "" || $firstname == "" || $lastname == ""  || $date_of_birth == "" || empty($_POST['gender'])) {
-                                    echo "<div class='alert alert-danger'>Please make sure all fields are not emplty!</div>";
+                                    echo "<div class='alert alert-danger'>Please make sure have * column are not emplty!</div>";
                                 } else {
                                     if (strlen($username) >= 6) {
                                         if (strpos(trim($username), ' ')) {
@@ -211,7 +211,7 @@
                             <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
                                 <div class="row mb-3 pt-3">
                                     <div class="form-outline text-start col-sm-6 col-12">
-                                        <label for="username" class="fw-semibold">Username</label>
+                                        <label for="username" class="fw-semibold"><div class="d-flex">Username <div class="text-danger">*</div></div></label>
                                         <input type="type" id="username" name="username" class="form-control form-control-md" value="<?php if (isset($_POST['username'])) {
                                                                                                                                             echo $_POST['username'];
                                                                                                                                         } else {
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="row mb-3 ">
                                     <div class="form-outline text-start col-sm-6 col-12">
-                                        <label for="firstname" class="fw-semibold">First Name</label>
+                                        <label for="firstname" class="fw-semibold"><div class="d-flex">First Name <div class="text-danger">*</div></div></label>
                                         <input type="type" id="firstname" name="firstname" class="form-control form-control-md" value="<?php if (isset($_POST['firstname'])) {
                                                                                                                                             echo $_POST['firstname'];
                                                                                                                                         } else {
@@ -233,7 +233,7 @@
                                                                                                                                         } ?>" />
                                     </div>
                                     <div class="form-outline text-start col-sm-6 col-12 mt-3 mt-sm-0">
-                                        <label for="lastname" class="fw-semibold">Last Name</label>
+                                        <label for="lastname" class="fw-semibold"><div class="d-flex">Last Name <div class="text-danger">*</div></div></label>
                                         <input type="type" id="lastname" name="lastname" class="form-control form-control-md" value="<?php if (isset($_POST['lastname'])) {
                                                                                                                                             echo $_POST['lastname'];
                                                                                                                                         } else {
@@ -243,17 +243,17 @@
                                 </div>
                                 <div class="row mb-3">
                                     <div class="form-outline text-start col-sm-6 col-12">
-                                        <label for="password" class="fw-semibold">Psassword</label>
+                                        <label for="password" class="fw-semibold"><div class="d-flex">Psassword <div class="text-danger">*</div></div></label>
                                         <input type="password" id="password" name="password" class="form-control form-control-md" />
                                     </div>
                                     <div class="form-outline  text-start col-sm-6 col-12 mt-3 mt-sm-0">
-                                        <label for="confirm_password" class="fw-semibold">Confirm Password</label>
+                                        <label for="confirm_password" class="fw-semibold"><div class="d-flex">Confirm Password <div class="text-danger">*</div></div></label>
                                         <input type="password" id="confirm_password" name="confirm_password" class="form-control form-control-md" />
                                     </div>
                                 </div>
                                 <div class="row mb-4">
                                     <div class="form-outline text-start col-sm-6 col-12">
-                                        <label for="date_of_birth" class="fw-semibold">Date of Birth</label>
+                                        <label for="date_of_birth" class="fw-semibold"><div class="d-flex">Date of Birth <div class="text-danger">*</div></div></label>
                                         <input type="date" id="date_of_birth" name="date_of_birth" class="form-control form-control-md" value="<?php if (isset($_POST['date_of_birth'])) {
                                                                                                                                                     echo $_POST['date_of_birth'];
                                                                                                                                                 } else {
@@ -261,25 +261,21 @@
                                                                                                                                                 } ?>" />
                                     </div>
                                     <div class="form-outline  text-start col-sm-6 col-12 mt-3 mt-sm-0">
-                                        <div class="fw-semibold">Gender</div>
+                                        <div class="fw-semibold"> <div class="d-flex">Gender <div class="text-danger">*</div></div></div>
                                         <div class="mt-2 me-2">
                                             <input type="radio" name="gender" value="male" id="male" <?php
                                                                                                         if (isset($_POST['gender'])) {
                                                                                                             if ($_POST['gender'] == "male") {
                                                                                                                 echo "checked";
                                                                                                             }
-                                                                                                        } else {
-                                                                                                            echo "checked";
-                                                                                                        } ?>>
+                                                                                                        }  ?>>
                                             <label for="male" class="me-4">Male</label>
                                             <input type="radio" name="gender" value="female" id="female" <?php
                                                                                                             if (isset($_POST['gender'])) {
                                                                                                                 if ($_POST['gender'] == "female") {
                                                                                                                     echo "checked";
                                                                                                                 }
-                                                                                                            } else {
-                                                                                                                echo "checked";
-                                                                                                            } ?>>
+                                                                                                            }  ?>>
                                             <label for="female">Female</label>
                                         </div>
                                     </div>
@@ -287,7 +283,7 @@
                                 <div class="text-center text-sm-start">
                                     <button type="submit" class="btn btn-secondary btn-md btn-block">Resgister</button>
 
-                                    <div class="mt-3 mb-3 text-muted">Have already an account? <a href="login.php" class=" text-dark">Login here</a></div>
+                                    <div class="mt-3 mb-3 text-muted">Have already an account? <a href="index.php" class=" text-dark">Login here</a></div>
 
                                     <div class="mt-3 text-muted">&copy; 2022 TANZX</div>
                                 </div>
