@@ -41,12 +41,14 @@ include 'logincheck.php';
             // execute our query
             $stmt->execute();
 
+            $oldusername = array();
             // store retrieved row to a variable
             $num = $stmt->rowCount();
             if ($num > 0) {
                 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                     // values to fill up our form
-                    $oldusername[] = $row['username'];
+                    array_push($oldusername , $row['username']);
+                    
                 }
             }
         }

@@ -26,7 +26,7 @@
                         <div class="card-body p-sm-5 p-4 ">
                             <div class="text-center">
                                 <img src="images/tanzxlogo.png" alt="Tanzx Logo" class="logo text-center">
-                                <h5 class="mb-3 fw-bold">Resgister</h5>
+                                <h5 class="mb-3 fw-bold">Register</h5>
                             </div>
                             <?php
 
@@ -281,7 +281,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center text-sm-start">
-                                    <button type="submit" class="btn btn-secondary btn-md btn-block">Resgister</button>
+                                    <button type="submit" class="btn btn-secondary btn-md btn-block">Register</button>
 
                                     <div class="mt-3 mb-3 text-muted">Have already an account? <a href="index.php" class=" text-dark">Login here</a></div>
 
